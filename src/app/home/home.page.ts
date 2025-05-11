@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TempatserviceService } from '../tempatservice.service';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +8,13 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class HomePage {
+  tempats: any[] = [];
 
-  constructor() {}
+  constructor(private tempatService: TempatserviceService) {}
+
+  ngOnInit() {
+    // Memanggil fungsi getTempat dari service
+    this.tempats = this.tempatService.getTempat();
+  }
 
 }
