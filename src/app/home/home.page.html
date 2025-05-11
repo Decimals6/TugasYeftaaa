@@ -1,34 +1,36 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Home
-    </ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Jelajahi Tempat</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+    <ion-toolbar color="light">
+      <ion-title size="large">Tempat Wisata</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div id="container">
-    <ion-list *ngFor="let tempat of tempats; let i = index">
-      <ion-accordion-group expand="inset">
-        <ion-accordion value={{tempat.nama}}>
-          <ion-item slot="header" color="tertiary">
-            <ion-label>{{tempat.nama}}</ion-label>
-          </ion-item>
+    <ion-accordion-group expand="inset">
+      <ion-accordion *ngFor="let tempat of tempats" value="{{tempat.nama}}">
+        <ion-item slot="header" color="tertiary">
+          <ion-label>
+            <h2>{{ tempat.nama }}</h2>
+            <p>{{ tempat.kategori }}</p>
+          </ion-label>
+        </ion-item>
 
-
-          <div class="ion-padding" slot="content">
-            <ion-img src={{tempat.url}}></ion-img>
-            <ion-label>{{tempat.keterangan}}</ion-label>
-            <ion-button routerLink="/detail/{{tempat.id}}">Detail Lokasi</ion-button>
+        <div class="accordion-content" slot="content">
+          <div class="img-wrapper">
+            <ion-img [src]="tempat.url"></ion-img>
           </div>
-        </ion-accordion>
-      </ion-accordion-group>
-    </ion-list>
+          <p class="keterangan">{{ tempat.keterangan }}</p>
+          <ion-button expand="block" color="primary" routerLink="/detail/{{tempat.id}}">
+            Detail Lokasi
+          </ion-button>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
   </div>
 </ion-content>

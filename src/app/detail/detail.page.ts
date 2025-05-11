@@ -4,6 +4,7 @@ import { interval, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TempatserviceService } from '../tempatservice.service';
 import { AfterViewInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-detail',
@@ -18,6 +19,7 @@ export class DetailPage implements OnInit {
   markerLokasi: any;
   timerSubscription: Subscription | undefined;
   isInit = false
+  count=0;
   markerTeman: any;
   rute1: any;
   rute2: any;
@@ -34,7 +36,7 @@ export class DetailPage implements OnInit {
   tempat: any = {};
 
 
-  constructor(private route: ActivatedRoute, private tempatService: TempatserviceService) { }
+  constructor(private alertCtrl: AlertController, private route: ActivatedRoute, private tempatService: TempatserviceService) { }
 
   ngOnInit() {
     this.fullname = localStorage.getItem("app_fullname") ?? "";
@@ -114,7 +116,11 @@ export class DetailPage implements OnInit {
   }
   startTimer() {
     this.timerSubscription = interval(1000).subscribe(() => {
-      this.getCoordinates()
+      this.getCoordinates();
+      this.count+=1;
+      console.log(this.count);
+      console.log(this.lat, this.lon);
+      this.checkRuteTerdekat();
     });
   }
   checkRuteTerdekat() {
@@ -140,7 +146,33 @@ export class DetailPage implements OnInit {
       this.ruteTerlalui = [false, false, false, false]; // reset buat putaran berikutnya
     }
   }
+  ionViewWillLeave() {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+      console.log("Timer stopped");
+    }
+  }
 
+  async konfirmasiReset() {
+    const alert = await this.alertCtrl.create({
+      header: 'Konfirmasi',
+      message: 'Apakah kamu yakin ingin mereset jumlah putaran?',
+      buttons: [
+        {
+          text: 'Batal',
+          role: 'cancel',
+        },
+        {
+          text: 'Ya, Reset',
+          handler: () => {
+            this.putaran = 0;
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
   moving() {
     this.markerLokasi.setLatLng([this.lat, this.lon])
     this.markerTeman.setLatLng([this.tempat.lat, this.tempat.lon])
