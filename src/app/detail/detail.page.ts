@@ -113,7 +113,7 @@ export class DetailPage implements OnInit {
     this.rute4.addTo(this.map);
   }
   startTimer() {
-    this.timerSubscription = interval(3000).subscribe(() => {
+    this.timerSubscription = interval(1000).subscribe(() => {
       this.getCoordinates()
     });
   }
