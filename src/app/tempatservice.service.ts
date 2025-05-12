@@ -44,6 +44,19 @@ export class TempatserviceService {
       rute3: {lat: -7.3135330091604205, lon: 112.6680275723617},
       rute4: {lat: -7.3138139339285395, lon: 112.66796256896303},
     },
+    {
+      id: 3,
+      nama: 'Masjid Al-Muk',
+      url: 'https://plongsite.wordpress.com/wp-content/uploads/2018/04/img_20180420_111649216652334.jpg',
+      lat: -7.3136057473826765, 
+      lon: 112.66720833744299,
+      keterangan: 'Masjid didalam perumahan',
+      rute1: {lat: -7.313650518893065, lon: 112.66707184645891},
+      rute2: {lat: -7.313380548298757, lon: 112.66712258869184},
+      rute3: {lat: -7.3135330091604205, lon: 112.6680275723617},
+      rute4: {lat: -7.3138139339285395, lon: 112.66796256896303},
+    },
+    
   ]
 
   getTempatById(id: number) {
