@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TempatserviceService } from '../tempatservice.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { TempatserviceService } from '../tempatservice.service';
   styleUrls: ['home.page.scss'],
   standalone: false,
 })
-export class HomePage {
+export class HomePage implements OnInit {
   tempats: any[] = [];
 
   constructor(private tempatService: TempatserviceService) {}
@@ -15,6 +15,7 @@ export class HomePage {
   ngOnInit() {
     // Memanggil fungsi getTempat dari service
     this.tempats = this.tempatService.getTempat();
+    console.log(this.tempats);
   }
 
 }
