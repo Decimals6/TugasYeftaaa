@@ -14,17 +14,14 @@
   <div class="accordion-container">
     <ion-accordion-group expand="inset">
       <ion-accordion *ngFor="let tempat of tempats" value="{{ tempat.nama }}">
+        
         <!-- Header -->
-        <ion-item slot="header" color="secondary" lines="none">
+        <ion-item slot="header" lines="none" color="tertiary">
           <ion-label>
-            <h2 class="accordion-title">{{ tempat.nama }}</h2>
-            <p class="accordion-subtitle">{{ tempat.kategori }}</p>
+            <div class="accordion-title">{{ tempat.nama }}</div>
+            <div class="accordion-subtitle">{{ tempat.kategori }}</div>
           </ion-label>
-          <ion-icon
-            slot="end"
-            name="chevron-down-outline"
-            class="expand-icon"
-          ></ion-icon>
+          <ion-icon slot="end" name="chevron-down-outline"></ion-icon>
         </ion-item>
 
         <!-- Content -->
@@ -41,6 +38,7 @@
             Detail Lokasi
           </ion-button>
         </div>
+
       </ion-accordion>
     </ion-accordion-group>
   </div>
