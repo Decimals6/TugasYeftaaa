@@ -11,22 +11,31 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
+  <div class="accordion-container">
     <ion-accordion-group expand="inset">
-      <ion-accordion *ngFor="let tempat of tempats" value="{{tempat.nama}}">
-        <ion-item slot="header" color="tertiary">
+      <ion-accordion *ngFor="let tempat of tempats" value="{{ tempat.nama }}">
+        <!-- Header -->
+        <ion-item slot="header" color="tertiary" lines="none">
           <ion-label>
             <h2>{{ tempat.nama }}</h2>
             <p>{{ tempat.kategori }}</p>
           </ion-label>
+          <ion-icon
+            slot="end"
+            name="chevron-down-outline"
+            class="expand-icon"
+          ></ion-icon>
         </ion-item>
 
+        <!-- Content -->
         <div class="accordion-content" slot="content">
-          <div class="img-wrapper">
-            <ion-img [src]="tempat.url"></ion-img>
-          </div>
+          <ion-img [src]="tempat.url" class="accordion-image"></ion-img>
           <p class="keterangan">{{ tempat.keterangan }}</p>
-          <ion-button expand="block" color="primary" routerLink="/detail/{{tempat.id}}">
+          <ion-button
+            expand="block"
+            color="primary"
+            [routerLink]="['/detail', tempat.id]"
+          >
             Detail Lokasi
           </ion-button>
         </div>
