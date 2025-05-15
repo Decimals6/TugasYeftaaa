@@ -68,10 +68,11 @@ ion-item[slot="header"] {
 }
 
 /* Gambar */
-.accordion-image {
+ion-img {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  height: 200px; /* tetap tinggi konsisten */
+  object-fit: cover; /* penting: crop tengah */
+  object-position: center center;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
