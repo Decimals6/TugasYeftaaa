@@ -14,7 +14,7 @@
   <div class="accordion-container">
     <ion-accordion-group expand="inset">
       <ion-accordion *ngFor="let tempat of tempats" value="{{ tempat.nama }}">
-        
+
         <!-- Header -->
         <ion-item slot="header" lines="none" color="tertiary">
           <ion-label>
@@ -28,12 +28,13 @@
         <div class="accordion-content" slot="content">
           <div class="img-wrapper">
             <ion-img [src]="tempat.url" class="accordion-image"></ion-img>
+          </div> <!-- ← penutup img-wrapper yang sebelumnya hilang -->
+
           <p class="keterangan">{{ tempat.keterangan }}</p>
           <ion-button
             expand="block"
             color="primary"
-            [routerLink]="['/detail', tempat.id]"
-          >
+            [routerLink]="['/detail', tempat.id]">
             Detail Lokasi
           </ion-button>
         </div>
