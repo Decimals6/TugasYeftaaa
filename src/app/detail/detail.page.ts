@@ -124,7 +124,7 @@ export class DetailPage implements OnInit {
     });
   }
   checkRuteTerdekat() {
-    const toleransi = 0.00001;
+    const toleransi = 0.0001;
     const rutes = [this.tempat.rute1, this.tempat.rute2, this.tempat.rute3, this.tempat.rute4];
 
     for (let i = 0; i < rutes.length; i++) {
