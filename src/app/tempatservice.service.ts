@@ -51,10 +51,10 @@ export class TempatserviceService {
       lat: -7.313778, 
       lon: 112.676944,
       keterangan: 'Masjid didalam perumahan',
-      rute1: { lat: -7.313750, lon: 112.677250 },
-      rute2: { lat: -7.313694, lon: 112.676972 },
-      rute3: { lat: -7.313889, lon: 112.676750 },
-      rute4: { lat: -7.314278, lon: 112.676889 }
+      rute1: { lat: -7.313833, lon: 112.677278 },
+      rute2: { lat: -7.313306, lon: 112.677111 },
+      rute3: { lat: -7.313694, lon: 112.676778 },
+      rute4: { lat: -7.314306, lon: 112.676778 }
 ,
     },
     
