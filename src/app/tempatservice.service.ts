@@ -54,7 +54,7 @@ export class TempatserviceService {
       rute1: { lat: -7.313833, lon: 112.677278 },
       rute2: { lat: -7.313306, lon: 112.677111 },
       rute3: { lat: -7.313694, lon: 112.676778 },
-      rute4: { lat: -7.314306, lon: 112.676778 }
+      rute4: { lat: -7.314306, lon: 112.676861 }
 ,
     },
     
