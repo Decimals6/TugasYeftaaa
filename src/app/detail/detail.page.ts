@@ -27,22 +27,23 @@ export class DetailPage implements OnInit {
   putaran = 0;
   lat2 = 0.0;
   lon2 = 0.0;
-  fullname = '';
-  teman = '';
+  fullname = "";
+  teman = "";
+
   id: number = 0;
   tempat: any = {};
 
-  // Untuk menyimpan urutan rute yang telah dilalui
-  urutanRute: number[] = [];
+  urutanKunjungan: number[] = []; // 🆕 Menyimpan urutan kunjungan titik
+  jalurPolyline: any = null;      // 🆕 Untuk menggambar garis jalur
 
   constructor(
     private alertCtrl: AlertController,
     private route: ActivatedRoute,
     private tempatService: TempatserviceService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.fullname = localStorage.getItem('app_fullname') ?? '';
+    this.fullname = localStorage.getItem("app_fullname") ?? "";
     this.route.params.subscribe(params => {
       this.id = params['index'];
     });
@@ -53,7 +54,7 @@ export class DetailPage implements OnInit {
   getCoordinates() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           this.lat = position.coords.latitude;
           this.lon = position.coords.longitude;
           if (!this.isInit) {
@@ -64,7 +65,7 @@ export class DetailPage implements OnInit {
             this.moving();
           }
         },
-        error => {
+        (error) => {
           console.error('Error getting location', error);
         }
       );
@@ -77,6 +78,7 @@ export class DetailPage implements OnInit {
     if (this.map) {
       this.map.remove();
     }
+
     this.map = L.map('map').setView([this.lat, this.lon], 13);
     const googleStreets = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -118,46 +120,65 @@ export class DetailPage implements OnInit {
 
   checkRuteTerdekat() {
     const toleransi = 0.0001;
+    const rutes = [this.tempat.rute1, this.tempat.rute2, this.tempat.rute3, this.tempat.rute4];
 
-    const ruteMap: { [key: number]: { lat: number; lon: number } } = {
+    for (let i = 0; i < rutes.length; i++) {
+      const rute = rutes[i];
+      const dekatLat = Math.abs(this.lat - rute.lat) <= toleransi;
+      const dekatLon = Math.abs(this.lon - rute.lon) <= toleransi;
+
+      if (dekatLat && dekatLon) {
+        const nomorRute = i + 1;
+        const lastVisited = this.urutanKunjungan[this.urutanKunjungan.length - 1];
+
+        if (lastVisited !== nomorRute) {
+          this.urutanKunjungan.push(nomorRute);
+          alert(`Kamu melewati rute ${nomorRute}`);
+          this.gambarJalur(); // 🆕 Gambar ulang garis jalur
+
+          const target = [1, 2, 3, 4, 1];
+          if (this.urutanKunjungan.length >= 5) {
+            const lastFive = this.urutanKunjungan.slice(-5);
+            if (JSON.stringify(lastFive) === JSON.stringify(target)) {
+              this.putaran += 1;
+              alert(`Putaran ${this.putaran} selesai!`);
+              this.urutanKunjungan = [];
+              this.gambarJalur(); // Hapus jalur karena reset
+            }
+          }
+        }
+      }
+    }
+  }
+
+  gambarJalur() {
+    if (this.jalurPolyline) {
+      this.map.removeLayer(this.jalurPolyline);
+    }
+
+    const ruteMap = {
       1: this.tempat.rute1,
       2: this.tempat.rute2,
       3: this.tempat.rute3,
       4: this.tempat.rute4,
     };
 
-    for (let r = 1; r <= 4; r++) {
-      const titik = ruteMap[r];
-      const dekatLat = Math.abs(this.lat - titik.lat) <= toleransi;
-      const dekatLon = Math.abs(this.lon - titik.lon) <= toleransi;
+    const jalur: [number, number][] = this.urutanKunjungan.map((r) => {
+const titik = ruteMap[r as 1 | 2 | 3 | 4];
+      return [titik.lat, titik.lon];
+    });
 
-      if (dekatLat && dekatLon) {
-        if (!this.urutanRute.includes(r)) {
-          this.urutanRute.push(r);
-          alert(`Kamu telah melewati rute ${r}`);
-        }
-
-        // Cek apakah putaran selesai
-        if (this.urutanRute.length === 4 && this.urutanRute[0] === r) {
-          this.putaran += 1;
-          alert(`Selamat! Kamu telah menyelesaikan ${this.putaran} putaran.`);
-          this.urutanRute = [];
-        }
-
-        break; // Supaya tidak mendeteksi lebih dari satu titik dalam satu kali deteksi
-      }
-    }
-  }
-
-  moving() {
-    this.markerLokasi.setLatLng([this.lat, this.lon]);
-    this.markerTeman.setLatLng([this.tempat.lat, this.tempat.lon]);
+    this.jalurPolyline = L.polyline(jalur, {
+      color: 'blue',
+      weight: 4,
+      opacity: 0.7,
+    }).addTo(this.map);
   }
 
   ionViewWillLeave() {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
-      console.log('Timer stopped');
+      console.log("Timer stopped");
     }
   }
 
@@ -174,12 +195,19 @@ export class DetailPage implements OnInit {
           text: 'Ya, Reset',
           handler: () => {
             this.putaran = 0;
-            this.urutanRute = [];
+            this.urutanKunjungan = [];
+            this.gambarJalur(); // 🆕 reset polyline
           },
         },
       ],
     });
 
     await alert.present();
+  }
+
+  moving() {
+    this.markerLokasi.setLatLng([this.lat, this.lon]);
+    this.markerTeman.setLatLng([this.tempat.lat, this.tempat.lon]);
+    // Anda bisa menambahkan komunikasi server jika diperlukan
   }
 }
