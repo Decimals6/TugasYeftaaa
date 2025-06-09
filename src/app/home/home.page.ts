@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TempatserviceService } from '../tempatservice.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,12 +11,25 @@ import { TempatserviceService } from '../tempatservice.service';
 export class HomePage implements OnInit {
   tempats: any[] = [];
 
-  constructor(private tempatService: TempatserviceService) {}
+  constructor(
+    private tempatService: TempatserviceService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    // Memanggil fungsi getTempat dari service
     this.tempats = this.tempatService.getTempat();
     console.log(this.tempats);
   }
 
+  goToDetail(tempat: any) {
+    const nama = tempat.nama.toLowerCase();
+
+    if (nama.includes('mina')) {
+      this.router.navigate(['/detail-mina'], { state: { data: tempat } });
+    } else if (nama.includes('akhir')) {
+      this.router.navigate(['/detail-makkah-akhir'], { state: { data: tempat } });
+    } else {
+      this.router.navigate(['/detail'], { state: { data: tempat } });
+    }
+  }
 }

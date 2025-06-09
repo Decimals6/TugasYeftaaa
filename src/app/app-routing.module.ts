@@ -14,7 +14,15 @@ const routes: Routes = [
   {
     path: 'detail/:index',
     loadChildren: () => import('./detail/detail.module').then( m => m.DetailPageModule)
+  },  {
+    path: 'detail-mina',
+    loadChildren: () => import('./detail-mina/detail-mina.module').then( m => m.DetailMinaPageModule)
   },
+  {
+    path: 'detail-makkah-akhir',
+    loadChildren: () => import('./detail-makkah-akhir/detail-makkah-akhir.module').then( m => m.DetailMakkahAkhirPageModule)
+  },
+
 ];
 
 @NgModule({

@@ -1,45 +1,24 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Jelajahi Tempat</ion-title>
+    <ion-title>e-Mutowif</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar color="light">
-      <ion-title size="large">Tempat Wisata</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div class="accordion-container">
-    <ion-accordion-group expand="inset">
-      <ion-accordion *ngFor="let tempat of tempats" value="{{ tempat.nama }}">
-
-        <!-- Header -->
-        <ion-item slot="header" lines="none" color="tertiary">
-          <ion-label>
-            <div class="accordion-title">{{ tempat.nama }}</div>
-            <div class="accordion-subtitle">{{ tempat.kategori }}</div>
-          </ion-label>
-          <ion-icon slot="end" name="chevron-down-outline"></ion-icon>
-        </ion-item>
-
-        <!-- Content -->
-        <div class="accordion-content" slot="content">
-          <div class="img-wrapper">
-            <ion-img [src]="tempat.url" class="accordion-image"></ion-img>
-          </div> <!-- ← penutup img-wrapper yang sebelumnya hilang -->
-
-          <p class="keterangan">{{ tempat.keterangan }}</p>
-          <ion-button
-            expand="block"
-            color="primary"
-            [routerLink]="['/detail', tempat.id]">
-            Detail Lokasi
-          </ion-button>
-        </div>
-
-      </ion-accordion>
-    </ion-accordion-group>
-  </div>
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" *ngFor="let tempat of tempats">
+        <ion-card class="lokasi-card">
+          <img [src]="tempat.url || 'assets/img/placeholder.jpg'" />
+          <ion-card-content class="ion-text-center">
+            <h2>{{ tempat.nama }}</h2>
+            <p>{{ tempat.keterangan }}</p>
+            <ion-button expand="block" (click)="goToDetail(tempat.id)">
+              MULAI
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
