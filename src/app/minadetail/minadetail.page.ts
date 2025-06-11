@@ -18,10 +18,10 @@ export class MinadetailPage implements OnInit {
   markerUser: any;
   timerSubscription: Subscription | undefined;
   isInit = false;
-  
+
   lat2 = 0.0;
   lon2 = 0.0;
-  
+
 
   id: number = 0;
   tempat: any = {};
@@ -101,16 +101,11 @@ export class MinadetailPage implements OnInit {
 
   checkRuteTerdekat() {
     const toleransi = 0.0001;
-    const rutes = [this.tempat.rute1, this.tempat.rute2, this.tempat.rute3, this.tempat.rute4];
+    const dekatLat = Math.abs(this.lat - this.tempat.lat) <= toleransi;
+    const dekatLon = Math.abs(this.lon - this.tempat.lon) <= toleransi;
 
-    for (let i = 0; i < rutes.length; i++) {
-      const rute = rutes[i];
-      const dekatLat = Math.abs(this.lat - rute.lat) <= toleransi;
-      const dekatLon = Math.abs(this.lon - rute.lon) <= toleransi;
-
-      if (dekatLat && dekatLon) {
-        this.selesaiRute()        
-      }
+    if (dekatLat && dekatLon) {
+      this.selesaiRute()
     }
   }
 

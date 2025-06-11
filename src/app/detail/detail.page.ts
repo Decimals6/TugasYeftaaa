@@ -123,36 +123,12 @@ export class DetailPage implements OnInit {
 
   checkRuteTerdekat() {
     const toleransi = 0.0001;
-    const rutes = [this.tempat.rute1, this.tempat.rute2, this.tempat.rute3, this.tempat.rute4];
+    const dekatLat = Math.abs(this.lat - this.tempat.lat) <= toleransi;
+    const dekatLon = Math.abs(this.lon - this.tempat.lon) <= toleransi;
 
-    for (let i = 0; i < rutes.length; i++) {
-      const rute = rutes[i];
-      const dekatLat = Math.abs(this.lat - rute.lat) <= toleransi;
-      const dekatLon = Math.abs(this.lon - rute.lon) <= toleransi;
-
-      if (dekatLat && dekatLon) {
+    if (dekatLat && dekatLon) {
         this.selesaiRute();
-        // const nomorRute = i + 1;
-        // const lastVisited = this.urutanKunjungan[this.urutanKunjungan.length - 1];
-
-        // if (lastVisited !== nomorRute) {
-        //   this.urutanKunjungan.push(nomorRute);
-        //   alert(`Kamu melewati rute ${nomorRute}`);
-        //   this.gambarJalur(); // 🆕 Gambar ulang garis jalur
-
-        //   const target = [1, 2, 3, 4, 1];
-        //   if (this.urutanKunjungan.length >= 5) {
-        //     const lastFive = this.urutanKunjungan.slice(-5);
-        //     if (JSON.stringify(lastFive) === JSON.stringify(target)) {
-        //       this.putaran += 1;
-        //       alert(`Putaran ${this.putaran} selesai!`);
-        //       this.urutanKunjungan = [];
-        //       this.gambarJalur(); // Hapus jalur karena reset
-        //     }
-        //   }
-        // }
       }
-    }
   }
 
   // gambarJalur() {
