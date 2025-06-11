@@ -8,28 +8,37 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
   standalone: false,
 })
-export class HomePage implements OnInit {
+export class HomePage {
   tempats: any[] = [];
 
   constructor(
     private tempatService: TempatserviceService,
     private router: Router
-  ) {}
+  ) { }
 
-  ngOnInit() {
-    this.tempats = this.tempatService.getTempat();
-    console.log(this.tempats);
+  ionViewWillEnter() {
+    this.tempatService.loadStatusFromStorage().then(() => {
+      this.tempats = this.tempatService.getTempat();
+      console.log('Refreshed tempats:', this.tempats);
+    });
   }
 
-  goToDetail(tempat: any) {
-    const nama = tempat.nama.toLowerCase();
+  goToDetail(id: any) {
+    const nama = this.tempats[id].nama.toLowerCase();
 
     if (nama.includes('mina')) {
-      this.router.navigate(['/detail-mina'], { state: { data: tempat } });
+      this.router.navigate(['/mina']);
     } else if (nama.includes('akhir')) {
-      this.router.navigate(['/detail-makkah-akhir'], { state: { data: tempat } });
+      this.router.navigate(['/makkahakhir']);
     } else {
-      this.router.navigate(['/detail'], { state: { data: tempat } });
+      this.router.navigate(['/detail', id]);
     }
   }
+  async reset() {
+    await this.tempatService.resetAllStatus();         // clear data dan storage
+    await this.tempatService.loadStatusFromStorage();  // ambil ulang data dari storage
+    this.tempats = this.tempatService.getTempat();     // refresh tampilan
+  }
+
+
 }

@@ -14,14 +14,26 @@ const routes: Routes = [
   {
     path: 'detail/:index',
     loadChildren: () => import('./detail/detail.module').then( m => m.DetailPageModule)
-  },  {
-    path: 'detail-mina',
-    loadChildren: () => import('./detail-mina/detail-mina.module').then( m => m.DetailMinaPageModule)
   },
   {
-    path: 'detail-makkah-akhir',
-    loadChildren: () => import('./detail-makkah-akhir/detail-makkah-akhir.module').then( m => m.DetailMakkahAkhirPageModule)
+    path: 'mina',
+    loadChildren: () => import('./mina/mina.module').then( m => m.MinaPageModule)
   },
+  {
+    path: 'minadetail/:index',
+    loadChildren: () => import('./minadetail/minadetail.module').then( m => m.MinadetailPageModule)
+  },
+  {
+    path: 'makkahakhir',
+    loadChildren: () => import('./makkahakhir/makkahakhir.module').then( m => m.MakkahakhirPageModule)
+  },
+  {
+    path: 'makkahakhirdetail/:index',
+    loadChildren: () => import('./makkahakhirdetail/makkahakhirdetail.module').then( m => m.MakkahakhirdetailPageModule)
+  },
+
+
+
 
 ];
 

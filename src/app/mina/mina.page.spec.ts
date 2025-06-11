@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DetailMinaPage } from './detail-mina.page';
+import { MinaPage } from './mina.page';
 
-describe('DetailMinaPage', () => {
-  let component: DetailMinaPage;
-  let fixture: ComponentFixture<DetailMinaPage>;
+describe('MinaPage', () => {
+  let component: MinaPage;
+  let fixture: ComponentFixture<MinaPage>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DetailMinaPage);
+    fixture = TestBed.createComponent(MinaPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

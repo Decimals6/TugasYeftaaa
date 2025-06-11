@@ -1,18 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { IonicModule } from '@ionic/angular';
 
-import { DetailMinaPageRoutingModule } from './detail-mina-routing.module';
-import { DetailMinaPage } from './detail-mina.page';
+import { MinadetailPageRoutingModule } from './minadetail-routing.module';
+
+import { MinadetailPage } from './minadetail.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DetailMinaPageRoutingModule,
-    DetailMinaPage // ✅ Diimport karena standalone
-  ]
+    MinadetailPageRoutingModule
+  ],
+  declarations: [MinadetailPage]
 })
-export class DetailMinaPageModule {}
+export class MinadetailPageModule {}
