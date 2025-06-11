@@ -290,7 +290,7 @@ export class TempatserviceService {
   }
 
   async resetAllMakkahStatus() {
-    this.minaList.forEach(t => t.status = false);
+    this.makkahList.forEach(t => t.status = false);
     await this.saveMakkahStatusToStorage();
     this.updateMakkahStatusTempat(0, true);
   }
