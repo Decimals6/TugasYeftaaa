@@ -10,6 +10,9 @@ import { TempatserviceService } from '../tempatservice.service';
 })
 export class MinaPage {
   tempats: any[] = [];
+  tanggalList: number[] = [8, 9, 10, 11, 12, 13, 14];
+
+  selectedTanggal: number | null = null;
   
   constructor(
     private tempatService: TempatserviceService,
@@ -18,7 +21,7 @@ export class MinaPage {
 
   ionViewWillEnter() {
     this.tempatService.loadStatusFromStorage().then(() => {
-      this.tempats = this.tempatService.getMina();
+      this.tempats = this.tempatService.tempatList[3]?.list ?? [];
       console.log('Refreshed tempats:', this.tempats);
     });
   }
@@ -31,6 +34,23 @@ export class MinaPage {
     await this.tempatService.resetAllMinaStatus();         // clear data dan storage
     await this.tempatService.loadStatusFromStorage();  // ambil ulang data dari storage
     this.tempats = this.tempatService.getMina();     // refresh tampilan
+  }
+
+  onTanggalChange(event: any) {
+    console.log('Tanggal dipilih:', this.selectedTanggal);
+    // Lanjutkan aksi sesuai kebutuhanmu di sini
+  }
+
+  isOpenOnSelectedDate(openValue: number | number[]): boolean {
+    if (!this.selectedTanggal) return false;
+
+    // Kalau openValue adalah array
+    if (Array.isArray(openValue)) {
+      return openValue.includes(this.selectedTanggal);
+    }
+
+    // Kalau openValue hanya angka
+    return openValue === this.selectedTanggal;
   }
 
 }

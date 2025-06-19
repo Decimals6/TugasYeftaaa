@@ -24,11 +24,11 @@ const routes: Routes = [
     loadChildren: () => import('./minadetail/minadetail.module').then( m => m.MinadetailPageModule)
   },
   {
-    path: 'makkahakhir',
+    path: 'makkahakhir/:index',
     loadChildren: () => import('./makkahakhir/makkahakhir.module').then( m => m.MakkahakhirPageModule)
   },
   {
-    path: 'makkahakhirdetail/:index',
+    path: 'makkahakhirdetail/:index1/:index2',
     loadChildren: () => import('./makkahakhirdetail/makkahakhirdetail.module').then( m => m.MakkahakhirdetailPageModule)
   },
 

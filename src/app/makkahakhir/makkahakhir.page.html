@@ -17,13 +17,13 @@
           [class.disabled-card]="!tempat.status"
         >
           <img [src]="tempat.url || 'assets/img/placeholder.jpg'" />
-          <ion-card-content class="ion-text-center">
+          <ion-card-content class="ion-text-center" > 
             <h2>{{ tempat.nama }}</h2>
             <p>{{ tempat.keterangan }}</p>
             <ion-button
               expand="block"
-              [disabled]="!tempat.status"
               (click)="goToDetail(tempat.id)"
+              
             >
               MULAI
             </ion-button>

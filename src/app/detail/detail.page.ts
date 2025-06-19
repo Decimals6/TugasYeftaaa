@@ -99,18 +99,10 @@ export class DetailPage implements OnInit {
       iconSize: [50, 50],
       iconAnchor: [25, 50],
     });
-    // const markerIcon3 = L.icon({
-    //   iconUrl: 'https://static.thenounproject.com/png/335079-200.png',
-    //   iconSize: [50, 50],
-    //   iconAnchor: [25, 50],
-    // });
+
 
     this.markerUser = L.marker([this.lat, this.lon], { icon: markerIcon }).addTo(this.map);
     this.markerLokasi = L.marker([this.lat2, this.lon2], { icon: markerIcon2 }).addTo(this.map);
-    // this.rute1 = L.marker([this.tempat.rute1.lat, this.tempat.rute1.lon], { icon: markerIcon3 }).addTo(this.map);
-    // this.rute2 = L.marker([this.tempat.rute2.lat, this.tempat.rute2.lon], { icon: markerIcon3 }).addTo(this.map);
-    // this.rute3 = L.marker([this.tempat.rute3.lat, this.tempat.rute3.lon], { icon: markerIcon3 }).addTo(this.map);
-    // this.rute4 = L.marker([this.tempat.rute4.lat, this.tempat.rute4.lon], { icon: markerIcon3 }).addTo(this.map);
   }
 
   startTimer() {
@@ -127,33 +119,17 @@ export class DetailPage implements OnInit {
     const dekatLon = Math.abs(this.lon - this.tempat.lon) <= toleransi;
 
     if (dekatLat && dekatLon) {
-        this.selesaiRute();
-      }
+      this.selesaiRute();
+    }
   }
-
-  // gambarJalur() {
-  //   if (this.jalurPolyline) {
-  //     this.map.removeLayer(this.jalurPolyline);
-  //   }
-
-  //   const ruteMap = {
-  //     1: this.tempat.rute1,
-  //     2: this.tempat.rute2,
-  //     3: this.tempat.rute3,
-  //     4: this.tempat.rute4,
-  //   };
-
-  //   const jalur: [number, number][] = this.urutanKunjungan.map((r) => {
-  //     const titik = ruteMap[r as 1 | 2 | 3 | 4];
-  //     return [titik.lat, titik.lon];
-  //   });
-
-  //   this.jalurPolyline = L.polyline(jalur, {
-  //     color: 'blue',
-  //     weight: 4,
-  //     opacity: 0.7,
-  //   }).addTo(this.map);
-  // }
+  async lihatInfo() {
+    const alert = await this.alertCtrl.create({
+        header: 'Detail Kegiatan',
+        message: this.tempat.detail,
+        buttons: ['OK'],
+      });
+      await alert.present();
+  }
 
   ionViewWillLeave() {
     if (this.timerSubscription) {

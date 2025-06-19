@@ -9,6 +9,13 @@ ion-content {
   padding: 16px;
 }
 
+.disabled-card {
+  opacity: 0.5;
+  filter: grayscale(1) brightness(0.8);
+  pointer-events: none; // Opsional: supaya tidak bisa klik card-nya
+  transition: opacity 0.3s ease;
+}
+
 /* Grid Card Style */
 .lokasi-card {
   border-radius: 16px;
@@ -24,6 +31,8 @@ ion-content {
     object-position: center;
     border-radius: 0;
   }
+
+
 
   ion-card-content {
     padding: 12px 16px;
@@ -55,12 +64,7 @@ ion-content {
       --background: #32b88b;
     }
 
-    .disabled-card {
-      opacity: 0.5;
-      filter: grayscale(1) brightness(0.8);
-      pointer-events: none; // Opsional: supaya tidak bisa klik card-nya
-      transition: opacity 0.3s ease;
-    }
+
   }
 }
 

@@ -13,11 +13,10 @@
       <ion-card-title>{{ tempat.nama }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <!-- <div class="putaran-row">
-        <p><strong>Jumlah Putaran:</strong> {{ putaran }}</p>
-        <ion-button size="small" color="danger" (click)="konfirmasiReset()">Reset</ion-button>
-      </div> -->
-      <ion-button size="small" color="success" (click)="selesaiRute()">Selesai</ion-button>
+      <div class="putaran-row">
+        <ion-button size="small" color="success" (click)="selesaiRute()">Selesai</ion-button>
+        <ion-button size="small" color="medium" (click)="lihatInfo()">Lihat Info</ion-button>
+      </div>
     </ion-card-content>
   </ion-card>
 

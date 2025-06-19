@@ -1,32 +1,41 @@
-
 :host {
-    --ion-background-color: hsla(0, 0%, 100%, 0.455);
-    --ion-text-color: #000000;
-  }
-  
-  ion-toolbar {
-    --background: #3880ff;
-    --color: hsla(0, 0%, 100%, 0.455);
-  }
-  
-  ion-card {
-    background: rgba(248, 248, 248, 0.37) 0%, 100%, 0.455;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  #map {
-    height: 400px;
-    width: 100%;
-    border: 2px dashed red;
-    margin-top: 20px;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-  }
-  .putaran-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
+  --ion-background-color: hsla(0, 0%, 100%, 0.455);
+  --ion-text-color: #000000;
+}
+
+ion-toolbar {
+  --background: #3880ff;
+  --color: hsla(0, 0%, 100%, 0.455);
+}
+
+ion-card {
+  background: rgba(248, 248, 248, 0.37) 0%, 100%, 0.455;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#map {
+  height: 400px;
+  width: 100%;
+  border: 2px dashed red;
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.putaran-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.putaran-row ion-button {
+  flex: 1;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  font-weight: 600;
+}

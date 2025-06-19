@@ -8,13 +8,25 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <div class="dropdown-container">
+    <ion-label>Pilih Tanggal:</ion-label>
+    <ion-select
+      interface="popover"
+      placeholder="Tanggal"
+      [(ngModel)]="selectedTanggal"
+      (ionChange)="onTanggalChange($event)"
+    >
+      <ion-select-option *ngFor="let tgl of tanggalList" [value]="tgl">{{ tgl }}</ion-select-option>
+    </ion-select>
+  </div>
+
   <ion-button size="small" color="danger" (click)="reset()">Reset All</ion-button>
   <ion-grid>
     <ion-row>
       <ion-col size="6" *ngFor="let tempat of tempats">
         <ion-card
           class="lokasi-card"
-          [class.disabled-card]="!tempat.status"
+          [class.disabled-card]="!isOpenOnSelectedDate(tempat.date)"
         >
           <img [src]="tempat.url || 'assets/img/placeholder.jpg'" />
           <ion-card-content class="ion-text-center">
@@ -22,7 +34,6 @@
             <p>{{ tempat.keterangan }}</p>
             <ion-button
               expand="block"
-              [disabled]="!tempat.status"
               (click)="goToDetail(tempat.id)"
             >
               MULAI

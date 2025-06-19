@@ -28,7 +28,8 @@ export class MakkahakhirdetailPage implements OnInit {
   lon2 = 0.0;
 
 
-  id: number = 0;
+  id1: number = 0;
+  id2: number = 0;
   tempat: any = {};
 
   urutanKunjungan: number[] = []; // 🆕 Menyimpan urutan kunjungan titik
@@ -42,10 +43,11 @@ export class MakkahakhirdetailPage implements OnInit {
 
   async ngOnInit() {
     this.route.params.subscribe(params => {
-      this.id = +params['index'];
+      this.id1 = +params['index1'];
+      this.id2 = +params['index2'];
     });
     await this.tempatService.loadMakkahStatusFromStorage();
-    this.tempat = this.tempatService.makkahList[this.id];
+    this.tempat = this.tempatService.tempatList[this.id1]?.list?.[this.id2] ?? {};
     this.getCoordinates();
   }
 
@@ -209,13 +211,13 @@ export class MakkahakhirdetailPage implements OnInit {
   }
 
   async selesaiRute() {
-    const nextId = this.id + 1;
+    const nextId = this.id2 + 1;
     if (nextId < this.tempatService.getMakkah().length) {
-      this.tempatService.updateMakkahStatusTempat(nextId, true);
+      this.tempatService.updateTempatStatus(this.id1, nextId, true, this.tempatService.tempatList);
     } else {
       const alert = await this.alertCtrl.create({
         header: 'Selesai!',
-        message: 'Semua Ibadah Haji Telah Selesai',
+        message: 'Ibadah Telah Selesai',
         buttons: ['OK'],
       });
       await alert.present();

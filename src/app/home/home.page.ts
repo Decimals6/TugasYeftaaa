@@ -10,6 +10,10 @@ import { Router } from '@angular/router';
 })
 export class HomePage {
   tempats: any[] = [];
+  tanggalList: number[] = [8, 9, 10, 11, 12, 13, 14];
+
+  selectedTanggal: number | null = null;
+
 
   constructor(
     private tempatService: TempatserviceService,
@@ -28,8 +32,8 @@ export class HomePage {
 
     if (nama.includes('mina')) {
       this.router.navigate(['/mina']);
-    } else if (nama.includes('akhir')) {
-      this.router.navigate(['/makkahakhir']);
+    } else if (nama.includes('makkah')) {
+      this.router.navigate(['/makkahakhir', id]);
     } else {
       this.router.navigate(['/detail', id]);
     }
@@ -38,6 +42,23 @@ export class HomePage {
     await this.tempatService.resetAllStatus();         // clear data dan storage
     await this.tempatService.loadStatusFromStorage();  // ambil ulang data dari storage
     this.tempats = this.tempatService.getTempat();     // refresh tampilan
+  }
+
+  onTanggalChange(event: any) {
+    console.log('Tanggal dipilih:', this.selectedTanggal);
+    // Lanjutkan aksi sesuai kebutuhanmu di sini
+  }
+
+  isOpenOnSelectedDate(openValue: number | number[]): boolean {
+    if (!this.selectedTanggal) return false;
+
+    // Kalau openValue adalah array
+    if (Array.isArray(openValue)) {
+      return openValue.includes(this.selectedTanggal);
+    }
+
+    // Kalau openValue hanya angka
+    return openValue === this.selectedTanggal;
   }
 
 
