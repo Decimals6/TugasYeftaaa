@@ -30,7 +30,15 @@ const routes: Routes = [
   {
     path: 'makkahakhirdetail/:index1/:index2',
     loadChildren: () => import('./makkahakhirdetail/makkahakhirdetail.module').then( m => m.MakkahakhirdetailPageModule)
+  },  {
+    path: 'teskoor',
+    loadChildren: () => import('./teskoor/teskoor.module').then( m => m.TeskoorPageModule)
   },
+  {
+    path: 'tesrute',
+    loadChildren: () => import('./tesrute/tesrute.module').then( m => m.TesrutePageModule)
+  },
+
 
 
 

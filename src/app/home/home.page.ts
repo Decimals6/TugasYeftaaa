@@ -27,6 +27,14 @@ export class HomePage {
     });
   }
 
+  tesrute(){
+    this.router.navigate(['/tesrute']);
+  }
+
+  teskoor(){
+    this.router.navigate(['/teskoor']);
+  }
+
   goToDetail(id: any) {
     const nama = this.tempats[id].nama.toLowerCase();
 

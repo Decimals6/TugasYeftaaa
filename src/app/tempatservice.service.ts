@@ -105,8 +105,8 @@ export class TempatserviceService {
           nama: 'Jumrah Ula',
           keterangan: 'Lemparan Pertama',
           url: 'https://nuansantb.id/wp-content/uploads/2024/06/IMG-20240616-WA0171_copy_640x419.jpg',
-          lat: 21.3891,
-          lon: 39.8579,
+          lat: -7.313849726080349,
+          lon: 112.66829622873807,
           date: [12, 13],
         },
         {
@@ -114,8 +114,8 @@ export class TempatserviceService {
           nama: 'Jumrah Wustha',
           keterangan: 'Lemparan Kedua',
           url: 'https://cdn.kemenag.go.id/storage/posts/16_9/big/1718613830.jpg',
-          lat: 21.3542,
-          lon: 39.9836,
+          lat: -7.313033034177666,
+          lon: 112.66845158543634,
           date: [12, 13],
         },
         {
@@ -123,8 +123,8 @@ export class TempatserviceService {
           nama: 'Jumrah Aqabah',
           keterangan: 'Lemparan Terakhir',
           url: 'https://muhammadiyah.or.id/wp-content/uploads/2024/06/lempar-jumrah.jpg',
-          lat: 21.3628,
-          lon: 39.9406,
+          lat: -7.3134298233520605,
+          lon: 112.66855256728748,
           date: [11, 12, 13],
         },
       ]
@@ -138,6 +138,7 @@ export class TempatserviceService {
       lon: 39.8579,
       open: 14,
       list: [
+        //KOORDINAT MAKKAH BUAT DI CEK
         {
           id: 0,
           nama: 'Tawaf Ifadah',
@@ -145,10 +146,11 @@ export class TempatserviceService {
           url: 'https://awsimages.detik.net.id/visual/2023/07/01/jemaah-haji-melaksanakan-tawaf-ifadah-di-dekat-kabah-masjidil-haram-makkah-arab-saudi-sabtu-172023-1.jpeg?w=650&q=80',
           lat: 21.3891,
           lon: 39.8579,
-          rute1: { lat: 21.3901, lon: 39.8585 },
-          rute2: { lat: 21.3880, lon: 39.8570 },
-          rute3: { lat: 21.3875, lon: 39.8590 },
-          rute4: { lat: 21.3895, lon: 39.8565 },
+          //KOORDINAT YANG INI
+          rute1: { lat: -7.313824162433201, lon: 112.66798119462554 }, //RUTE 1
+          rute2: { lat: -7.313888249245295, lon: 112.66847877285261 }, //RUTE 2
+          rute3: { lat: -7.312983842217551, lon: 112.66863039962753 }, //RUTE 3
+          rute4: { lat: -7.312884033964248, lon: 112.66816946407612 }, //RUTE 4
           status: true,
         },
         {
@@ -187,8 +189,9 @@ export class TempatserviceService {
       nama: 'Jumrah Aqabah',
       keterangan: 'Lemparan Terakhir',
       url: 'https://muhammadiyah.or.id/wp-content/uploads/2024/06/lempar-jumrah.jpg',
-      lat: 21.3628,
-      lon: 39.9406,
+      //KOORDINAT MINA 1
+      lat: -7.313849726080349,
+      lon: 112.66829622873807,
       rute1: { lat: 21.3630, lon: 39.9410 },
       rute2: { lat: 21.3620, lon: 39.9400 },
       rute3: { lat: 21.3615, lon: 39.9412 },
@@ -201,8 +204,9 @@ export class TempatserviceService {
       nama: 'Jumrah Ula',
       keterangan: 'Lemparan Pertama',
       url: 'https://nuansantb.id/wp-content/uploads/2024/06/IMG-20240616-WA0171_copy_640x419.jpg',
-      lat: 21.3891,
-      lon: 39.8579,
+      //KOORDINAT MINA 2
+      lat: -7.313033034177666,
+      lon: 112.66845158543634,
       rute1: { lat: 21.3901, lon: 39.8585 },
       rute2: { lat: 21.3880, lon: 39.8570 },
       rute3: { lat: 21.3875, lon: 39.8590 },
@@ -215,8 +219,9 @@ export class TempatserviceService {
       nama: 'Jumrah Wustha',
       keterangan: 'Lemparan Kedua',
       url: 'https://cdn.kemenag.go.id/storage/posts/16_9/big/1718613830.jpg',
-      lat: 21.3542,
-      lon: 39.9836,
+      //KOORDINAT MINA 1
+      lat: -7.3134298233520605,
+      lon: 112.66855256728748,
       rute1: { lat: 21.3550, lon: 39.9840 },
       rute2: { lat: 21.3535, lon: 39.9820 },
       rute3: { lat: 21.3548, lon: 39.9830 },

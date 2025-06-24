@@ -1,21 +1,19 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/makkahakhir"></ion-back-button>
+      <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Detail Makkah Akhir</ion-title>
+    <ion-title>Tes Koor</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>{{ tempat.nama }}</ion-card-title>
+      <ion-card-title></ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <div class="putaran-row">
-        <p><strong>Jumlah Putaran:</strong> {{ putaran }}</p>
-        <ion-button size="small" color="danger" (click)="konfirmasiReset()">Reset</ion-button>
       </div>
       <ion-button size="small" color="success" (click)="selesaiRute()">Selesai</ion-button>
     </ion-card-content>

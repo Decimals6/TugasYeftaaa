@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import * as L from 'leaflet';
 import { interval, Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 import { TempatserviceService } from '../tempatservice.service';
-import { AlertController } from '@ionic/angular';
+
 @Component({
-  selector: 'app-minadetail',
-  templateUrl: './minadetail.page.html',
-  styleUrls: ['./minadetail.page.scss'],
+  selector: 'app-teskoor',
+  templateUrl: './teskoor.page.html',
+  styleUrls: ['./teskoor.page.scss'],
   standalone: false,
 })
-export class MinadetailPage implements OnInit {
+export class TeskoorPage implements OnInit {
   lat: number = 0;
   lon: number = 0;
   map: any;
@@ -19,8 +20,8 @@ export class MinadetailPage implements OnInit {
   timerSubscription: Subscription | undefined;
   isInit = false;
 
-  lat2 = 0.0;
-  lon2 = 0.0;
+  lat2 = -7.314037168060839;
+  lon2 = 112.66774757824008;
 
 
   id: number = 0;
@@ -89,7 +90,7 @@ export class MinadetailPage implements OnInit {
     });
 
     this.markerUser = L.marker([this.lat, this.lon], { icon: markerIcon }).addTo(this.map);
-    this.markerLokasi = L.marker([this.tempat.lat, this.tempat.lon], { icon: markerIcon2 }).addTo(this.map);
+    this.markerLokasi = L.marker([this.lat2, this.lon2], { icon: markerIcon2 }).addTo(this.map);
   }
 
   startTimer() {
@@ -101,8 +102,8 @@ export class MinadetailPage implements OnInit {
 
   checkRuteTerdekat() {
     const toleransi = 0.0001;
-    const dekatLat = Math.abs(this.lat - this.tempat.lat) <= toleransi;
-    const dekatLon = Math.abs(this.lon - this.tempat.lon) <= toleransi;
+    const dekatLat = Math.abs(this.lat - this.lat2) <= toleransi;
+    const dekatLon = Math.abs(this.lon - this.lon2) <= toleransi;
 
     if (dekatLat && dekatLon) {
       this.selesaiRute()
@@ -118,33 +119,34 @@ export class MinadetailPage implements OnInit {
 
   moving() {
     this.markerUser.setLatLng([this.lat, this.lon]);
-    this.markerLokasi.setLatLng([this.tempat.lat, this.tempat.lon]);
+    // this.markerLokasi.setLatLng([this.tempat.lat, this.tempat.lon]);
     // Anda bisa menambahkan komunikasi server jika diperlukan
   }
 
   async selesaiRute() {
-    const nextId = this.id + 1;
-    if (nextId < this.tempatService.getMina().length) {
-      this.tempatService.updateMinaStatusTempat(nextId, true);
-      const alert = await this.alertCtrl.create({
+    const alert = await this.alertCtrl.create({
         header: 'Selesai!',
         message: 'Lanjutkan ke tempat berikutnya',
         buttons: ['OK'],
       });
       await alert.present();
-    } else {
-      this.tempatService.updateStatusTempat(4, true);
-      const alert = await this.alertCtrl.create({
-        header: 'Selesai!',
-        message: 'Ibadah Jumrah (melempar batu) telah selesai, lanjutkan ke makkah akhir',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    }
-    this.stopTimer();
-    
+      this.stopTimer();
+    // const nextId = this.id + 1;
+    // if (nextId < this.tempatService.getMina().length) {
+    //   this.tempatService.updateMinaStatusTempat(nextId, true);
+      
+    // } else {
+    //   this.tempatService.updateStatusTempat(4, true);
+    //   const alert = await this.alertCtrl.create({
+    //     header: 'Selesai!',
+    //     message: 'Ibadah Jumrah (melempar batu) telah selesai, lanjutkan ke makkah akhir',
+    //     buttons: ['OK'],
+    //   });
+    //   await alert.present();
+    // }
 
   }
+
   stopTimer() {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
