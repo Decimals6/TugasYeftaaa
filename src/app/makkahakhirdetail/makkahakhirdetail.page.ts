@@ -143,6 +143,9 @@ export class MakkahakhirdetailPage implements OnInit {
               alert(`Putaran ${this.putaran} selesai!`);
               this.urutanKunjungan = [];
               this.gambarJalur(); // Hapus jalur karena reset
+              if (this.putaran == 2) {
+                this.selesaiRute();
+              }
             }
           }
         }
@@ -211,17 +214,23 @@ export class MakkahakhirdetailPage implements OnInit {
   }
 
   async selesaiRute() {
-    const nextId = this.id2 + 1;
-    if (nextId < this.tempatService.getMakkah().length) {
-      this.tempatService.updateTempatStatus(this.id1, nextId, true, this.tempatService.tempatList);
-    } else {
-      const alert = await this.alertCtrl.create({
-        header: 'Selesai!',
-        message: 'Ibadah Telah Selesai',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    }
+    const alert = await this.alertCtrl.create({
+      header: 'Selesai!',
+      message: 'Ibadah Telah Selesai',
+      buttons: ['OK'],
+    });
+    await alert.present();
+    // const nextId = this.id2 + 1;
+    // if (nextId < this.tempatService.getMakkah().length) {
+    //   this.tempatService.updateTempatStatus(this.id1, nextId, true, this.tempatService.tempatList);
+    // } else {
+    //   const alert = await this.alertCtrl.create({
+    //     header: 'Selesai!',
+    //     message: 'Ibadah Telah Selesai',
+    //     buttons: ['OK'],
+    //   });
+    //   await alert.present();
+    // }
 
   }
 
