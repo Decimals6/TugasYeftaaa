@@ -27,6 +27,8 @@ export class MakkahakhirdetailPage implements OnInit {
   lat2 = 0.0;
   lon2 = 0.0;
 
+  pos = 0;
+
 
   id1: number = 0;
   id2: number = 0;
@@ -211,6 +213,32 @@ export class MakkahakhirdetailPage implements OnInit {
     this.markerUser.setLatLng([this.lat, this.lon]);
     this.markerLokasi.setLatLng([this.tempat.lat, this.tempat.lon]);
     // Anda bisa menambahkan komunikasi server jika diperlukan
+  }
+  jalan() {
+    this.pos +=1
+    console.log(this.pos.toString());
+
+    if (this.pos == 1) {
+      this.lat = this.tempat.rute1.lat;
+      this.lon = this.tempat.rute1.lon;
+    } else if (this.pos == 2) {
+      this.lat = this.tempat.rute2.lat;
+      this.lon = this.tempat.rute2.lon;
+    }
+    else if (this.pos == 3) {
+      this.lat = this.tempat.rute3.lat;
+      this.lon = this.tempat.rute3.lon;
+    }
+    else if (this.pos == 4) {
+      this.lat = this.tempat.rute4.lat;
+      this.lon = this.tempat.rute4.lon;
+    }
+    else if (this.pos == 5) {
+      this.lat = this.tempat.rute1.lat;
+      this.lon = this.tempat.rute1.lon;
+      this.pos = 0;
+    }
+    this.moving();
   }
 
   async selesaiRute() {

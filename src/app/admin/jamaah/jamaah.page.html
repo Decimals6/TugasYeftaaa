@@ -1,0 +1,350 @@
+<ion-header>
+
+  <ion-toolbar color="success">
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin/dashboard"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Data Jamaah</ion-title>
+
+    <ion-buttons slot="end">
+
+      <ion-button>
+        <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button>
+        <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+  <ion-toolbar>
+
+    <ion-searchbar
+      animated="true"
+      debounce="500"
+      placeholder="Cari Nama Jamaah...">
+    </ion-searchbar>
+
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content fullscreen>
+
+  <ion-refresher slot="fixed">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Statistik -->
+
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col size="6" size-md="3">
+        <ion-card color="success">
+          <ion-card-content class="ion-text-center">
+            <ion-icon name="people-outline" size="large"></ion-icon>
+            <h2>120</h2>
+            <small>Total Jamaah</small>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card color="primary">
+          <ion-card-content class="ion-text-center">
+            <ion-icon name="wifi-outline" size="large"></ion-icon>
+            <h2>117</h2>
+            <small>Online</small>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card color="warning">
+          <ion-card-content class="ion-text-center">
+            <ion-icon name="cloud-offline-outline" size="large"></ion-icon>
+            <h2>2</h2>
+            <small>Offline</small>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card color="danger">
+          <ion-card-content class="ion-text-center">
+            <ion-icon name="alert-circle-outline" size="large"></ion-icon>
+            <h2>1</h2>
+            <small>Emergency</small>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+
+  <ion-item lines="none">
+
+    <ion-label>
+
+      <h2>Monitoring Jamaah</h2>
+
+      <p>120 Jamaah sedang dipantau</p>
+
+    </ion-label>
+
+    <ion-chip color="success">
+
+      <ion-icon name="pulse-outline"></ion-icon>
+
+      <ion-label>LIVE</ion-label>
+
+    </ion-chip>
+
+  </ion-item>
+
+
+  <!-- ========================= -->
+  <!-- DAFTAR JAMAAH -->
+  <!-- ========================= -->
+
+  <ion-list inset="true">
+
+    <!-- Ahmad -->
+
+    <ion-item
+      button="true"
+      detail="true"
+      [routerLink]="['/admin/detail-jamaah',1]">
+
+      <ion-avatar slot="start">
+        <img src="https://i.pravatar.cc/150?img=10">
+      </ion-avatar>
+
+      <ion-label>
+
+        <h2>Ahmad Fauzi</h2>
+
+        <small>ID : JMH-001</small>
+
+        <p>
+
+          <ion-icon name="location-outline"></ion-icon>
+
+          Kloter 01 • Makkah
+
+        </p>
+
+        <ion-note color="medium">
+
+          GPS Aktif • Update 1 menit lalu
+
+        </ion-note>
+
+      </ion-label>
+
+      <ion-badge color="success">
+
+        Online
+
+      </ion-badge>
+
+    </ion-item>
+
+
+    <!-- Siti -->
+
+    <ion-item
+      button="true"
+      detail="true"
+      [routerLink]="['/admin/detail-jamaah',2]">
+
+      <ion-avatar slot="start">
+        <img src="https://i.pravatar.cc/150?img=11">
+      </ion-avatar>
+
+      <ion-label>
+
+        <h2>Siti Aminah</h2>
+
+        <small>ID : JMH-002</small>
+
+        <p>
+
+          <ion-icon name="location-outline"></ion-icon>
+
+          Kloter 01 • Mina
+
+        </p>
+
+        <ion-note color="warning">
+
+          Sedang Istirahat
+
+        </ion-note>
+
+      </ion-label>
+
+      <ion-badge color="warning">
+
+        Istirahat
+
+      </ion-badge>
+
+    </ion-item>
+
+
+    <!-- Nur -->
+
+    <ion-item
+      button="true"
+      detail="true"
+      [routerLink]="['/admin/detail-jamaah',3]">
+
+      <ion-avatar slot="start">
+        <img src="https://i.pravatar.cc/150?img=12">
+      </ion-avatar>
+
+      <ion-label>
+
+        <h2>Nur Hidayah</h2>
+
+        <small>ID : JMH-003</small>
+
+        <p>
+
+          <ion-icon name="location-outline"></ion-icon>
+
+          Kloter 02 • Arafah
+
+        </p>
+
+        <ion-note color="danger">
+
+          Tidak Ada Sinyal
+
+        </ion-note>
+
+      </ion-label>
+
+      <ion-badge color="danger">
+
+        Offline
+
+      </ion-badge>
+
+    </ion-item>
+
+
+    <!-- Yusuf -->
+
+    <ion-item
+      button="true"
+      detail="true"
+      [routerLink]="['/admin/detail-jamaah',4]">
+
+      <ion-avatar slot="start">
+        <img src="https://i.pravatar.cc/150?img=13">
+      </ion-avatar>
+
+      <ion-label>
+
+        <h2>Muhammad Yusuf</h2>
+
+        <small>ID : JMH-004</small>
+
+        <p>
+
+          <ion-icon name="location-outline"></ion-icon>
+
+          Kloter 03 • Muzdalifah
+
+        </p>
+
+        <ion-note color="medium">
+
+          GPS Aktif • Battery 100%
+
+        </ion-note>
+
+      </ion-label>
+
+      <ion-badge color="success">
+
+        Online
+
+      </ion-badge>
+
+    </ion-item>
+
+
+    <!-- Fatimah -->
+
+    <ion-item
+      button="true"
+      detail="true"
+      color="danger"
+      [routerLink]="['/admin/detail-jamaah',5]">
+
+      <ion-avatar slot="start">
+        <img src="https://i.pravatar.cc/150?img=14">
+      </ion-avatar>
+
+      <ion-label>
+
+        <h2>Fatimah Zahra</h2>
+
+        <small>ID : JMH-005</small>
+
+        <p>
+
+          <ion-icon name="location-outline"></ion-icon>
+
+          Kloter 04 • Mina
+
+        </p>
+
+        <ion-note color="light">
+
+          🚨 Tombol Darurat Ditekan
+
+        </ion-note>
+
+      </ion-label>
+
+      <ion-badge color="light">
+
+        SOS
+
+      </ion-badge>
+
+    </ion-item>
+
+  </ion-list>
+
+
+  <!-- FAB -->
+
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed">
+
+    <ion-fab-button color="success">
+
+      <ion-icon name="person-add-outline"></ion-icon>
+
+    </ion-fab-button>
+
+  </ion-fab>
+
+</ion-content>

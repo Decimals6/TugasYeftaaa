@@ -1,0 +1,370 @@
+<ion-header>
+
+  <ion-toolbar color="success">
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/welcome"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>E-Mutowif Admin</ion-title>
+
+    <ion-buttons slot="end">
+
+      <ion-button>
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content class="ion-padding">
+
+  <!-- Header -->
+
+  <h2>Selamat Datang, Admin 👋</h2>
+
+  <p>Dashboard Monitoring Jamaah Haji</p>
+
+
+  <!-- Statistik -->
+
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col size="6">
+
+        <ion-card color="primary">
+
+          <ion-card-content class="ion-text-center">
+
+            <ion-icon
+              name="people-outline"
+              size="large">
+            </ion-icon>
+
+            <h1>120</h1>
+
+            <p>Total Jamaah</p>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+
+      <ion-col size="6">
+
+        <ion-card color="success">
+
+          <ion-card-content class="ion-text-center">
+
+            <ion-icon
+              name="wifi-outline"
+              size="large">
+            </ion-icon>
+
+            <h1>117</h1>
+
+            <p>Online</p>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+
+    </ion-row>
+
+
+    <ion-row>
+
+      <ion-col size="6">
+
+        <ion-card color="warning">
+
+          <ion-card-content class="ion-text-center">
+
+            <ion-icon
+              name="cloud-offline-outline"
+              size="large">
+            </ion-icon>
+
+            <h1>2</h1>
+
+            <p>Offline</p>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+
+      <ion-col size="6">
+
+        <ion-card color="danger">
+
+          <ion-card-content class="ion-text-center">
+
+            <ion-icon
+              name="alert-circle-outline"
+              size="large">
+            </ion-icon>
+
+            <h1>1</h1>
+
+            <p>Emergency</p>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+
+  <!-- Status Sistem -->
+
+  <ion-card>
+
+    <ion-card-header>
+
+      <ion-card-title>
+
+        Status Sistem
+
+      </ion-card-title>
+
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <ion-item lines="none">
+
+        <ion-icon
+          slot="start"
+          name="checkmark-circle"
+          color="success">
+        </ion-icon>
+
+        <ion-label>
+
+          Semua layanan berjalan normal
+
+        </ion-label>
+
+      </ion-item>
+
+      <ion-item lines="none">
+
+        <ion-icon
+          slot="start"
+          name="location-outline"
+          color="primary">
+        </ion-icon>
+
+        <ion-label>
+
+          Monitoring GPS Aktif
+
+        </ion-label>
+
+      </ion-item>
+
+      <ion-item lines="none">
+
+        <ion-icon
+          slot="start"
+          name="server-outline"
+          color="warning">
+        </ion-icon>
+
+        <ion-label>
+
+          Database : Belum Terhubung
+
+        </ion-label>
+
+      </ion-item>
+
+    </ion-card-content>
+
+  </ion-card>
+
+
+  <!-- MENU ADMIN -->
+
+  <ion-list inset="true">
+
+    <!-- GROUP HAJI -->
+
+    <ion-item
+      button
+      routerLink="/admin/group-haji">
+
+      <ion-icon
+        slot="start"
+        name="people-circle-outline"
+        color="primary">
+      </ion-icon>
+
+      <ion-label>
+
+        <h2>Data Group Haji</h2>
+
+        <p>Kelola kelompok, kloter dan pembimbing</p>
+
+      </ion-label>
+
+      <ion-badge
+        slot="end"
+        color="primary">
+
+        5
+
+      </ion-badge>
+
+    </ion-item>
+
+
+
+    <!-- MONITORING -->
+
+    <ion-item
+      button
+      routerLink="/admin/monitoring">
+
+      <ion-icon
+        slot="start"
+        name="map-outline"
+        color="success">
+      </ion-icon>
+
+      <ion-label>
+
+        <h2>Monitoring Jamaah</h2>
+
+        <p>Lihat lokasi jamaah secara realtime</p>
+
+      </ion-label>
+
+      <ion-icon
+        slot="end"
+        name="chevron-forward-outline">
+      </ion-icon>
+
+    </ion-item>
+
+
+
+    <!-- NOTIFIKASI -->
+
+    <ion-item
+      button
+      routerLink="/admin/notifikasi">
+
+      <ion-icon
+        slot="start"
+        name="notifications-outline"
+        color="warning">
+      </ion-icon>
+
+      <ion-label>
+
+        <h2>Notifikasi</h2>
+
+        <p>Emergency, Offline, GPS dan Baterai</p>
+
+      </ion-label>
+
+      <ion-badge
+        slot="end"
+        color="danger">
+
+        5
+
+      </ion-badge>
+
+    </ion-item>
+
+
+
+    <!-- LAPORAN -->
+
+    <ion-item
+      button
+      routerLink="/admin/laporan">
+
+      <ion-icon
+        slot="start"
+        name="bar-chart-outline"
+        color="tertiary">
+      </ion-icon>
+
+      <ion-label>
+
+        <h2>Laporan</h2>
+
+        <p>Rekap monitoring jamaah</p>
+
+      </ion-label>
+
+      <ion-icon
+        slot="end"
+        name="chevron-forward-outline">
+      </ion-icon>
+
+    </ion-item>
+
+
+
+    <!-- PENGATURAN -->
+
+    <ion-item
+      button
+      routerLink="/admin/pengaturan">
+
+      <ion-icon
+        slot="start"
+        name="settings-outline"
+        color="medium">
+      </ion-icon>
+
+      <ion-label>
+
+        <h2>Pengaturan</h2>
+
+        <p>Konfigurasi aplikasi</p>
+
+      </ion-label>
+
+      <ion-icon
+        slot="end"
+        name="chevron-forward-outline">
+      </ion-icon>
+
+    </ion-item>
+
+  </ion-list>
+
+
+  <!-- Footer -->
+
+  <ion-text color="medium">
+
+    <p class="ion-text-center">
+
+      E-Mutowif Admin v1.0
+
+    </p>
+
+  </ion-text>
+
+</ion-content>

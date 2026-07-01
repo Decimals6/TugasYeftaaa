@@ -1,0 +1,58 @@
+<ion-content [fullscreen]="true">
+
+  <div class="welcome-container">
+
+    <div class="logo-area">
+      <ion-icon name="location"></ion-icon>
+
+      <h1>E-Mutowif</h1>
+
+      <p>
+        Sistem Monitoring dan Panduan
+        <br>
+        Ibadah Haji
+      </p>
+    </div>
+
+    <ion-card button (click)="masukUser()">
+      <ion-card-header>
+
+        <ion-card-title>
+          👤 Jamaah
+        </ion-card-title>
+
+        <ion-card-subtitle>
+          Masuk sebagai pengguna aplikasi
+        </ion-card-subtitle>
+
+      </ion-card-header>
+
+      <ion-card-content>
+        Melihat panduan ibadah, lokasi, dan tahapan haji.
+      </ion-card-content>
+
+    </ion-card>
+
+    <ion-card button color="success" (click)="masukAdmin()">
+
+      <ion-card-header>
+
+        <ion-card-title>
+          🛡️ Admin
+        </ion-card-title>
+
+        <ion-card-subtitle>
+          Monitoring Jamaah
+        </ion-card-subtitle>
+
+      </ion-card-header>
+
+      <ion-card-content>
+        Memantau posisi jamaah, progress ibadah, dan status koneksi.
+      </ion-card-content>
+
+    </ion-card>
+
+  </div>
+
+</ion-content>

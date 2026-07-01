@@ -1,0 +1,205 @@
+<ion-header>
+
+  <ion-toolbar color="success">
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin/dashboard"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Laporan Monitoring</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <!-- Statistik -->
+
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col size="6">
+
+        <ion-card color="primary">
+
+          <ion-card-content class="ion-text-center">
+
+            <h2>120</h2>
+
+            <p>Total Jamaah</p>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+
+      <ion-col size="6">
+
+        <ion-card color="success">
+
+          <ion-card-content class="ion-text-center">
+
+            <h2>117</h2>
+
+            <p>Online</p>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+
+  <!-- Filter -->
+
+  <ion-item>
+
+    <ion-label>Periode</ion-label>
+
+    <ion-select value="hari">
+
+      <ion-select-option value="hari">
+        Hari Ini
+      </ion-select-option>
+
+      <ion-select-option value="minggu">
+        Mingguan
+      </ion-select-option>
+
+      <ion-select-option value="bulan">
+        Bulanan
+      </ion-select-option>
+
+    </ion-select>
+
+  </ion-item>
+
+
+  <!-- Riwayat -->
+
+  <ion-list>
+
+    <ion-item>
+
+      <ion-icon
+        slot="start"
+        color="success"
+        name="checkmark-circle">
+      </ion-icon>
+
+      <ion-label>
+
+        <h2>Ahmad Fauzi</h2>
+
+        <p>Makkah • Online</p>
+
+      </ion-label>
+
+      <ion-note slot="end">
+        08:20
+      </ion-note>
+
+    </ion-item>
+
+
+    <ion-item>
+
+      <ion-icon
+        slot="start"
+        color="warning"
+        name="cloud-offline-outline">
+      </ion-icon>
+
+      <ion-label>
+
+        <h2>Siti Aminah</h2>
+
+        <p>Mina • Offline</p>
+
+      </ion-label>
+
+      <ion-note slot="end">
+        08:10
+      </ion-note>
+
+    </ion-item>
+
+
+    <ion-item>
+
+      <ion-icon
+        slot="start"
+        color="danger"
+        name="alert-circle">
+      </ion-icon>
+
+      <ion-label>
+
+        <h2>Fatimah Zahra</h2>
+
+        <p>Mina • SOS</p>
+
+      </ion-label>
+
+      <ion-note slot="end">
+        08:05
+      </ion-note>
+
+    </ion-item>
+
+  </ion-list>
+
+
+  <!-- Tombol -->
+
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col>
+
+        <ion-button
+          expand="block"
+          color="danger">
+
+          <ion-icon
+            slot="start"
+            name="document-outline">
+          </ion-icon>
+
+          Export PDF
+
+        </ion-button>
+
+      </ion-col>
+
+      <ion-col>
+
+        <ion-button
+          expand="block"
+          color="success">
+
+          <ion-icon
+            slot="start"
+            name="download-outline">
+          </ion-icon>
+
+          Export Excel
+
+        </ion-button>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

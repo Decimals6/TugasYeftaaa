@@ -1,0 +1,189 @@
+<ion-header>
+
+  <ion-toolbar color="success">
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin/dashboard"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Notifikasi</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+
+    <!-- SOS -->
+
+    <ion-item button routerLink="/admin/detail-jamaah/5">
+
+      <ion-avatar slot="start">
+
+        <ion-icon
+          name="alert-circle"
+          color="danger"
+          style="font-size:40px;">
+        </ion-icon>
+
+      </ion-avatar>
+
+      <ion-label>
+
+        <h2>Fatimah Zahra</h2>
+
+        <p>🚨 Tombol SOS ditekan</p>
+
+        <small>2 menit yang lalu</small>
+
+      </ion-label>
+
+      <ion-badge color="danger">
+
+        SOS
+
+      </ion-badge>
+
+    </ion-item>
+
+
+
+    <!-- OFFLINE -->
+
+    <ion-item button routerLink="/admin/detail-jamaah/3">
+
+      <ion-avatar slot="start">
+
+        <ion-icon
+          name="cloud-offline"
+          color="warning"
+          style="font-size:40px;">
+        </ion-icon>
+
+      </ion-avatar>
+
+      <ion-label>
+
+        <h2>Nur Hidayah</h2>
+
+        <p>GPS Tidak Aktif</p>
+
+        <small>5 menit yang lalu</small>
+
+      </ion-label>
+
+      <ion-badge color="warning">
+
+        Offline
+
+      </ion-badge>
+
+    </ion-item>
+
+
+
+    <!-- ONLINE -->
+
+    <ion-item button routerLink="/admin/detail-jamaah/1">
+
+      <ion-avatar slot="start">
+
+        <ion-icon
+          name="checkmark-circle"
+          color="success"
+          style="font-size:40px;">
+        </ion-icon>
+
+      </ion-avatar>
+
+      <ion-label>
+
+        <h2>Ahmad Fauzi</h2>
+
+        <p>Kembali Online</p>
+
+        <small>10 menit yang lalu</small>
+
+      </ion-label>
+
+      <ion-badge color="success">
+
+        Online
+
+      </ion-badge>
+
+    </ion-item>
+
+
+
+    <!-- LOKASI -->
+
+    <ion-item button routerLink="/admin/detail-jamaah/4">
+
+      <ion-avatar slot="start">
+
+        <ion-icon
+          name="location"
+          color="primary"
+          style="font-size:40px;">
+        </ion-icon>
+
+      </ion-avatar>
+
+      <ion-label>
+
+        <h2>Muhammad Yusuf</h2>
+
+        <p>Memasuki Area Mina</p>
+
+        <small>15 menit yang lalu</small>
+
+      </ion-label>
+
+      <ion-badge color="primary">
+
+        Lokasi
+
+      </ion-badge>
+
+    </ion-item>
+
+
+
+    <!-- BATERAI -->
+
+    <ion-item button routerLink="/admin/detail-jamaah/2">
+
+      <ion-avatar slot="start">
+
+        <ion-icon
+          name="battery-half"
+          color="medium"
+          style="font-size:40px;">
+        </ion-icon>
+
+      </ion-avatar>
+
+      <ion-label>
+
+        <h2>Siti Aminah</h2>
+
+        <p>Baterai tinggal 15%</p>
+
+        <small>20 menit yang lalu</small>
+
+      </ion-label>
+
+      <ion-badge color="medium">
+
+        Battery
+
+      </ion-badge>
+
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>

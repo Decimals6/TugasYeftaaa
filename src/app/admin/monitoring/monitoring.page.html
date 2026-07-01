@@ -1,0 +1,182 @@
+<ion-header>
+
+  <ion-toolbar color="success">
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin/dashboard"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Monitoring Jamaah</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <!-- STATUS -->
+
+  <ion-card>
+
+    <ion-card-content>
+
+      <ion-grid>
+
+        <ion-row>
+
+          <ion-col>
+
+            <h2>120</h2>
+            <small>Total Jamaah</small>
+
+          </ion-col>
+
+          <ion-col>
+
+            <h2 style="color:limegreen;">117</h2>
+            <small>Online</small>
+
+          </ion-col>
+
+          <ion-col>
+
+            <h2 style="color:red;">3</h2>
+            <small>Offline</small>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-card-content>
+
+  </ion-card>
+
+
+  <!-- MAP -->
+
+  <ion-card>
+
+    <ion-card-header>
+
+      <ion-card-title>
+
+        Lokasi Jamaah
+
+      </ion-card-title>
+
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <div class="map">
+
+        <div class="marker marker1">📍</div>
+        <div class="marker marker2">📍</div>
+        <div class="marker marker3">📍</div>
+        <div class="marker marker4">📍</div>
+        <div class="marker marker5">🚨</div>
+
+      </div>
+
+    </ion-card-content>
+
+  </ion-card>
+
+
+  <!-- LIST -->
+
+  <ion-card>
+
+    <ion-card-header>
+
+      <ion-card-title>
+
+        Jamaah Aktif
+
+      </ion-card-title>
+
+    </ion-card-header>
+
+    <ion-list>
+
+      <ion-item>
+
+        <ion-avatar slot="start">
+
+          <img src="https://i.pravatar.cc/150?img=10">
+
+        </ion-avatar>
+
+        <ion-label>
+
+          Ahmad Fauzi
+
+          <p>Makkah</p>
+
+        </ion-label>
+
+        <ion-chip color="success">
+
+          Online
+
+        </ion-chip>
+
+      </ion-item>
+
+
+      <ion-item>
+
+        <ion-avatar slot="start">
+
+          <img src="https://i.pravatar.cc/150?img=11">
+
+        </ion-avatar>
+
+        <ion-label>
+
+          Siti Aminah
+
+          <p>Mina</p>
+
+        </ion-label>
+
+        <ion-chip color="warning">
+
+          Istirahat
+
+        </ion-chip>
+
+      </ion-item>
+
+
+      <ion-item>
+
+        <ion-avatar slot="start">
+
+          <img src="https://i.pravatar.cc/150?img=14">
+
+        </ion-avatar>
+
+        <ion-label>
+
+          Fatimah Zahra
+
+          <p>Mina</p>
+
+        </ion-label>
+
+        <ion-chip color="danger">
+
+          SOS
+
+        </ion-chip>
+
+      </ion-item>
+
+    </ion-list>
+
+  </ion-card>
+
+</ion-content>

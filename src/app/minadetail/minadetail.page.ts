@@ -83,10 +83,10 @@ export class MinadetailPage implements OnInit {
       iconAnchor: [25, 50],
     });
     const markerIcon2 = L.icon({
-      iconUrl: 'https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color/254000/66-512.png',
-      iconSize: [50, 50],
-      iconAnchor: [25, 50],
-    });
+          iconUrl: 'https://static.thenounproject.com/png/335079-200.png',
+          iconSize: [50, 50],
+          iconAnchor: [25, 50],
+        });
 
     this.markerUser = L.marker([this.lat, this.lon], { icon: markerIcon }).addTo(this.map);
     this.markerLokasi = L.marker([this.tempat.lat, this.tempat.lon], { icon: markerIcon2 }).addTo(this.map);
@@ -142,7 +142,7 @@ export class MinadetailPage implements OnInit {
       await alert.present();
     }
     this.stopTimer();
-    
+
 
   }
   stopTimer() {
