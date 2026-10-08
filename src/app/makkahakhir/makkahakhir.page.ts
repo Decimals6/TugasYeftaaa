@@ -21,9 +21,24 @@ export class MakkahakhirPage {
   async ionViewWillEnter() {
     this.route.params.subscribe(async params => {
       this.id1 = +params['index'];
-      await this.tempatService.loadTempatStatusFromStorage(this.tempatService.tempatList);
-      this.tempats = this.tempatService.tempatList[this.id1]?.list ?? [];
-      console.log('Refreshed tempats:', this.tempats);
+
+      try {
+        // Ambil data terbaru dari API / storage
+        const data = await this.tempatService.initData();
+
+        // Cari location berdasarkan ID database
+        const target = data.find((tempat: any) => tempat.id === this.id1);
+
+        this.tempats = target?.list ?? [];
+
+        console.log('ID location:', this.id1);
+        console.log('Target location:', target);
+        console.log('Activities:', this.tempats);
+
+      } catch (error) {
+        console.error('Gagal load data Makkah:', error);
+        this.tempats = [];
+      }
     });
   }
 
