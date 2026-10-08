@@ -1,187 +1,231 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import { HttpClient, HttpHeaders } from '@angular/common/http'; // <-- Import ini
+import { Observable } from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class TempatserviceService {
 
-  constructor(private storage: Storage) {
+  private baseUrl = 'http://selesai.my.id/emutowif/api/';
+
+  public tempatList: any[] = [];
+  private isInitialized = false;
+
+  constructor(private storage: Storage, private http: HttpClient) {
     this.initStorage();
+  }
+
+  async initData() {
+    if (this.isInitialized) return this.tempatList;
+
+    try {
+      const res: any = await firstValueFrom(
+        this.http.get<any>(`${this.baseUrl}listlocations.php`)
+      );
+
+      // Ambil array dari res.data
+      this.tempatList = res?.data || [];
+
+      // Gabungkan dengan status di local storage jika ada
+      await this.loadStatusFromStorage();
+
+      this.isInitialized = true;
+      return this.tempatList;
+    } catch (error) {
+      console.error('Gagal fetch data tempat:', error);
+      return [];
+    }
+  }
+
+  loginAPI(usernameEmail: string, password: string): Observable<any> {
+    // Karena API PHP kita nangkepnya pake $_POST biasa, kita kirim dalam format FormData
+    const body = new FormData();
+    body.append('username_email', usernameEmail);
+    body.append('password', password);
+
+    // Kirim request POST ke cPanel
+    return this.http.post(`${this.baseUrl}/login.php`, body);
   }
 
   async initStorage() {
     await this.storage.create();
   }
 
-  tempatList = [
-    {
-      id: 0,
-      nama: 'Makkah Awal',
-      keterangan: 'Persiapan Ihram dan Umrah',
-      url: 'https://pkbtalk24.com/wp-content/uploads/2025/04/msuim-haji-2025-Saudi-mulai-batasi-jamaah-umrah-masuk-mekah.jpg',
-      lat: 21.3891,
-      lon: 39.8579,
-      rute1: { lat: 21.3901, lon: 39.8585 },
-      rute2: { lat: 21.3880, lon: 39.8570 },
-      rute3: { lat: 21.3875, lon: 39.8590 },
-      rute4: { lat: 21.3895, lon: 39.8565 },
-      open: 8,
-      list: [
-        {
-          id: 0,
-          nama: 'Tawaf Qudum',
-          keterangan: 'penghormatan ketika pertama kali tiba di Masjidil Haram',
-          url: 'https://awsimages.detik.net.id/visual/2023/07/01/jemaah-haji-melaksanakan-tawaf-ifadah-di-dekat-kabah-masjidil-haram-makkah-arab-saudi-sabtu-172023-1.jpeg?w=650&q=80',
-          lat: 21.3891,
-          lon: 39.8579,
-          rute1: { lat: 21.3901, lon: 39.8585 },
-          rute2: { lat: 21.3880, lon: 39.8570 },
-          rute3: { lat: 21.3875, lon: 39.8590 },
-          rute4: { lat: 21.3895, lon: 39.8565 },
-          status: true,
-        },
-        {
-          id: 1,
-          nama: 'Tawaf Sai',
-          keterangan: 'berjalan atau berlari-lari kecil antara bukit Shafa dan Marwah sebanyak tujuh kali.',
-          url: 'https://nabawimulia.co.id/wp-content/uploads/2023/05/ibadah-Sai.jpg',
-          lat: 21.3891,
-          lon: 39.8579,
-          rute1: { lat: 21.3901, lon: 39.8585 },
-          rute2: { lat: 21.3880, lon: 39.8570 },
-          rute3: { lat: 21.3875, lon: 39.8590 },
-          rute4: { lat: 21.3895, lon: 39.8565 },
-          status: false,
-        },
-      ]
-    },
-    {
-      id: 1,
-      nama: 'Arafah',
-      keterangan: 'Wukuf di Padang Arafah',
-      detail: "perisapan wukuf,  Melaksanakan salat Żuhur dan Aşar jama'-qaşar taqdim, melakukan wukuf sampai magrib",
-      url: 'https://cdn0-production-images-kly.akamaized.net/yhNo-3lll2XxY264wcc00ojr4XI=/800x450/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3420246/original/026155800_1617619011-jabal-arafat_21730-5765.jpg',
-      lat: 21.3542,
-      lon: 39.9836,
-      rute1: { lat: 21.3550, lon: 39.9840 },
-      rute2: { lat: 21.3535, lon: 39.9820 },
-      rute3: { lat: 21.3548, lon: 39.9830 },
-      rute4: { lat: 21.3530, lon: 39.9845 },
-      status: false,
-      open: 9,
-    },
-    {
-      id: 2,
-      nama: 'Muzdalifah',
-      keterangan: 'Menginap dan Mengumpulkan Batu',
-      detail: "mengingap semalam, Melaksanakan salat isyak salat qaşar taqdim, sampai subuh terus salat subuh habis itu kemina",
-      url: 'https://upload.wikimedia.org/wikipedia/commons/b/bf/Mabit_in_Muzdalifah.JPG',
-      lat: 21.3628,
-      lon: 39.9406,
-      rute1: { lat: 21.3630, lon: 39.9410 },
-      rute2: { lat: 21.3620, lon: 39.9400 },
-      rute3: { lat: 21.3615, lon: 39.9412 },
-      rute4: { lat: 21.3635, lon: 39.9398 },
-      status: false,
-      open: 10,
-    },
-    {
-      id: 3,
-      nama: 'Mina',
-      keterangan: 'Melempar Jumrah dan Mabit',
-      url: 'https://umrahbandung.id/wp-content/uploads/2023/08/melempar-jumrah-di-mina.jpg',
-      lat: 21.4231,
-      lon: 39.8943,
-      rute1: { lat: 21.4240, lon: 39.8950 },
-      rute2: { lat: 21.4225, lon: 39.8935 },
-      rute3: { lat: 21.4235, lon: 39.8948 },
-      rute4: { lat: 21.4218, lon: 39.8930 },
-      status: false,
-      open: [11, 12, 13],
-      list: [
-        {
-          id: 0,
-          nama: 'Jumrah Ula',
-          keterangan: 'Lemparan Pertama',
-          url: 'https://nuansantb.id/wp-content/uploads/2024/06/IMG-20240616-WA0171_copy_640x419.jpg',
-          lat: -7.313849726080349,
-          lon: 112.66829622873807,
-          date: [12, 13],
-        },
-        {
-          id: 1,
-          nama: 'Jumrah Wustha',
-          keterangan: 'Lemparan Kedua',
-          url: 'https://cdn.kemenag.go.id/storage/posts/16_9/big/1718613830.jpg',
-          lat: -7.313033034177666,
-          lon: 112.66845158543634,
-          date: [12, 13],
-        },
-        {
-          id: 2,
-          nama: 'Jumrah Aqabah',
-          keterangan: 'Lemparan Terakhir',
-          url: 'https://muhammadiyah.or.id/wp-content/uploads/2024/06/lempar-jumrah.jpg',
-          lat: -7.3134298233520605,
-          lon: 112.66855256728748,
-          date: [11, 12, 13],
-        },
-      ]
-    },
-    {
-      id: 4,
-      nama: 'Makkah Akhir',
-      keterangan: 'Tawaf Ifadah dan Sai',
-      url: 'https://uici.ac.id/wp-content/uploads/2023/04/png_20230410_170228_0000.png.webp',
-      lat: 21.3891,
-      lon: 39.8579,
-      open: 14,
-      list: [
-        //KOORDINAT MAKKAH BUAT DI CEK
-        {
-          id: 0,
-          nama: 'Tawaf Ifadah',
-          keterangan: 'mengelilingi Kabah sebanyak tujuh kali dengan posisi Kabah di sebelah kiri',
-          url: 'https://awsimages.detik.net.id/visual/2023/07/01/jemaah-haji-melaksanakan-tawaf-ifadah-di-dekat-kabah-masjidil-haram-makkah-arab-saudi-sabtu-172023-1.jpeg?w=650&q=80',
-          lat: 21.3891,
-          lon: 39.8579,
-          //KOORDINAT YANG INI
-          rute1: { lat: -7.313824162433201, lon: 112.66798119462554 }, //RUTE 1
-          rute2: { lat: -7.313888249245295, lon: 112.66847877285261 }, //RUTE 2
-          rute3: { lat: -7.312983842217551, lon: 112.66863039962753 }, //RUTE 3
-          rute4: { lat: -7.312884033964248, lon: 112.66816946407612 }, //RUTE 4
-          status: true,
-        },
-        {
-          id: 1,
-          nama: 'Sai',
-          keterangan: 'berjalan atau berlari-lari kecil bolak-balik tujuh kali antara bukit Shafa dan Marwah.',
-          url: 'https://nabawimulia.co.id/wp-content/uploads/2023/05/ibadah-Sai.jpg',
-          lat: 21.3542,
-          lon: 39.9836,
-          rute1: { lat: 21.3550, lon: 39.9840 },
-          rute2: { lat: 21.3535, lon: 39.9820 },
-          rute3: { lat: 21.3548, lon: 39.9830 },
-          rute4: { lat: 21.3530, lon: 39.9845 },
-          status: false,
-        },
-        {
-          id: 2,
-          nama: 'Tawaf Wada',
-          keterangan: 'tawaf perpisahan yang dilakukan oleh jemaah haji setelah menyelesaikan semua rangkaian ibadah haji sebelum meninggalkan Makkah.',
-          url: 'https://awsimages.detik.net.id/community/media/visual/2019/08/16/592b547f-a2c8-4488-af65-d05a8e398e20_169.jpeg?w=1200',
-          lat: 21.3628,
-          lon: 39.9406,
-          rute1: { lat: 21.3630, lon: 39.9410 },
-          rute2: { lat: 21.3620, lon: 39.9400 },
-          rute3: { lat: 21.3615, lon: 39.9412 },
-          rute4: { lat: 21.3635, lon: 39.9398 },
-          status: false,
-        },
-      ]
-    }
-  ];
+  // tempatList = [
+  //   {
+  //     id: 0,
+  //     nama: 'Makkah Awal',
+  //     keterangan: 'Persiapan Ihram dan Umrah',
+  //     url: 'https://pkbtalk24.com/wp-content/uploads/2025/04/msuim-haji-2025-Saudi-mulai-batasi-jamaah-umrah-masuk-mekah.jpg',
+  //     lat: 21.3891,
+  //     lon: 39.8579,
+  //     rute1: { lat: 21.3901, lon: 39.8585 },
+  //     rute2: { lat: 21.3880, lon: 39.8570 },
+  //     rute3: { lat: 21.3875, lon: 39.8590 },
+  //     rute4: { lat: 21.3895, lon: 39.8565 },
+  //     open: 8,
+  //     list: [
+  //       {
+  //         id: 0,
+  //         nama: 'Tawaf Qudum',
+  //         keterangan: 'penghormatan ketika pertama kali tiba di Masjidil Haram',
+  //         url: 'https://awsimages.detik.net.id/visual/2023/07/01/jemaah-haji-melaksanakan-tawaf-ifadah-di-dekat-kabah-masjidil-haram-makkah-arab-saudi-sabtu-172023-1.jpeg?w=650&q=80',
+  //         lat: 21.3891,
+  //         lon: 39.8579,
+  //         rute1: { lat: 21.3901, lon: 39.8585 },
+  //         rute2: { lat: 21.3880, lon: 39.8570 },
+  //         rute3: { lat: 21.3875, lon: 39.8590 },
+  //         rute4: { lat: 21.3895, lon: 39.8565 },
+  //         status: true,
+  //       },
+  //       {
+  //         id: 1,
+  //         nama: 'Tawaf Sai',
+  //         keterangan: 'berjalan atau berlari-lari kecil antara bukit Shafa dan Marwah sebanyak tujuh kali.',
+  //         url: 'https://nabawimulia.co.id/wp-content/uploads/2023/05/ibadah-Sai.jpg',
+  //         lat: 21.3891,
+  //         lon: 39.8579,
+  //         rute1: { lat: 21.3901, lon: 39.8585 },
+  //         rute2: { lat: 21.3880, lon: 39.8570 },
+  //         rute3: { lat: 21.3875, lon: 39.8590 },
+  //         rute4: { lat: 21.3895, lon: 39.8565 },
+  //         status: false,
+  //       },
+  //     ]
+  //   },
+  //   {
+  //     id: 1,
+  //     nama: 'Arafah',
+  //     keterangan: 'Wukuf di Padang Arafah',
+  //     detail: "perisapan wukuf,  Melaksanakan salat Żuhur dan Aşar jama'-qaşar taqdim, melakukan wukuf sampai magrib",
+  //     url: 'https://cdn0-production-images-kly.akamaized.net/yhNo-3lll2XxY264wcc00ojr4XI=/800x450/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3420246/original/026155800_1617619011-jabal-arafat_21730-5765.jpg',
+  //     lat: 21.3542,
+  //     lon: 39.9836,
+  //     rute1: { lat: 21.3550, lon: 39.9840 },
+  //     rute2: { lat: 21.3535, lon: 39.9820 },
+  //     rute3: { lat: 21.3548, lon: 39.9830 },
+  //     rute4: { lat: 21.3530, lon: 39.9845 },
+  //     status: false,
+  //     open: 9,
+  //   },
+  //   {
+  //     id: 2,
+  //     nama: 'Muzdalifah',
+  //     keterangan: 'Menginap dan Mengumpulkan Batu',
+  //     detail: "mengingap semalam, Melaksanakan salat isyak salat qaşar taqdim, sampai subuh terus salat subuh habis itu kemina",
+  //     url: 'https://upload.wikimedia.org/wikipedia/commons/b/bf/Mabit_in_Muzdalifah.JPG',
+  //     lat: 21.3628,
+  //     lon: 39.9406,
+  //     rute1: { lat: 21.3630, lon: 39.9410 },
+  //     rute2: { lat: 21.3620, lon: 39.9400 },
+  //     rute3: { lat: 21.3615, lon: 39.9412 },
+  //     rute4: { lat: 21.3635, lon: 39.9398 },
+  //     status: false,
+  //     open: 10,
+  //   },
+  //   {
+  //     id: 3,
+  //     nama: 'Mina',
+  //     keterangan: 'Melempar Jumrah dan Mabit',
+  //     url: 'https://umrahbandung.id/wp-content/uploads/2023/08/melempar-jumrah-di-mina.jpg',
+  //     lat: 21.4231,
+  //     lon: 39.8943,
+  //     rute1: { lat: 21.4240, lon: 39.8950 },
+  //     rute2: { lat: 21.4225, lon: 39.8935 },
+  //     rute3: { lat: 21.4235, lon: 39.8948 },
+  //     rute4: { lat: 21.4218, lon: 39.8930 },
+  //     status: false,
+  //     open: [11, 12, 13],
+  //     list: [
+  //       {
+  //         id: 0,
+  //         nama: 'Jumrah Ula',
+  //         keterangan: 'Lemparan Pertama',
+  //         url: 'https://nuansantb.id/wp-content/uploads/2024/06/IMG-20240616-WA0171_copy_640x419.jpg',
+  //         lat: -7.313849726080349,
+  //         lon: 112.66829622873807,
+  //         date: [12, 13],
+  //       },
+  //       {
+  //         id: 1,
+  //         nama: 'Jumrah Wustha',
+  //         keterangan: 'Lemparan Kedua',
+  //         url: 'https://cdn.kemenag.go.id/storage/posts/16_9/big/1718613830.jpg',
+  //         lat: -7.313033034177666,
+  //         lon: 112.66845158543634,
+  //         date: [12, 13],
+  //       },
+  //       {
+  //         id: 2,
+  //         nama: 'Jumrah Aqabah',
+  //         keterangan: 'Lemparan Terakhir',
+  //         url: 'https://muhammadiyah.or.id/wp-content/uploads/2024/06/lempar-jumrah.jpg',
+  //         lat: -7.3134298233520605,
+  //         lon: 112.66855256728748,
+  //         date: [11, 12, 13],
+  //       },
+  //     ]
+  //   },
+  //   {
+  //     id: 4,
+  //     nama: 'Makkah Akhir',
+  //     keterangan: 'Tawaf Ifadah dan Sai',
+  //     url: 'https://uici.ac.id/wp-content/uploads/2023/04/png_20230410_170228_0000.png.webp',
+  //     lat: 21.3891,
+  //     lon: 39.8579,
+  //     open: 14,
+  //     list: [
+  //       //KOORDINAT MAKKAH BUAT DI CEK
+  //       {
+  //         id: 0,
+  //         nama: 'Tawaf Ifadah',
+  //         keterangan: 'mengelilingi Kabah sebanyak tujuh kali dengan posisi Kabah di sebelah kiri',
+  //         url: 'https://awsimages.detik.net.id/visual/2023/07/01/jemaah-haji-melaksanakan-tawaf-ifadah-di-dekat-kabah-masjidil-haram-makkah-arab-saudi-sabtu-172023-1.jpeg?w=650&q=80',
+  //         lat: 21.3891,
+  //         lon: 39.8579,
+  //         //KOORDINAT YANG INI
+  //         rute1: { lat: -7.313824162433201, lon: 112.66798119462554 }, //RUTE 1
+  //         rute2: { lat: -7.313888249245295, lon: 112.66847877285261 }, //RUTE 2
+  //         rute3: { lat: -7.312983842217551, lon: 112.66863039962753 }, //RUTE 3
+  //         rute4: { lat: -7.312884033964248, lon: 112.66816946407612 }, //RUTE 4
+  //         status: true,
+  //       },
+  //       {
+  //         id: 1,
+  //         nama: 'Sai',
+  //         keterangan: 'berjalan atau berlari-lari kecil bolak-balik tujuh kali antara bukit Shafa dan Marwah.',
+  //         url: 'https://nabawimulia.co.id/wp-content/uploads/2023/05/ibadah-Sai.jpg',
+  //         lat: 21.3542,
+  //         lon: 39.9836,
+  //         rute1: { lat: 21.3550, lon: 39.9840 },
+  //         rute2: { lat: 21.3535, lon: 39.9820 },
+  //         rute3: { lat: 21.3548, lon: 39.9830 },
+  //         rute4: { lat: 21.3530, lon: 39.9845 },
+  //         status: false,
+  //       },
+  //       {
+  //         id: 2,
+  //         nama: 'Tawaf Wada',
+  //         keterangan: 'tawaf perpisahan yang dilakukan oleh jemaah haji setelah menyelesaikan semua rangkaian ibadah haji sebelum meninggalkan Makkah.',
+  //         url: 'https://awsimages.detik.net.id/community/media/visual/2019/08/16/592b547f-a2c8-4488-af65-d05a8e398e20_169.jpeg?w=1200',
+  //         lat: 21.3628,
+  //         lon: 39.9406,
+  //         rute1: { lat: 21.3630, lon: 39.9410 },
+  //         rute2: { lat: 21.3620, lon: 39.9400 },
+  //         rute3: { lat: 21.3615, lon: 39.9412 },
+  //         rute4: { lat: 21.3635, lon: 39.9398 },
+  //         status: false,
+  //       },
+  //     ]
+  //   }
+  // ];
+
+
 
   minaList = [
     {

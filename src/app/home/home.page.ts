@@ -11,32 +11,43 @@ import { Router } from '@angular/router';
 export class HomePage {
   tempats: any[] = [];
   tanggalList: number[] = [8, 9, 10, 11, 12, 13, 14];
-
   selectedTanggal: number | null = null;
-
+  isLoading: boolean = false; // Tambahan buat penanda loading jika perlu
 
   constructor(
     private tempatService: TempatserviceService,
     private router: Router
   ) { }
 
-  ionViewWillEnter() {
-    this.tempatService.loadStatusFromStorage().then(() => {
-      this.tempats = this.tempatService.getTempat();
-      console.log('Refreshed tempats:', this.tempats);
-    });
+  // 1. CARA PANGGIL INIT DATA
+  async ionViewWillEnter() {
+    this.isLoading = true;
+    try {
+      // initData() akan fetch API -> sync ke Storage -> balikin array data
+      this.tempats = await this.tempatService.initData();
+      console.log('Data tempats berhasil dimuat:', this.tempats);
+    } catch (error) {
+      console.error('Error saat load data:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
-  tesrute(){
+  tesrute() {
     this.router.navigate(['/tesrute']);
   }
 
-  teskoor(){
+  teskoor() {
     this.router.navigate(['/teskoor']);
   }
 
+  // 2. PERBAIKAN goToDetail
+  // Jangan pakai this.tempats[id] karena id database belum tentu sama dengan index array
   goToDetail(id: any) {
-    const nama = this.tempats[id].nama.toLowerCase();
+    const target = this.tempats.find(t => t.id === id);
+    if (!target) return;
+
+    const nama = target.name.toLowerCase();
 
     if (nama.includes('mina')) {
       this.router.navigate(['/mina']);
@@ -46,28 +57,26 @@ export class HomePage {
       this.router.navigate(['/detail', id]);
     }
   }
+
+  // 3. RESET
   async reset() {
-    await this.tempatService.resetAllStatus();         // clear data dan storage
-    await this.tempatService.loadStatusFromStorage();  // ambil ulang data dari storage
-    this.tempats = this.tempatService.getTempat();     // refresh tampilan
+    await this.tempatService.resetAllStatus();
+    this.tempats = this.tempatService.getTempat(); // ambil data yang sudah ter-reset
   }
 
   onTanggalChange(event: any) {
     console.log('Tanggal dipilih:', this.selectedTanggal);
-    // Lanjutkan aksi sesuai kebutuhanmu di sini
   }
 
   isOpenOnSelectedDate(openValue: number | number[]): boolean {
-    if (!this.selectedTanggal) return false;
+    if (!this.selectedTanggal || !openValue) return false;
 
-    // Kalau openValue adalah array
+    // Kalau di API JSON openValue tipenya string misal "8" atau "[11,12]", 
+    // pastikan nilainya array / number
     if (Array.isArray(openValue)) {
       return openValue.includes(this.selectedTanggal);
     }
 
-    // Kalau openValue hanya angka
     return openValue === this.selectedTanggal;
   }
-
-
 }

@@ -8,7 +8,7 @@ const routes: Routes = [
   // =========================
   {
     path: '',
-    redirectTo: 'welcome',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
 
@@ -135,6 +135,11 @@ const routes: Routes = [
       m => m.LaporanPageModule
     )
 },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+
 
 
 
