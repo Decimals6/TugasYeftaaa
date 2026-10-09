@@ -11,7 +11,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class TempatserviceService {
 
-  private baseUrl = 'http://selesai.my.id/emutowif/api/';
+  private baseUrl = 'https://selesai.my.id/emutowif/api/';
 
   public tempatList: any[] = [];
   private isInitialized = false;
