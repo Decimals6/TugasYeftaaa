@@ -1,8 +1,8 @@
 {
-  "name": "Haji Apps",
-  "short_name": "Haji Apps",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "name": "E-Mutowif Monitoring Haji",
+  "short_name": "E-Mutowif",
+  "theme_color": "#0b4635",
+  "background_color": "#0b4635",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",

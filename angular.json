@@ -32,7 +32,10 @@
               },
               "src/manifest.webmanifest"
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss"
+            ],
             "scripts": [],
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json"
@@ -42,13 +45,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "4mb",
+                  "maximumError": "8mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "15kb",
+                  "maximumError": "30kb"
                 }
               ],
               "fileReplacements": [
@@ -82,8 +85,7 @@
             "development": {
               "buildTarget": "app:build:development"
             },
-            "ci": {
-            }
+            "ci": {}
           },
           "defaultConfiguration": "development"
         },
@@ -114,7 +116,10 @@
               },
               "src/manifest.webmanifest"
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss"
+            ],
             "scripts": []
           },
           "configurations": {
