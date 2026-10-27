@@ -1,0 +1,142 @@
+$primary-emerald: #0b4635;
+$emerald-light: #13634c;
+$accent-gold: #c5a059;
+$gold-soft: #f4ecdc;
+$bg-slate: #f8faf9;
+$text-dark: #1f2937;
+$text-muted: #6b7280;
+
+.admin-toolbar {
+  --background: #{$primary-emerald};
+  --color: #ffffff;
+  border-bottom: 2px solid #{$accent-gold};
+
+  ion-title {
+    font-weight: 700;
+  }
+}
+
+.admin-content {
+  --background: #{$bg-slate};
+}
+
+.header-banner {
+  background: linear-gradient(135deg, $primary-emerald 0%, $emerald-light 100%);
+  padding: 24px 20px 40px;
+  
+  .banner-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .badge-role {
+    display: inline-block;
+    background: $accent-gold;
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    color: #ffffff;
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  p {
+    color: #d1fae5;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
+.main-wrapper {
+  max-width: 900px;
+  margin: -16px auto 0;
+  padding: 0 16px;
+}
+
+.menu-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.menu-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 14px rgba(11, 70, 53, 0.08);
+  border: 1px solid rgba(197, 160, 89, 0.25);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  .card-icon-wrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 26px;
+    }
+
+    &.user-icon {
+      background: #e8f5e9;
+      color: $primary-emerald;
+    }
+
+    &.group-icon {
+      background: $gold-soft;
+      color: $accent-gold;
+    }
+  }
+
+  .card-text {
+    flex: 1;
+
+    h3 {
+      margin: 0 0 4px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: $text-dark;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: $text-muted;
+    }
+  }
+
+  .card-action ion-icon {
+    font-size: 24px;
+    color: $accent-gold;
+  }
+}
+
+.footer-app {
+  text-align: center;
+  padding: 32px 16px 20px;
+  p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #9ca3af;
+  }
+}

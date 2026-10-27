@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { TempatserviceService } from '../tempatservice.service';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-makkahakhir',
@@ -12,6 +11,9 @@ import { Router } from '@angular/router';
 export class MakkahakhirPage {
   tempats: any[] = [];
   id1: number = 0;
+  locationTitle: string = 'Makkah';
+  locationDesc: string = 'Rangkaian Tawaf dan Sa\'i di Masjidil Haram.';
+
   constructor(
     private tempatService: TempatserviceService,
     private router: Router,
@@ -20,18 +22,22 @@ export class MakkahakhirPage {
 
   async ionViewWillEnter() {
     this.route.params.subscribe(async params => {
-      this.id1 = +params['index'];
+      // Menangkap parameter index atau id yang dilempar dari routing
+      this.id1 = +(params['index'] || params['id'] || 0);
 
       try {
-        // Ambil data terbaru dari API / storage
         const data = await this.tempatService.initData();
-
-        // Cari location berdasarkan ID database
         const target = data.find((tempat: any) => tempat.id === this.id1);
 
-        this.tempats = target?.list ?? [];
+        if (target) {
+          this.locationTitle = target.name || target.nama || 'Makkah';
+          this.locationDesc = target.description || target.keterangan || 'Rangkaian Tawaf dan Sa\'i di Masjidil Haram.';
+          this.tempats = target.list ?? [];
+        } else {
+          this.tempats = [];
+        }
 
-        console.log('ID location:', this.id1);
+        console.log('ID location terpilih:', this.id1);
         console.log('Target location:', target);
         console.log('Activities:', this.tempats);
 
@@ -43,14 +49,14 @@ export class MakkahakhirPage {
   }
 
   goToDetail(id2: any) {
-    const nama = this.tempats[id2].nama.toLowerCase();
     this.router.navigate(['/makkahakhirdetail', this.id1, id2]);
-
   }
+
   async reset() {
-    await this.tempatService.resetAllTempatStatus(this.tempatService.tempatList);         // clear data dan storage
-    await this.tempatService.loadTempatStatusFromStorage(this.tempatService.tempatList);  // ambil ulang data dari storage
-    this.tempats = this.tempatService.tempatList[this.id1]?.list ?? [];     // refresh tampilan
+    await this.tempatService.resetAllTempatStatus(this.tempatService.tempatList);
+    await this.tempatService.loadTempatStatusFromStorage(this.tempatService.tempatList);
+    
+    const target = this.tempatService.tempatList.find((t: any) => t.id === this.id1);
+    this.tempats = target?.list ?? [];
   }
-
 }

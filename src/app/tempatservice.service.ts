@@ -547,4 +547,64 @@ export class TempatserviceService {
   }
 
 
+  //BARUUUUUUUUUUUUUUUUU
+  private baseUrl1 = 'https://selesai.my.id/emutowif/api/users/';
+  private cachedLocations: any[] = [];
+
+  // Ambil data lokasi (cek cache memori dulu biar instan)
+  async getLocationsFast(userId: number, forceRefresh: boolean = false): Promise<any[]> {
+    if (this.cachedLocations.length > 0 && !forceRefresh) {
+      return this.cachedLocations;
+    }
+
+    try {
+      const res: any = await firstValueFrom(
+        this.http.get<any>(`${this.baseUrl1}get_locations.php?user_id=${userId}`)
+      );
+      if (res?.status === 'success') {
+        this.cachedLocations = res.data;
+      }
+    } catch (error) {
+      console.error('Gagal fetch lokasi:', error);
+    }
+
+    return this.cachedLocations;
+  }
+
+  // Update riwayat ke server sekaligus update cache lokal
+  updateUserActivity(userId: number, activityId: number, status: string): Observable<any> {
+    const body = new FormData();
+    body.append('user_id', userId.toString());
+    body.append('activity_id', activityId.toString());
+    body.append('status', status);
+
+    return this.http.post<any>(`${this.baseUrl1}update_activity.php`, body);
+  }
+
+  completeUserActivity(userId: number, activityId: number, status: string = 'selesai', lat?: number, lon?: number): Observable<any> {
+    const body = new FormData();
+    body.append('user_id', userId.toString());
+    body.append('activity_id', activityId.toString());
+    body.append('status', status);
+    if (lat !== undefined && lon !== undefined) {
+      body.append('lat', lat.toString());
+      body.append('lon', lon.toString());
+    }
+
+    // Gunakan baseUrl1 yang mengarah ke folder /api/users/
+    return this.http.post<any>(`${this.baseUrl1}complete_activity.php`, body);
+  }
+
+  resetUserActivities(userId: number): Observable<any> {
+    const body = new FormData();
+    body.append('user_id', userId.toString());
+
+    return this.http.post<any>(`${this.baseUrl1}reset_user_activities.php`, body);
+  }
+
+  getLeaderLocation(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl1}get_leader_location.php?user_id=${userId}`);
+  }
+
+
 }

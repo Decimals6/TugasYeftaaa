@@ -1,0 +1,135 @@
+$primary-emerald: #0b4635;
+$accent-gold: #c5a059;
+$gold-soft: #f4ecdc;
+$bg-slate: #f8faf9;
+
+.admin-toolbar {
+    --background: #{$primary-emerald};
+    --color: #ffffff;
+    border-bottom: 2px solid #{$accent-gold};
+
+    .btn-gold-add {
+        --background: #{$accent-gold};
+        --color: #ffffff;
+        --border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+}
+
+.content-body {
+    --background: #{$bg-slate};
+}
+
+.content-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.table-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e5e7eb;
+    overflow-x: auto;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+
+    th {
+        background: #f1f5f3;
+        color: $primary-emerald;
+        padding: 14px 16px;
+        font-weight: 700;
+        border-bottom: 2px solid #e2e8f0;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: 14px 16px;
+        border-bottom: 1px solid #edf2f7;
+        vertical-align: middle;
+    }
+
+    .fw-bold {
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .text-muted {
+        color: #6b7280;
+        font-size: 0.85rem;
+    }
+
+    .coordinate-text {
+        font-family: monospace;
+        font-size: 0.8rem;
+        color: #374151;
+    }
+
+    .no-coord {
+        color: #9ca3af;
+        font-style: italic;
+        font-size: 0.8rem;
+    }
+}
+
+// Badges Role
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    &-jamaah {
+        background: #e0f2fe;
+        color: #0369a1;
+    }
+
+    &-leader {
+        background: $gold-soft;
+        color: #854d0e;
+    }
+
+    &-admin {
+        background: #dcfce7;
+        color: $primary-emerald;
+    }
+}
+
+// Tombol Action
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+
+    .btn-action {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+
+        &.btn-map {
+            background: #ecfdf5;
+            color: $primary-emerald;
+            border: 1px solid #a7f3d0;
+        }
+
+        &.btn-edit {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+    }
+}   

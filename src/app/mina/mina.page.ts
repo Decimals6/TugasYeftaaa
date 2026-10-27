@@ -13,7 +13,7 @@ export class MinaPage {
   tanggalList: number[] = [8, 9, 10, 11, 12, 13, 14];
 
   selectedTanggal: number | null = null;
-  
+
   constructor(
     private tempatService: TempatserviceService,
     private router: Router
@@ -27,8 +27,7 @@ export class MinaPage {
   }
 
   goToDetail(id: any) {
-    const nama = this.tempats[id].nama.toLowerCase();
-    this.router.navigate(['/minadetail', id]);  
+    this.router.navigate(['/minadetail', id]);
   }
   async reset() {
     await this.tempatService.resetAllMinaStatus();         // clear data dan storage

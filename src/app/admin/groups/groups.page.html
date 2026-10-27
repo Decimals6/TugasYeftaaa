@@ -1,0 +1,68 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="admin-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Kelompok Haji</ion-title>
+    <ion-buttons slot="end">
+      <!-- Tombol dibuat ringkas dan responsif -->
+      <ion-button (click)="createGroup()" fill="solid" class="btn-gold-add">
+        <ion-icon slot="start" name="add-outline"></ion-icon>
+        <span class="btn-text">Kelompok</span>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-body">
+  <div class="content-wrapper">
+    <!-- State Loading -->
+    <div *ngIf="isLoading" class="ion-text-center ion-padding state-box">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Memuat daftar kelompok...</p>
+    </div>
+
+    <!-- State Kosong -->
+    <div *ngIf="!isLoading && groups.length === 0" class="ion-text-center ion-padding state-box empty">
+      <ion-icon name="file-tray-outline"></ion-icon>
+      <p>Belum ada kelompok yang dibuat.</p>
+    </div>
+
+    <!-- Grid Kartu Kelompok -->
+    <div class="group-grid" *ngIf="!isLoading && groups.length > 0">
+      <div class="group-card" *ngFor="let g of groups">
+        <div class="group-header">
+          <div class="icon-wrap">
+            <ion-icon name="people-circle-outline"></ion-icon>
+          </div>
+          <div class="group-title">
+            <h3>{{ g.name }}</h3>
+            <span class="badge-jamaah">{{ g.totalJamaah }} Jamaah Terdaftar</span>
+          </div>
+        </div>
+
+        <div class="group-info">
+          <div class="info-row">
+            <span class="label">Leader:</span>
+            <span class="val fw-bold">{{ g.leaderName }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Keterangan:</span>
+            <span class="val desc">{{ g.keterangan || '-' }}</span>
+          </div>
+        </div>
+
+        <div class="group-footer">
+          <button class="btn-detail" (click)="detailGroup(g)">
+            <ion-icon name="eye-outline"></ion-icon>
+            <span>Detail</span>
+          </button>
+          <button class="btn-edit" (click)="editGroup(g)">
+            <ion-icon name="create-outline"></ion-icon>
+            <span>Edit</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

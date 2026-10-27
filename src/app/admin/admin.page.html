@@ -1,0 +1,61 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="admin-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/welcome" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Portal Admin</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="admin-content" fullscreen="true">
+  <!-- Islamic Geometric Banner & Greeting -->
+  <div class="header-banner">
+    <div class="banner-container">
+      <span class="badge-role">Super Admin</span>
+      <h2>Kelola Mutowif</h2>
+      <p>Pusat kontrol data pengguna, pembimbing, dan kelompok ibadah haji.</p>
+    </div>
+  </div>
+
+  <div class="main-wrapper">
+    <!-- Menu Navigasi Utama -->
+    <div class="menu-grid">
+      <!-- Card Kelola User -->
+      <div class="menu-card" routerLink="/admin/users">
+        <div class="card-icon-wrapper user-icon">
+          <ion-icon name="people"></ion-icon>
+        </div>
+        <div class="card-text">
+          <h3>Kelola Pengguna</h3>
+          <p>Daftar akun jamaah & leader, tambah akun baru, serta atur hak akses.</p>
+        </div>
+        <div class="card-action">
+          <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+        </div>
+      </div>
+
+      <!-- Card Kelola Kelompok -->
+      <div class="menu-card" routerLink="/admin/groups">
+        <div class="card-icon-wrapper group-icon">
+          <ion-icon name="git-network-outline"></ion-icon>
+        </div>
+        <div class="card-text">
+          <h3>Kelola Kelompok</h3>
+          <p>Struktur kloter/rombongan dan pemasangan jamaah ke akun leader.</p>
+        </div>
+        <div class="card-action">
+          <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-app">
+    <p>E-Mutowif Management Console &bull; v1.0</p>
+  </div>
+</ion-content>

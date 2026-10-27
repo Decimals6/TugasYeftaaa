@@ -1,23 +1,56 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
+<ion-header class="ion-no-border">
+  <ion-toolbar class="user-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/home" color="light"></ion-back-button>
     </ion-buttons>
-    <ion-title>Tes Koor</ion-title>
+    <ion-title>Tes Koordinat GPS</ion-title>
+    <ion-buttons slot="end">
+      <!-- Tombol Fokus ke Leader -->
+      <ion-button *ngIf="leaderLat && leaderLon" (click)="focusLeader()" title="Cari Posisi Leader">
+        <ion-icon slot="icon-only" name="shield-checkmark" color="warning"></ion-icon>
+      </ion-button>
+      <!-- Tombol Pusatkan ke User Sendiri -->
+      <ion-button (click)="centerToUser()" title="Pusatkan Peta Saya">
+        <ion-icon slot="icon-only" name="locate-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title></ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="putaran-row">
-      </div>
-      <ion-button size="small" color="success" (click)="selesaiRute()">Selesai</ion-button>
-    </ion-card-content>
-  </ion-card>
+<ion-content [fullscreen]="true" class="teskoor-content">
+  <div id="map" class="map-container"></div>
 
-  <div id="map"></div>
+  <!-- Floating Status Dashboard -->
+  <div class="floating-panel">
+    <div class="coord-card">
+      <div class="card-top">
+        <div class="badge-status">
+          <span class="dot-live"></span>
+          <span>Live Tracking</span>
+        </div>
+        <span class="accuracy-tag">Akurasi &plusmn;{{ accuracy | number:'1.0-1' }}m</span>
+      </div>
+
+      <div class="coords-grid">
+        <div class="coord-item">
+          <span class="label">Koordinat Saya</span>
+          <span class="val">{{ lat ? (lat | number:'1.4-4') : '...' }}, {{ lon ? (lon | number:'1.4-4') : '...'
+            }}</span>
+        </div>
+        <div class="coord-item leader-box" (click)="focusLeader()">
+          <span class="label">Pembimbing / Leader</span>
+          <span class="val leader-val">{{ leaderName || 'Mencari...' }}</span>
+          <span class="sub-val" *ngIf="leaderLat">{{ leaderLat | number:'1.4-4' }}, {{ leaderLon | number:'1.4-4'
+            }}</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ion-button expand="block" class="btn-refresh" (click)="getCoordinates()">
+          <ion-icon name="refresh-outline" slot="start"></ion-icon>
+          Perbarui Titik
+        </ion-button>
+      </div>
+    </div>
+  </div>
 </ion-content>

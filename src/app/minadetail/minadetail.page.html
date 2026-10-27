@@ -1,23 +1,51 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
+<ion-header class="ion-no-border">
+  <ion-toolbar class="user-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/mina"></ion-back-button>
+      <ion-back-button defaultHref="/mina" color="light"></ion-back-button>
     </ion-buttons>
-    <ion-title>Detail Lokasi</ion-title>
+    <ion-title>{{ tempat?.nama || tempat?.name || 'Titik Lontar Jumrah' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="lihatPanduan()" title="Panduan Lempar Jumrah">
+        <ion-icon slot="icon-only" name="information-circle-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>{{ tempat.nama }}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="putaran-row">
-      </div>
-      <ion-button size="small" color="success" (click)="selesaiRute()">Selesai</ion-button>
-    </ion-card-content>
-  </ion-card>
+<ion-content [fullscreen]="true" class="detail-content">
+  <!-- Peta Leaflet Full Screen -->
+  <div id="map" class="map-container"></div>
 
-  <div id="map"></div>
+  <!-- Floating Info & Action Panel -->
+  <div class="floating-panel">
+    <div class="tracker-card">
+      <div class="tracker-header">
+        <div class="title-meta">
+          <span class="badge-activity">Pos Lempar Jumrah</span>
+          <h3>{{ tempat?.nama || tempat?.name || 'Memuat Pos...' }}</h3>
+          <p class="subtitle">{{ tempat?.keterangan || tempat?.description || 'Lontarkan 7 batu kerikil ke pilar ini.'
+            }}</p>
+        </div>
+      </div>
+
+      <div class="status-indicator">
+        <div class="pulse-dot"></div>
+        <span>Pelacakan GPS aktif &bull; Menuju pilar jumrah</span>
+      </div>
+
+      <div class="tracker-actions">
+        <!-- Tombol Simulasi Dekat Titik Pilar -->
+        <ion-button fill="outline" class="btn-step" (click)="simulasiTiba()">
+          <ion-icon name="pin-outline" slot="start"></ion-icon>
+          Simulasi Tiba
+        </ion-button>
+
+        <!-- Tombol Selesai Manual / Bypass -->
+        <ion-button class="btn-complete" (click)="selesaiRute()">
+          <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
+          Selesaikan
+        </ion-button>
+      </div>
+    </div>
+  </div>
 </ion-content>

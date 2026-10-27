@@ -1,0 +1,51 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="maps-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/leader" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Radar Peta Jamaah</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="loadJamaahLocations()">
+        <ion-icon slot="icon-only" name="refresh-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="maps-content">
+  <div id="fullMap" class="map-container"></div>
+
+  <!-- Tombol Melayang Fokus ke Posisi Leader -->
+  <ion-fab vertical="top" horizontal="end" slot="fixed" class="fab-locate-leader">
+    <ion-fab-button (click)="focusLeader()" color="light">
+      <ion-icon name="locate" color="primary"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Bottom Sheet Horizontal Slider Jamaah -->
+  <div class="bottom-sheet">
+    <div class="sheet-scroller">
+      <div
+        *ngFor="let j of jamaahList"
+        [id]="'jamaah-card-' + j.id"
+        class="card-pill"
+        [class.active]="j.id === selectedUserId"
+        (click)="selectUser(j.id)"
+      >
+        <div class="user-info">
+          <div class="dot-indicator" [class.online]="j.lat && j.lon"></div>
+          <div>
+            <h4>{{ j.name }}</h4>
+            <span class="status-time">
+              {{ j.lat ? (j.last_located_at | date:'HH:mm:ss') : 'Lokasi Mati' }}
+            </span>
+          </div>
+        </div>
+        <ion-button fill="clear" class="btn-detail-sheet" (click)="goToDetail(j.id, $event)">
+          Detail
+          <ion-icon name="chevron-forward" slot="end"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

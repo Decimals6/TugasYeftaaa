@@ -5,18 +5,12 @@ import { Router } from '@angular/router';
   selector: 'app-welcome',
   templateUrl: './welcome.page.html',
   styleUrls: ['./welcome.page.scss'],
-  standalone: false,   // <-- TAMBAHKAN BARIS INI
+  standalone: false
 })
 export class WelcomePage {
-
   constructor(private router: Router) {}
 
-  masukUser() {
-    this.router.navigate(['/home']);
+  masuk() {
+    this.router.navigate(['/login']);
   }
-
-  masukAdmin() {
-    this.router.navigate(['/admin/dashboard']);
-  }
-
 }

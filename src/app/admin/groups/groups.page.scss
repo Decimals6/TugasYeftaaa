@@ -1,0 +1,205 @@
+$primary-emerald: #0b4635;
+$accent-gold: #c5a059;
+$gold-soft: #f4ecdc;
+$bg-slate: #f8faf9;
+
+.admin-toolbar {
+    --background: #{$primary-emerald};
+    --color: #ffffff;
+    border-bottom: 2px solid #{$accent-gold};
+
+    ion-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    .btn-gold-add {
+        --background: #{$accent-gold};
+        --color: #ffffff;
+        --border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        height: 34px;
+        margin-inline-end: 8px;
+
+        ion-icon {
+            font-size: 18px;
+        }
+    }
+}
+
+.content-body {
+    --background: #{$bg-slate};
+}
+
+.content-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 16px 14px 24px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.state-box {
+    padding: 40px 16px;
+    color: #6b7280;
+
+    p {
+        margin-top: 8px;
+        font-size: 0.9rem;
+    }
+
+    &.empty ion-icon {
+        font-size: 48px;
+        color: #9ca3af;
+    }
+}
+
+/* Responsif: 1 kolom di mobile, 2-3 kolom di layar besar */
+.group-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    width: 100%;
+    box-sizing: border-box;
+
+    @media (min-width: 680px) {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 16px;
+    }
+}
+
+.group-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    border: 1px solid rgba(197, 160, 89, 0.28);
+    box-shadow: 0 4px 12px rgba(11, 70, 53, 0.05);
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+
+    .group-header {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 12px;
+        min-width: 0;
+
+        .icon-wrap {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            background: $gold-soft;
+            color: $accent-gold;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            ion-icon {
+                font-size: 24px;
+            }
+        }
+
+        .group-title {
+            min-width: 0;
+            flex: 1;
+
+            h3 {
+                margin: 0 0 4px;
+                font-size: 1rem;
+                font-weight: 700;
+                color: #1f2937;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .badge-jamaah {
+                display: inline-block;
+                background: #ecfdf5;
+                color: $primary-emerald;
+                font-size: 0.72rem;
+                font-weight: 600;
+                padding: 2px 8px;
+                border-radius: 10px;
+            }
+        }
+    }
+
+    .group-info {
+        border-top: 1px solid #f1f5f9;
+        padding-top: 10px;
+        margin-bottom: 14px;
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+            font-size: 0.82rem;
+            gap: 10px;
+
+            .label {
+                color: #6b7280;
+                flex-shrink: 0;
+            }
+
+            .val {
+                color: #1f2937;
+                text-align: right;
+                min-width: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                &.fw-bold {
+                    font-weight: 600;
+                    color: $primary-emerald;
+                }
+
+                &.desc {
+                    color: #4b5563;
+                    max-width: 60%;
+                }
+            }
+        }
+    }
+
+    .group-footer {
+        display: flex;
+        gap: 8px;
+
+        button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            height: 38px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+
+            &:active {
+                opacity: 0.85;
+            }
+        }
+
+        .btn-detail {
+            background: $primary-emerald;
+            color: #ffffff;
+        }
+
+        .btn-edit {
+            background: #f8fafc;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+    }
+}

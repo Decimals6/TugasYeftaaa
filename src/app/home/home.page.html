@@ -1,57 +1,113 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>e-Mutowif</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar class="user-toolbar">
+    <ion-title>e-Mutowif Jamaah</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <div class="dropdown-container">
-    <ion-label>Pilih Tanggal:</ion-label>
-    <ion-select
-      interface="popover"
-      placeholder="Tanggal"
-      [(ngModel)]="selectedTanggal"
-      (ionChange)="onTanggalChange($event)"
-    >
-      <ion-select-option *ngFor="let tgl of tanggalList" [value]="tgl">{{ tgl }}</ion-select-option>
-    </ion-select>
+<ion-content class="user-content" [fullscreen]="true">
+  <!-- Banner Hijau Zamrud Solid & Teks Kontras -->
+  <div class="header-banner">
+    <div class="banner-container">
+      <span class="badge-role">Panduan Manasik</span>
+      <h2 class="banner-title">Rangkaian Ibadah</h2>
+      <p class="banner-desc">Pilih tanggal pelaksanaan dan mulai navigasi rute manasik Anda.</p>
+    </div>
   </div>
 
+  <div class="main-wrapper">
+    <!-- Filter Tanggal Card -->
+    <div class="filter-card">
+      <div class="filter-left">
+        <div class="icon-wrap">
+          <ion-icon name="calendar"></ion-icon>
+        </div>
+        <div class="filter-text">
+          <label>Jadwal Ibadah</label>
+          <span>Pilih Tanggal Dzulhijjah</span>
+        </div>
+      </div>
+      <div class="filter-select-wrap">
+        <ion-select interface="popover" placeholder="Pilih Tanggal" [(ngModel)]="selectedTanggal"
+          (ionChange)="onTanggalChange($event)" class="custom-select">
+          <ion-select-option *ngFor="let tgl of tanggalList" [value]="tgl">
+            Tanggal {{ tgl }}
+          </ion-select-option>
+        </ion-select>
+      </div>
+    </div>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6" *ngFor="let tempat of tempats">
-        <ion-card class="lokasi-card" [class.disabled-card]="!isOpenOnSelectedDate(tempat.open)">
-          <img [src]="tempat.image_url || 'assets/img/placeholder.jpg'" />
-          <ion-card-content class="ion-text-center">
-            <h2>{{ tempat.name }}</h2>
-            <p>{{ tempat.description }}</p>
-            <ion-button expand="block" (click)="goToDetail(tempat.id)">
-              MULAI
-            </ion-button>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-      <!-- <ion-col>
-        <ion-card class="lokasi-card">
-          <ion-card-content class="ion-text-center">
-            <h2>Tes Koordinat</h2>
-            <p>Tes titik lokasi koordinat</p>
-            <ion-button expand="block"  (click)="teskoor()">
-              MULAI
-            </ion-button>
-          </ion-card-content>
-        </ion-card>
-        <ion-card class="lokasi-card">
-          <ion-card-content class="ion-text-center">
-            <h2>Tes Rute</h2>
-            <p>Tes Rute dan Putaran</p>
-            <ion-button expand="block" (click)="tesrute()">
-              MULAI
-            </ion-button>
-          </ion-card-content>
-        </ion-card>
-      </ion-col> -->
-    </ion-row>
-  </ion-grid>
+    <!-- Section Heading -->
+    <div class="section-header">
+      <div>
+        <h3>Titik Lokasi Manasik</h3>
+        <p>Tahapan ibadah berdasarkan urutan rute</p>
+      </div>
+      <span class="count-pill">{{ tempats.length }} Lokasi</span>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Memuat rute ibadah...</p>
+    </div>
+
+    <!-- Grid Tempat Ibadah -->
+    <div class="lokasi-grid" *ngIf="!isLoading">
+      <div *ngFor="let tempat of tempats; let i = index" class="lokasi-card"
+        [class.disabled-card]="!isOpenOnSelectedDate(tempat.open)">
+        <div class="card-image-box">
+          <img [src]="tempat.image_url || tempat.url || 'assets/img/placeholder.jpg'"
+            [alt]="tempat.name || tempat.nama" />
+          <span class="step-badge">Tahap {{ i + 1 }}</span>
+          <span class="date-badge" *ngIf="tempat.open">
+            <ion-icon name="time-outline"></ion-icon>
+            Tgl {{ tempat.open }}
+          </span>
+        </div>
+
+        <div class="card-content-box">
+          <div class="text-meta">
+            <h4>{{ tempat.name || tempat.nama }}</h4>
+            <p>{{ tempat.description || tempat.keterangan }}</p>
+          </div>
+
+          <ion-button expand="block" class="btn-mulai" [disabled]="!isOpenOnSelectedDate(tempat.open)"
+            (click)="goToDetail(tempat.id)">
+            <ion-icon name="navigate-circle-outline" slot="start"></ion-icon>
+            {{ isOpenOnSelectedDate(tempat.open) ? 'MULAI PANDUAN' : 'BELUM DIBUKA' }}
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dev / Debug Actions -->
+    <div class="dev-actions-box">
+      <div class="dev-divider">
+        <span>Aksi Tambahan</span>
+      </div>
+      <div class="dev-buttons">
+        <ion-button fill="outline" class="btn-dev" (click)="reset()">
+          <ion-icon name="refresh-outline" slot="start"></ion-icon>
+          Reset Status
+        </ion-button>
+        <ion-button fill="outline" class="btn-dev" (click)="teskoor()">
+          <ion-icon name="pin-outline" slot="start"></ion-icon>
+          Tes Koordinat
+        </ion-button>
+        <!-- <ion-button fill="outline" class="btn-dev" (click)="tesrute()">
+          <ion-icon name="navigate-outline" slot="start"></ion-icon>
+          Tes Rute
+        </ion-button> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-app">
+    <p>E-Mutowif Mobile System &bull; Jamaah Edition</p>
+  </div>
 </ion-content>

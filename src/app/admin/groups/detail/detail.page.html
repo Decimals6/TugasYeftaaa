@@ -1,0 +1,89 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="admin-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin/groups" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detail Kelompok</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="editThisGroup()" fill="solid" class="btn-gold-action">
+        <ion-icon slot="start" name="create-outline"></ion-icon>
+        Edit Kelompok
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-body" fullscreen="true">
+  <div class="content-wrapper">
+    <div *ngIf="isLoading" class="ion-text-center ion-padding" style="padding: 40px; color: #6b7280;">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Memuat informasi kelompok...</p>
+    </div>
+
+    <div *ngIf="!isLoading && detailData">
+      <!-- Card Ringkasan Kloter -->
+      <div class="summary-card">
+        <div class="summary-header">
+          <div class="icon-wrap">
+            <ion-icon name="people-circle-outline"></ion-icon>
+          </div>
+          <div>
+            <h2>{{ detailData.group.name }}</h2>
+            <span class="badge-count">{{ detailData.members.length }} Jamaah Terdaftar</span>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Leader / Muthawif:</span>
+            <span class="info-value fw-bold">{{ detailData.group.leader_name }}</span>
+            <span class="info-sub">{{ detailData.group.leader_email }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Keterangan / Maktab:</span>
+            <span class="info-value">{{ detailData.group.description }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabel Anggota Jamaah -->
+      <div class="table-container">
+        <div class="table-header-title">
+          <h3>Daftar Anggota Jamaah</h3>
+        </div>
+
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">No</th>
+              <th>Nama Jamaah</th>
+              <th>Username / Email</th>
+              <th>Status Koordinat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="detailData.members.length === 0">
+              <td colspan="4" class="ion-text-center" style="padding: 24px; color: #9ca3af; font-style: italic;">
+                Belum ada jamaah yang didaftarkan ke kelompok ini.
+              </td>
+            </tr>
+
+            <tr *ngFor="let m of detailData.members; let i = index">
+              <td class="ion-text-center text-muted">{{ i + 1 }}</td>
+              <td class="fw-bold">{{ m.name }}</td>
+              <td class="text-muted">{{ m.email }}</td>
+              <td>
+                <span *ngIf="m.lat && m.lon" class="badge-coord">
+                  <ion-icon name="location-outline"></ion-icon> {{ m.lat }}, {{ m.lon }}
+                </span>
+                <span *ngIf="!m.lat || !m.lon" class="text-muted" style="font-size: 0.8rem;">
+                  Belum terpantau
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ion-content>

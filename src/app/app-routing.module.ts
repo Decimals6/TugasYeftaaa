@@ -1,72 +1,67 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { authGuard } from './guards/auth-guard';
 
 const routes: Routes = [
-
   // =========================
-  // HALAMAN AWAL
+  // HALAMAN AWAL (Arahkan langsung ke login atau welcome)
   // =========================
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
 
   // =========================
-  // WELCOME
+  // WELCOME & LOGIN (Bebas tanpa guard)
   // =========================
   {
     path: 'welcome',
-    loadChildren: () =>
-      import('./welcome/welcome.module').then(
-        (m) => m.WelcomePageModule
-      )
+    loadChildren: () => import('./welcome/welcome.module').then(m => m.WelcomePageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
   },
 
   // =========================
-  // USER
+  // USER (JAMAAH)
   // =========================
   {
     path: 'home',
-    loadChildren: () =>
-      import('./home/home.module').then(
-        (m) => m.HomePageModule
-      )
+    canActivate: [authGuard],
+    data: { roles: ['jamaah'] },
+    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
     path: 'detail/:index',
-    loadChildren: () =>
-      import('./detail/detail.module').then(
-        (m) => m.DetailPageModule
-      )
+    canActivate: [authGuard],
+    data: { roles: ['jamaah'] },
+    loadChildren: () => import('./detail/detail.module').then(m => m.DetailPageModule)
   },
   {
     path: 'mina',
-    loadChildren: () =>
-      import('./mina/mina.module').then(
-        (m) => m.MinaPageModule
-      )
+    canActivate: [authGuard],
+    data: { roles: ['jamaah'] },
+    loadChildren: () => import('./mina/mina.module').then(m => m.MinaPageModule)
   },
   {
     path: 'minadetail/:index',
-    loadChildren: () =>
-      import('./minadetail/minadetail.module').then(
-        (m) => m.MinadetailPageModule
-      )
+    canActivate: [authGuard],
+    data: { roles: ['jamaah'] },
+    loadChildren: () => import('./minadetail/minadetail.module').then(m => m.MinadetailPageModule)
   },
   {
     path: 'makkahakhir/:index',
-    loadChildren: () =>
-      import('./makkahakhir/makkahakhir.module').then(
-        (m) => m.MakkahakhirPageModule
-      )
+    canActivate: [authGuard],
+    data: { roles: ['jamaah'] },
+    loadChildren: () => import('./makkahakhir/makkahakhir.module').then(m => m.MakkahakhirPageModule)
   },
   {
     path: 'makkahakhirdetail/:index1/:index2',
-    loadChildren: () =>
-      import('./makkahakhirdetail/makkahakhirdetail.module').then(
-        (m) => m.MakkahakhirdetailPageModule
-      )
+    canActivate: [authGuard],
+    data: { roles: ['jamaah'] },
+    loadChildren: () => import('./makkahakhirdetail/makkahakhirdetail.module').then(m => m.MakkahakhirdetailPageModule)
   },
 
   // =========================
@@ -74,77 +69,78 @@ const routes: Routes = [
   // =========================
   {
     path: 'teskoor',
-    loadChildren: () =>
-      import('./teskoor/teskoor.module').then(
-        (m) => m.TeskoorPageModule
-      )
+    canActivate: [authGuard],
+    data: { roles: ['jamaah'] },
+    loadChildren: () => import('./teskoor/teskoor.module').then(m => m.TeskoorPageModule)
   },
   {
     path: 'tesrute',
-    loadChildren: () =>
-      import('./tesrute/tesrute.module').then(
-        (m) => m.TesrutePageModule
-      )
-  },
-  {
-     path: 'admin/dashboard',
-  loadChildren: () =>
-    import('./admin/dashboard/dashboard.module').then(
-      m => m.DashboardPageModule
-    )
-  },
-  {
-    path: 'admin/jamaah',
-  loadChildren: () =>
-    import('./admin/jamaah/jamaah.module').then(
-      m => m.JamaahPageModule
-    )
-  },
-  {
-      path: 'admin/detail-jamaah/:id',
-  loadChildren: () =>
-    import('./admin/detail-jamaah/detail-jamaah.module').then(
-      m => m.DetailJamaahPageModule
-    )
-  },
-  {
-    path: 'admin/group-haji',
-  loadChildren: () =>
-    import('./admin/group-haji/group-haji.module').then(
-      m => m.GroupHajiPageModule
-    )
-  },
-  {
-     path: 'admin/monitoring',
-  loadChildren: () =>
-    import('./admin/monitoring/monitoring.module').then(
-      m => m.MonitoringPageModule
-    )
-  },
-  {
-     path: 'admin/notifikasi',
-  loadChildren: () =>
-    import('./admin/notifikasi/notifikasi.module').then(
-      m => m.NotifikasiPageModule
-    )
-  },
-{
-  path: 'admin/laporan',
-  loadChildren: () =>
-    import('./admin/laporan/laporan.module').then(
-      m => m.LaporanPageModule
-    )
-},
-  {
-    path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    canActivate: [authGuard],
+    data: { roles: ['jamaah'] },
+    loadChildren: () => import('./tesrute/tesrute.module').then(m => m.TesrutePageModule)
   },
 
-
-
-
-
-
+  // =========================
+  // ADMIN (ROLE HARUS ADMIN)
+  // =========================
+  {
+    path: 'admin',
+    canActivate: [authGuard],
+    data: { roles: ['admin'] }, // Ubah dari 'jamaah' ke 'admin'
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./admin/admin.module').then(m => m.AdminPageModule)
+      },
+      {
+        path: 'users',
+        loadChildren: () => import('./admin/users/users.module').then(m => m.UsersPageModule)
+      },
+      {
+        path: 'groups',
+        loadChildren: () => import('./admin/groups/groups.module').then(m => m.GroupsPageModule)
+      },
+      {
+        path: 'ausers/create',
+        loadChildren: () => import('./admin/users/create/create.module').then(m => m.CreatePageModule)
+      },
+      {
+        path: 'groups/edit/:id',
+        loadChildren: () => import('./admin/groups/edit/edit.module').then(m => m.EditPageModule)
+      },
+      {
+        path: 'groups/detail/:id',
+        loadChildren: () => import('./admin/groups/detail/detail.module').then(m => m.DetailPageModule)
+      },
+    ]
+  },
+  {
+    path: 'leader',
+    canActivate: [authGuard],
+    data: { roles: ['leader'] },
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./leader/leader.module').then(m => m.LeaderPageModule)
+      },
+      {
+        path: 'maps',
+        loadChildren: () => import('./leader/maps/maps.module').then(m => m.MapsPageModule)
+      },
+      {
+        path: 'maps/:id',
+        loadChildren: () => import('./leader/maps/maps.module').then(m => m.MapsPageModule)
+      },
+      {
+        path: 'jamaah/:id',
+        loadChildren: () => import('./leader/jamaah/jamaah.module').then(m => m.JamaahPageModule)
+      }
+    ]
+  },
+  {
+    path: 'leader',
+    loadChildren: () => import('./leader/leader.module').then(m => m.LeaderPageModule)
+  }
 
 ];
 
@@ -156,4 +152,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

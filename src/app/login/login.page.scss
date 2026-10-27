@@ -1,134 +1,116 @@
-// Variabel warna kustom
-$primary-gradient: linear-gradient(135deg, #1e5631 0%, #4c9a2a 100%);
-$text-dark: #2c3e50;
-$text-muted: #7f8c8d;
+$primary-emerald: #0b4635;
+$emerald-light: #13634c;
+$accent-gold: #c5a059;
+$gold-soft: #f4ecdc;
+$bg-slate: #f8faf9;
 
-ion-content {
-    --background: #f4f7f6;
+.login-content {
+    --background: #{$bg-slate};
 }
 
-.login-container {
+.login-wrapper {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    min-height: 100%;
-    padding: 24px;
-    background: $primary-gradient;
+}
 
-    // Logo & Branding Area
-    .logo-area {
-        text-align: center;
-        margin-bottom: 32px;
-        color: #ffffff;
+.brand-section {
+    text-align: center;
+    margin-bottom: 28px;
 
-        .logo-circle {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            margin-bottom: 16px;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    .logo-box {
+        width: 68px;
+        height: 68px;
+        background: linear-gradient(135deg, $primary-emerald, $emerald-light);
+        color: $accent-gold;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 20px rgba(11, 70, 53, 0.2);
+        margin-bottom: 12px;
 
-            ion-icon {
-                font-size: 42px;
-                color: #ffffff;
-            }
-        }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin: 0 0 8px 0;
-            letter-spacing: 1px;
-        }
-
-        p {
-            font-size: 14px;
-            margin: 0;
-            opacity: 0.9;
+        ion-icon {
+            font-size: 36px;
         }
     }
 
-    // Card Container untuk Form Login
-    .form-card {
-        width: 100%;
-        max-width: 400px;
-        background: #ffffff;
-        border-radius: 20px;
-        padding: 32px 24px;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    h2 {
+        margin: 0 0 4px;
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: $primary-emerald;
+    }
 
-        h2 {
-            font-size: 22px;
-            font-weight: 600;
-            color: $text-dark;
-            margin: 0 0 6px 0;
-        }
+    p {
+        margin: 0;
+        font-size: 0.88rem;
+        color: #6b7280;
+    }
+}
 
-        .subtitle {
-            font-size: 13px;
-            color: $text-muted;
-            margin: 0 0 24px 0;
-        }
+.card-form {
+    background: #ffffff;
+    padding: 28px 22px;
+    border-radius: 16px;
+    border: 1px solid rgba(197, 160, 89, 0.25);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
 
-        // Input Style Pembersih
-        .input-group {
-            margin-bottom: 20px;
+    h3 {
+        margin: 0 0 4px;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+    }
 
-            .custom-input {
-                --background: #f1f5f4;
-                --border-radius: 12px;
-                --padding-start: 16px;
-                --inner-padding-end: 16px;
-                margin-bottom: 16px;
-                border: 1px solid #e2e8f0;
-                transition: border-color 0.2s ease;
+    .subtitle {
+        margin: 0 0 20px;
+        font-size: 0.82rem;
+        color: #9ca3af;
+    }
+}
 
-                &.item-has-focus {
-                    border-color: #4c9a2a;
-                }
+.input-item {
+    --background: #f9fafb;
+    --border-radius: 10px;
+    --padding-start: 12px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 16px;
 
-                ion-icon {
-                    color: $text-muted;
-                    font-size: 20px;
-                    margin-right: 12px;
-                }
+    ion-icon {
+        color: $primary-emerald;
+        margin-right: 8px;
+    }
 
-                ion-input {
-                    --padding-top: 14px;
-                    --padding-bottom: 14px;
-                    font-size: 14px;
-                    color: $text-dark;
-                }
-            }
-        }
+    ion-input {
+        font-size: 0.9rem;
+        --color: #1f2937; /* Warna teks yang diketik agar kontras dan terbaca */
+        --placeholder-color: #9ca3af; /* Warna placeholder dibuat abu-abu redup */
+        --placeholder-opacity: 1;
+    }
+}
 
-        // Tombol Login Bergaya Modern
-        .btn-login {
-            --background: #1e5631;
-            --background-activated: #153e22;
-            --border-radius: 12px;
-            --box-shadow: 0 6px 16px rgba(30, 86, 49, 0.3);
-            font-size: 16px;
-            font-weight: 600;
-            height: 48px;
-            margin-top: 24px;
-        }
+.btn-login {
+    --background: #{$primary-emerald};
+    --color: #ffffff;
+    --border-radius: 10px;
+    margin-top: 10px;
+    height: 46px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
 
-        .login-footer {
-            text-align: center;
-            margin-top: 24px;
+.footer-note {
+    text-align: center;
+    margin-top: 32px;
 
-            p {
-                font-size: 12px;
-                color: $text-muted;
-                margin: 0;
-            }
-        }
+    p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: #9ca3af;
     }
 }

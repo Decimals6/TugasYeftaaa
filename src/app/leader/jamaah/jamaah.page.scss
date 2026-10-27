@@ -1,0 +1,232 @@
+$primary-emerald: #0b4635;
+$emerald-light: #13634c;
+$accent-gold: #c5a059;
+$gold-soft: #f4ecdc;
+$bg-slate: #f8faf9;
+$text-dark: #1f2937;
+$text-muted: #6b7280;
+
+.jamaah-toolbar {
+    --background: #{$primary-emerald};
+    --color: #ffffff;
+    border-bottom: 2px solid #{$accent-gold};
+
+    ion-title {
+        font-weight: 700;
+    }
+}
+
+.jamaah-content {
+    --background: #{$bg-slate};
+}
+
+.header-banner {
+    background: linear-gradient(135deg, $primary-emerald 0%, $emerald-light 100%);
+    padding: 24px 20px 36px;
+
+    .banner-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .badge-role {
+        display: inline-block;
+        background: $accent-gold;
+        color: #ffffff;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        color: #ffffff;
+        margin: 0 0 4px;
+        font-size: 1.45rem;
+        font-weight: 700;
+    }
+
+    p {
+        color: #d1fae5;
+        margin: 0;
+        font-size: 0.85rem;
+    }
+}
+
+.main-wrapper {
+    max-width: 900px;
+    margin: -20px auto 0;
+    padding: 0 16px;
+}
+
+.profile-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba(197, 160, 89, 0.25);
+    box-shadow: 0 4px 14px rgba(11, 70, 53, 0.08);
+    margin-bottom: 22px;
+
+    .coord-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 14px;
+
+        .coord-box {
+            flex: 1;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+
+            .lbl {
+                font-size: 0.7rem;
+                color: $text-muted;
+                font-weight: 600;
+            }
+
+            .val {
+                font-size: 0.88rem;
+                font-weight: 700;
+                color: $text-dark;
+            }
+        }
+    }
+
+    .btn-locate {
+        --background: #{$primary-emerald};
+        --color: #ffffff;
+        --border-radius: 10px;
+        font-weight: 600;
+        margin: 0;
+        height: 42px;
+    }
+}
+
+.section-header {
+    margin-bottom: 14px;
+
+    h3 {
+        margin: 0 0 2px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: $text-dark;
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.78rem;
+        color: $text-muted;
+    }
+}
+
+.activity-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.activity-item {
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e5e7eb;
+
+    .thumb-wrapper {
+        position: relative;
+        width: 105px;
+        flex-shrink: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 6px;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.6);
+        }
+    }
+
+    .act-details {
+        padding: 12px 14px;
+        flex: 1;
+
+        h4 {
+            margin: 0 0 4px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: $text-dark;
+        }
+
+        p {
+            margin: 0 0 6px;
+            font-size: 0.8rem;
+            color: $text-muted;
+            line-height: 1.35;
+        }
+
+        .done-time {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.72rem;
+            color: #10b981;
+            font-weight: 600;
+        }
+    }
+
+    &.completed {
+        border-color: #10b981;
+
+        .status-badge {
+            background: #10b981;
+        }
+    }
+
+    &.in-progress {
+        border-color: $accent-gold;
+
+        .status-badge {
+            background: $accent-gold;
+        }
+    }
+
+    &.uncompleted {
+        opacity: 0.65;
+
+        .thumb-wrapper img {
+            filter: grayscale(100%);
+        }
+
+        .status-badge {
+            background: #94a3b8;
+        }
+    }
+}
+
+.footer-app {
+    text-align: center;
+    padding: 28px 16px 20px;
+
+    p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: #9ca3af;
+    }
+}

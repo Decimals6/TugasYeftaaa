@@ -1,26 +1,57 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
+<ion-header class="ion-no-border">
+  <ion-toolbar class="user-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/makkahakhir"></ion-back-button>
+      <ion-back-button defaultHref="/makkahakhir" color="light"></ion-back-button>
     </ion-buttons>
-    <ion-title>Detail Makkah Akhir</ion-title>
+    <ion-title>{{ tempat.nama || tempat.name || 'Panduan Rute' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="konfirmasiReset()" title="Reset Putaran">
+        <ion-icon slot="icon-only" name="refresh-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>{{ tempat.nama }}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="putaran-row">
-        <p><strong>Jumlah Putaran:</strong> {{ putaran }}</p>
-        <ion-button size="small" color="danger" (click)="konfirmasiReset()">Reset</ion-button>
-      </div>
-      <ion-button size="small" color="success" (click)="selesaiRute()">Selesai</ion-button>
-      <ion-button size="small" color="success" (click)="jalan()">Jalan</ion-button>
-    </ion-card-content>
-  </ion-card>
+<ion-content [fullscreen]="true" class="detail-content">
+  <!-- Peta Leaflet Full Screen -->
+  <div id="map" class="map-container"></div>
 
-  <div id="map"></div>
+  <!-- Floating Tracker Card di Atas Peta -->
+  <div class="floating-panel">
+    <div class="tracker-card">
+      <div class="tracker-header">
+        <div class="title-meta">
+          <span class="badge-activity">Navigasi Ibadah</span>
+          <h3>{{ tempat.nama || tempat.name }}</h3>
+        </div>
+        <div class="lap-box">
+          <span class="lap-num">{{ putaran }}</span>
+          <span class="lap-label">/ 7 Putaran</span>
+        </div>
+      </div>
+
+      <div class="progress-bar-wrap">
+        <ion-progress-bar [value]="putaran / 7"></ion-progress-bar>
+      </div>
+
+      <p class="status-info">
+        <ion-icon name="navigate-circle-outline"></ion-icon>
+        Titik berikutnya: <strong>Rute {{ getNextTarget() }}</strong>
+      </p>
+
+      <div class="tracker-actions">
+        <!-- Tombol Bypass Simulasi Jalan -->
+        <ion-button fill="outline" class="btn-step" (click)="jalan()">
+          <ion-icon name="walk-outline" slot="start"></ion-icon>
+          Simulasi Titik
+        </ion-button>
+
+        <!-- Tombol Selesai Manual / Bypass -->
+        <ion-button class="btn-complete" (click)="selesaiRute()">
+          <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
+          Selesaikan
+        </ion-button>
+      </div>
+    </div>
+  </div>
 </ion-content>

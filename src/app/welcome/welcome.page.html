@@ -1,58 +1,95 @@
-<ion-content [fullscreen]="true">
+<ion-content class="welcome-content" [fullscreen]="true">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-container">
+      <div class="brand-badge">
+        <span class="gold-dot"></span>
+        Platform Monitoring & Panduan Ibadah
+      </div>
 
-  <div class="welcome-container">
+      <div class="app-brand">
+        <div class="brand-icon">
+          <ion-icon name="compass-outline"></ion-icon>
+        </div>
+        <h1>E-Mutowif</h1>
+      </div>
 
-    <div class="logo-area">
-      <ion-icon name="location"></ion-icon>
-
-      <h1>E-Mutowif</h1>
-
-      <p>
-        Sistem Monitoring dan Panduan
-        <br>
-        Ibadah Haji
+      <p class="hero-desc">
+        Solusi terintegrasi pembimbingan umrah & haji. Menjaga kekhusyukan jamaah dengan pemantauan lokasi real-time dan panduan ritus ibadah yang runut.
       </p>
     </div>
-
-    <ion-card button (click)="masukUser()">
-      <ion-card-header>
-
-        <ion-card-title>
-          👤 Jamaah
-        </ion-card-title>
-
-        <ion-card-subtitle>
-          Masuk sebagai pengguna aplikasi
-        </ion-card-subtitle>
-
-      </ion-card-header>
-
-      <ion-card-content>
-        Melihat panduan ibadah, lokasi, dan tahapan haji.
-      </ion-card-content>
-
-    </ion-card>
-
-    <ion-card button color="success" (click)="masukAdmin()">
-
-      <ion-card-header>
-
-        <ion-card-title>
-          🛡️ Admin
-        </ion-card-title>
-
-        <ion-card-subtitle>
-          Monitoring Jamaah
-        </ion-card-subtitle>
-
-      </ion-card-header>
-
-      <ion-card-content>
-        Memantau posisi jamaah, progress ibadah, dan status koneksi.
-      </ion-card-content>
-
-    </ion-card>
-
   </div>
 
+  <!-- Content Wrapper -->
+  <div class="main-wrapper">
+    <!-- Stat Counter / Highlight Strip -->
+    <div class="stats-strip">
+      <div class="stat-item">
+        <span class="stat-val">5s</span>
+        <span class="stat-lbl">GPS Radar</span>
+      </div>
+      <div class="divider"></div>
+      <div class="stat-item">
+        <span class="stat-val">100%</span>
+        <span class="stat-lbl">Terpandu</span>
+      </div>
+      <div class="divider"></div>
+      <div class="stat-item">
+        <span class="stat-val">Multi</span>
+        <span class="stat-lbl">Kloter Rombongan</span>
+      </div>
+    </div>
+
+    <!-- Feature Showcase -->
+    <div class="section-title">
+      <h3>Keunggulan Layanan</h3>
+      <p>Fitur andalan untuk kenyamanan jamaah & pembimbing</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="icon-wrap map-icon">
+          <ion-icon name="navigate-circle"></ion-icon>
+        </div>
+        <div class="feature-text">
+          <h4>Live Radar Tracking</h4>
+          <p>Pemantauan titik posisi jamaah dan pembimbing secara interaktif menggunakan peta terintegrasi.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-wrap check-icon">
+          <ion-icon name="checkbox"></ion-icon>
+        </div>
+        <div class="feature-text">
+          <h4>Checklist Tahapan Ibadah</h4>
+          <p>Panduan rukun, wajib, dan sunnah secara terstruktur dari miqat hingga tahallul akhir.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-wrap shield-icon">
+          <ion-icon name="shield-checkmark"></ion-icon>
+        </div>
+        <div class="feature-text">
+          <h4>Manajemen Terpusat</h4>
+          <p>Koordinasi terpadu antara admin pusat, mutowif di tanah suci, dan seluruh anggota rombongan.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call To Action Button -->
+    <div class="cta-container">
+      <ion-button expand="block" class="btn-masuk" (click)="masuk()">
+        Masuk ke Aplikasi
+        <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+      </ion-button>
+      <span class="login-note">Akses masuk untuk Admin, Mutowif Leader, dan Jamaah</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-app">
+    <p>E-Mutowif Management Console &bull; v1.0</p>
+  </div>
 </ion-content>

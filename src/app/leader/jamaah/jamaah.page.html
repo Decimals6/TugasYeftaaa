@@ -1,0 +1,79 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="jamaah-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/leader" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detail Jamaah</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="loadDetail()">
+        <ion-icon slot="icon-only" name="refresh-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="jamaah-content" [fullscreen]="true" *ngIf="data">
+  <div class="header-banner">
+    <div class="banner-container">
+      <span class="badge-role">Profil Jamaah</span>
+      <h2>{{ data.user.name }}</h2>
+      <p>ID Kelompok: #{{ data.user.group_id }} &bull; Role: {{ data.user.role }}</p>
+    </div>
+  </div>
+
+  <div class="main-wrapper">
+    <!-- Card Info & Map Trigger -->
+    <div class="profile-card">
+      <div class="coord-row">
+        <div class="coord-box">
+          <span class="lbl">Latitude</span>
+          <span class="val">{{ data.user.lat || '-' }}</span>
+        </div>
+        <div class="coord-box">
+          <span class="lbl">Longitude</span>
+          <span class="val">{{ data.user.lon || '-' }}</span>
+        </div>
+      </div>
+
+      <ion-button expand="block" class="btn-locate" (click)="openOnMap()">
+        <ion-icon name="navigate-outline" slot="start"></ion-icon>
+        Lacak di Radar Peta
+      </ion-button>
+    </div>
+
+    <!-- Section Progres Ibadah -->
+    <div class="section-header">
+      <h3>Daftar Aktivitas Ibadah</h3>
+      <p>Progres ritus dan amalan selama ibadah haji/umrah</p>
+    </div>
+
+    <!-- Activity List -->
+    <div class="activity-grid">
+      <div *ngFor="let act of data.activities" class="activity-item" [class.completed]="act.status === 'selesai'"
+        [class.in-progress]="act.status === 'proses'" [class.uncompleted]="act.status === 'belum'">
+        <div class="thumb-wrapper">
+          <img [src]="act.image_url || 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=300'"
+            alt="Activity" />
+          <span class="status-badge" [ngSwitch]="act.status">
+            <span *ngSwitchCase="'selesai'">Selesai</span>
+            <span *ngSwitchCase="'proses'">Berlangsung</span>
+            <span *ngSwitchDefault>Belum</span>
+          </span>
+        </div>
+
+        <div class="act-details">
+          <h4>{{ act.name }}</h4>
+          <p>{{ act.description }}</p>
+          <div *ngIf="act.completed_at" class="done-time">
+            <ion-icon name="checkmark-done-circle"></ion-icon>
+            {{ act.completed_at | date:'dd MMM yyyy, HH:mm' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-app">
+    <p>E-Mutowif Management Console &bull; Detail Jamaah</p>
+  </div>
+</ion-content>

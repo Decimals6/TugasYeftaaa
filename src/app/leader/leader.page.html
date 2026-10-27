@@ -1,0 +1,90 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="leader-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/welcome" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Portal Leader</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fetchJamaah()">
+        <ion-icon slot="icon-only" name="refresh-outline" color="light"></ion-icon>
+      </ion-button>
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="leader-content" [fullscreen]="true">
+  <!-- Banner Hijau Zamrud Solid & Teks Kontras -->
+  <div class="header-banner">
+    <div class="banner-container">
+      <span class="badge-role">Pembimbing Mutowif</span>
+      <h2 class="banner-title">Pantau Jamaah</h2>
+      <p class="banner-desc">Monitoring presensi, pergerakan lokasi jamaah, dan capaian ibadah kelompok.</p>
+    </div>
+  </div>
+
+  <div class="main-wrapper">
+    <!-- Map Preview Box -->
+    <div class="map-card">
+      <div id="miniMap" class="mini-map"></div>
+      <div class="map-card-footer">
+        <div class="tracking-pill">
+          <span class="dot-pulse"></span>
+          <span>Auto Update 5s</span>
+        </div>
+        <ion-button fill="solid" class="btn-expand-map" (click)="goToMaps()">
+          <ion-icon name="map-outline" slot="start"></ion-icon>
+          Buka Peta Jamaah
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Section Heading -->
+    <div class="section-header">
+      <div>
+        <h3>Daftar Anggota Jamaah</h3>
+        <p>Rombongan dalam tanggung jawab Anda</p>
+      </div>
+      <span class="count-pill">{{ jamaahList.length }} Jamaah</span>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="jamaahList.length === 0" class="empty-state">
+      <ion-icon name="people-outline"></ion-icon>
+      <p>Belum ada data jamaah di kelompok ini.</p>
+    </div>
+
+    <!-- Jamaah Cards -->
+    <div class="jamaah-grid">
+      <div *ngFor="let j of jamaahList" class="jamaah-card">
+        <div class="card-left">
+          <div class="avatar-badge">
+            <ion-icon name="person"></ion-icon>
+          </div>
+          <div class="user-meta">
+            <h4>{{ j.name }}</h4>
+            <span class="time-meta">
+              <ion-icon name="time-outline"></ion-icon>
+              {{ j.last_located_at ? (j.last_located_at | date:'HH:mm:ss') : 'Belum aktif' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <ion-button fill="clear" class="btn-action detail" (click)="goToDetail(j.id)" title="Detail Jamaah">
+            <ion-icon name="id-card-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" class="btn-action map" (click)="goToMapsWithUser(j.id)" title="Pin Lokasi">
+            <ion-icon name="navigate-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-app">
+    <p>E-Mutowif Management Console &bull; Leader Mode</p>
+  </div>
+</ion-content>

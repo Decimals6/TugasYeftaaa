@@ -36,3 +36,39 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+
+/* Custom Alert Bahaya untuk Reset */
+.custom-alert-danger {
+    --background: #ffffff;
+    --max-width: 320px;
+    border-radius: 18px;
+
+    .alert-title {
+        color: #dc2626 !important;
+        font-weight: 800;
+        font-size: 1.15rem;
+    }
+
+    .alert-sub-title {
+        color: #1f2937 !important;
+        font-weight: 700;
+    }
+
+    .alert-message {
+        color: #4b5563 !important;
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+
+    .btn-confirm-danger {
+        color: #dc2626 !important;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+
+        &.is-disabled {
+            opacity: 0.35 !important;
+            pointer-events: none !important;
+        }
+    }
+}

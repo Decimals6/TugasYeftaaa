@@ -1,0 +1,82 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="admin-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin/users" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tambah Pengguna Baru</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-body" fullscreen="true">
+  <div class="form-wrapper">
+    <div class="form-card">
+      <div class="card-header">
+        <div class="header-icon">
+          <ion-icon name="person-add-outline"></ion-icon>
+        </div>
+        <div>
+          <h3>Form Akun Pengguna</h3>
+          <p>Lengkapi kredensial dan role akun untuk sistem ibadah haji.</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <div class="custom-input-box">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-input
+            [(ngModel)]="name"
+            type="text"
+            placeholder="cth. H. Ahmad Fauzi">
+          </ion-input>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Email atau Username</label>
+        <div class="custom-input-box">
+          <ion-icon name="mail-outline"></ion-icon>
+          <ion-input
+            [(ngModel)]="usernameEmail"
+            type="text"
+            placeholder="cth. ahmad_fauzi atau ahmad@gmail.com">
+          </ion-input>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Kata Sandi</label>
+        <div class="custom-input-box">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <ion-input
+            [(ngModel)]="password"
+            type="password"
+            placeholder="Minimal 6 karakter">
+          </ion-input>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Peran / Role</label>
+        <div class="custom-input-box">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <ion-select [(ngModel)]="role" interface="action-sheet" placeholder="Pilih Role">
+            <ion-select-option value="jamaah">Jamaah</ion-select-option>
+            <ion-select-option value="leader">Leader / Muthawif</ion-select-option>
+            <ion-select-option value="admin">Administrator</ion-select-option>
+          </ion-select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <ion-button fill="clear" color="medium" (click)="navCtrl.back()" class="btn-cancel">
+          Batal
+        </ion-button>
+        <ion-button class="btn-gold-save" (click)="onSubmit()">
+          <ion-icon slot="start" name="save-outline"></ion-icon>
+          Simpan Akun
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

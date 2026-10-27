@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import { interval, Subscription } from 'rxjs';
+import { interval, Subscription, firstValueFrom } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TempatserviceService } from '../tempatservice.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
+import { AuthService } from '../auth.service';
+
 @Component({
   selector: 'app-minadetail',
   templateUrl: './minadetail.page.html',
@@ -19,29 +21,57 @@ export class MinadetailPage implements OnInit {
   timerSubscription: Subscription | undefined;
   isInit = false;
 
-  lat2 = 0.0;
-  lon2 = 0.0;
-
-
   id: number = 0;
-  tempat: any = {};
-
+  tempat: any = null;
+  currentUser: any = null;
 
   constructor(
     private alertCtrl: AlertController,
     private route: ActivatedRoute,
-    private tempatService: TempatserviceService
+    private navCtrl: NavController,
+    private tempatService: TempatserviceService,
+    private authService: AuthService
   ) { }
 
   async ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.id = +params['index'];
+    this.loadUserData();
+
+    this.route.params.subscribe(async params => {
+      this.id = +(params['index'] || params['id'] || 0);
+
+      // Ambil data dari master initData API
+      const data = await this.tempatService.initData();
+
+      // Cari lokasi Mina terlebih dahulu
+      const minaLoc = data.find((t: any) =>
+        (t.name || t.nama || '').toLowerCase().includes('mina')
+      );
+
+      // Cari activity berdasarkan ID database (misal ID: 3, 4, 5)
+      if (minaLoc?.list) {
+        this.tempat = minaLoc.list.find((item: any) => item.id === this.id);
+      }
+
+      // Fallback cadangan jika data belum masuk tree
+      if (!this.tempat) {
+        this.tempat = this.tempatService.getMinaById(this.id) || {};
+      }
+
+      console.log('Pos Jumrah Terpilih:', this.tempat);
+      this.getCoordinates();
     });
-    await this.tempatService.loadMinaStatusFromStorage();
-    this.tempat = this.tempatService.minaList[this.id];
-    this.getCoordinates();
-    console.log(this.tempat.lat, this.tempat.lon);
   }
+
+  loadUserData() {
+    this.currentUser = this.authService.getCurrentUser();
+    if (!this.currentUser) {
+      const raw = localStorage.getItem('user_session');
+      if (raw) {
+        this.currentUser = JSON.parse(raw);
+      }
+    }
+  }
+
   getCoordinates() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -58,10 +88,15 @@ export class MinadetailPage implements OnInit {
         },
         (error) => {
           console.error('Error getting location', error);
+          if (!this.isInit && this.tempat?.lat) {
+            this.lat = this.tempat.lat;
+            this.lon = this.tempat.lon;
+            this.initializeMap();
+            this.isInit = true;
+            this.startTimer();
+          }
         }
       );
-    } else {
-      console.error('Geolocation is not supported in this browser.');
     }
   }
 
@@ -70,85 +105,129 @@ export class MinadetailPage implements OnInit {
       this.map.remove();
     }
 
-    this.map = L.map('map').setView([this.lat, this.lon], 13);
-    const googleStreets = L.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }
-    );
-    googleStreets.addTo(this.map);
+    const defaultLat = this.tempat?.lat || this.lat || 21.4231;
+    const defaultLon = this.tempat?.lon || this.lon || 39.8943;
 
-    const markerIcon = L.icon({
+    this.map = L.map('map', { zoomControl: false }).setView([defaultLat, defaultLon], 16);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(this.map);
+
+    const userIcon = L.icon({
       iconUrl: 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/map-marker-512.png',
-      iconSize: [50, 50],
-      iconAnchor: [25, 50],
+      iconSize: [42, 42],
+      iconAnchor: [21, 42],
     });
-    const markerIcon2 = L.icon({
-          iconUrl: 'https://static.thenounproject.com/png/335079-200.png',
-          iconSize: [50, 50],
-          iconAnchor: [25, 50],
-        });
 
-    this.markerUser = L.marker([this.lat, this.lon], { icon: markerIcon }).addTo(this.map);
-    this.markerLokasi = L.marker([this.tempat.lat, this.tempat.lon], { icon: markerIcon2 }).addTo(this.map);
+    const jumrahIcon = L.icon({
+      iconUrl: 'https://static.thenounproject.com/png/335079-200.png',
+      iconSize: [36, 36],
+      iconAnchor: [18, 36],
+    });
+
+    this.markerUser = L.marker([this.lat, this.lon], { icon: userIcon }).addTo(this.map);
+
+    if (this.tempat?.lat && this.tempat?.lon) {
+      this.markerLokasi = L.marker([this.tempat.lat, this.tempat.lon], { icon: jumrahIcon }).addTo(this.map);
+    }
   }
 
   startTimer() {
-    this.timerSubscription = interval(1000).subscribe(() => {
+    this.timerSubscription = interval(1500).subscribe(() => {
       this.getCoordinates();
       this.checkRuteTerdekat();
     });
   }
 
   checkRuteTerdekat() {
-    const toleransi = 0.0001;
+    if (!this.tempat?.lat || !this.tempat?.lon) return;
+
+    const toleransi = 0.0003;
     const dekatLat = Math.abs(this.lat - this.tempat.lat) <= toleransi;
     const dekatLon = Math.abs(this.lon - this.tempat.lon) <= toleransi;
 
     if (dekatLat && dekatLon) {
-      this.selesaiRute()
-    }
-  }
-
-  ionViewWillLeave() {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-      console.log("Timer stopped");
+      this.selesaiRute();
     }
   }
 
   moving() {
-    this.markerUser.setLatLng([this.lat, this.lon]);
-    this.markerLokasi.setLatLng([this.tempat.lat, this.tempat.lon]);
-    // Anda bisa menambahkan komunikasi server jika diperlukan
+    if (this.markerUser) {
+      this.markerUser.setLatLng([this.lat, this.lon]);
+    }
+    if (this.markerLokasi && this.tempat?.lat && this.tempat?.lon) {
+      this.markerLokasi.setLatLng([this.tempat.lat, this.tempat.lon]);
+    }
+  }
+
+  simulasiTiba() {
+    if (this.tempat?.lat && this.tempat?.lon) {
+      this.lat = this.tempat.lat;
+      this.lon = this.tempat.lon;
+      this.moving();
+      this.selesaiRute();
+    }
+  }
+
+  async lihatPanduan() {
+    const alert = await this.alertCtrl.create({
+      header: 'Panduan Lontar',
+      subHeader: this.tempat?.nama || this.tempat?.name,
+      message: this.tempat?.keterangan || this.tempat?.description || 'Lontarkan 7 batu kerikil satu per satu dengan membaca takbir.',
+      buttons: ['Mengerti'],
+    });
+    await alert.present();
   }
 
   async selesaiRute() {
-    const nextId = this.id + 1;
-    if (nextId < this.tempatService.getMina().length) {
-      this.tempatService.updateMinaStatusTempat(nextId, true);
-      const alert = await this.alertCtrl.create({
-        header: 'Selesai!',
-        message: 'Lanjutkan ke tempat berikutnya',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    } else {
-      this.tempatService.updateStatusTempat(4, true);
-      const alert = await this.alertCtrl.create({
-        header: 'Selesai!',
-        message: 'Ibadah Jumrah (melempar batu) telah selesai, lanjutkan ke makkah akhir',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    }
     this.stopTimer();
 
+    const userId = this.currentUser?.id;
+    const activityId = this.tempat?.id || this.id;
 
+    if (userId && activityId) {
+      try {
+        await firstValueFrom(
+          this.tempatService.completeUserActivity(
+            userId,
+            activityId,
+            'selesai',
+            this.lat,
+            this.lon
+          )
+        );
+        console.log('Status lempar jumrah tercatat ke server');
+      } catch (err) {
+        console.error('Gagal mencatat jumrah ke server:', err);
+      }
+    }
+
+    const alert = await this.alertCtrl.create({
+      header: 'Alhamdulillah!',
+      subHeader: this.tempat?.nama || this.tempat?.name || 'Jumrah Selesai',
+      message: 'Lontaran batu kerikil pada pilar ini telah tercatat selesai.',
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Kembali ke Pos Mina',
+          handler: () => {
+            this.navCtrl.back();
+          }
+        }
+      ],
+    });
+    await alert.present();
   }
+
   stopTimer() {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
   }
 
+  ionViewWillLeave() {
+    this.stopTimer();
+  }
 }

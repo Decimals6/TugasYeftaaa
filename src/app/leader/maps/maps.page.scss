@@ -1,0 +1,211 @@
+$primary-emerald: #0b4635;
+$emerald-light: #13634c;
+$accent-gold: #c5a059;
+$gold-soft: #f4ecdc;
+$text-dark: #1f2937;
+$text-muted: #6b7280;
+
+.maps-toolbar {
+    --background: #{$primary-emerald};
+    --color: #ffffff;
+    border-bottom: 2px solid #{$accent-gold};
+
+    ion-title {
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    ion-buttons ion-button {
+        --color: #ffffff;
+    }
+}
+
+.map-container {
+    width: 100%;
+    height: 100%;
+}
+
+.fab-locate-leader {
+    margin-top: 14px;
+    margin-right: 14px;
+
+    ion-fab-button {
+        --box-shadow: 0 4px 14px rgba(11, 70, 53, 0.25);
+        width: 44px;
+        height: 44px;
+
+        ion-icon {
+            font-size: 22px;
+            color: $primary-emerald;
+        }
+    }
+}
+
+.bottom-sheet {
+    position: absolute;
+    bottom: 18px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0 14px;
+
+    .sheet-scroller {
+        display: flex;
+        overflow-x: auto;
+        gap: 12px;
+        padding-bottom: 6px;
+        scroll-snap-type: x mandatory;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .card-pill {
+            flex: 0 0 270px;
+            scroll-snap-align: center;
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 12px 14px;
+            box-shadow: 0 6px 18px rgba(11, 70, 53, 0.15);
+            border: 1.5px solid rgba(197, 160, 89, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+
+            &.active {
+                border-color: $accent-gold;
+                background: #fdfaf3;
+                transform: translateY(-3px);
+            }
+
+            .user-info {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .dot-indicator {
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    background: #cbd5e1;
+
+                    &.online {
+                        background: #10b981;
+                        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+                    }
+                }
+
+                h4 {
+                    margin: 0;
+                    font-size: 0.9rem;
+                    font-weight: 700;
+                    color: $text-dark;
+                }
+
+                .status-time {
+                    font-size: 0.72rem;
+                    color: $text-muted;
+                }
+            }
+
+            .btn-detail-sheet {
+                --color: #{$primary-emerald};
+                font-size: 0.75rem;
+                font-weight: 700;
+            }
+        }
+    }
+}
+
+::ng-deep {
+
+    /* Pin Khusus Leader (Emerald + Badge Orang + Pulse) */
+    .leader-pin-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .leader-pin-badge {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .pin-body {
+                width: 38px;
+                height: 38px;
+                background: #0b4635;
+                border: 2.5px solid #ffffff;
+                border-radius: 50% 50% 50% 0;
+                transform: rotate(-45deg);
+                box-shadow: 0 4px 12px rgba(11, 70, 53, 0.45);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .leader-svg-icon {
+                    width: 18px;
+                    height: 18px;
+                    color: #c5a059;
+                    transform: rotate(45deg);
+                }
+            }
+
+            .pin-pulse {
+                position: absolute;
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background: rgba(11, 70, 53, 0.3);
+                animation: pulse-ring 2s infinite ease-out;
+                z-index: -1;
+            }
+        }
+    }
+
+    @keyframes pulse-ring {
+        0% {
+            transform: scale(0.8);
+            opacity: 0.8;
+        }
+
+        100% {
+            transform: scale(1.6);
+            opacity: 0;
+        }
+    }
+
+    /* Dot Biasa Jamaah (Biru Gelap) */
+    .user-dot {
+        width: 14px;
+        height: 14px;
+        background: #0284c7;
+        border: 2.5px solid #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Pin Jamaah yang Diklik / Terpilih (Gold Mengkilap) */
+    .user-pin-active {
+        position: relative;
+        width: 32px;
+        height: 32px;
+        background: #c5a059;
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        border: 2.5px solid #ffffff;
+        box-shadow: 0 4px 14px rgba(197, 160, 89, 0.6);
+
+        .pin-head {
+            width: 10px;
+            height: 10px;
+            background: #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            top: 8px;
+            left: 8px;
+        }
+    }
+}

@@ -1,74 +1,81 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { TempatserviceService } from '../tempatservice.service'; // <-- Sesuaikan path service-mu
-import { AlertController } from '@ionic/angular';
+import { NavController, ToastController, LoadingController } from '@ionic/angular';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  standalone: false,
+  standalone: false
 })
 export class LoginPage {
-  usernameEmail: string = '';
-  password: string = '';
-  showPassword: boolean = false;
+  username_email = '';
+  password = '';
 
-  // Inject TempatService dan AlertController
   constructor(
-    private router: Router,
-    private tempatService: TempatserviceService,
-    private alertCtrl: AlertController
+    private authService: AuthService,
+    private navCtrl: NavController,
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController
   ) {}
 
-  togglePassword() {
-    this.showPassword = !this.showPassword;
+  ngOnInit() {
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      if (user.role === 'admin') {
+        this.navCtrl.navigateRoot('/admin');
+      } else if (user.role === 'leader') {
+        this.navCtrl.navigateRoot('/leader');
+      } else {
+        this.navCtrl.navigateRoot('/home');
+      }
+    }
   }
 
-  prosesLogin() {
-    // Validasi dasar biar gak kosongan pas di-klik
-    if (!this.usernameEmail || !this.password) {
-      this.tampilAlert('Peringatan', 'Username/Email dan Password wajib diisi!');
+  async onSubmit() {
+    if (!this.username_email || !this.password) {
+      this.showToast('Username/Email dan Password harus diisi.', 'warning');
       return;
     }
 
-    console.log('Mencoba login ke server...');
+    const loader = await this.loadingCtrl.create({
+      message: 'Sedang masuk...',
+      spinner: 'crescent'
+    });
+    await loader.present();
 
-    // Panggil service API cPanel
-    this.tempatService.loginAPI(this.usernameEmail, this.password).subscribe({
-      next: (response: any) => {
-        console.log('Respon dari server:', response);
+    this.authService.login({
+      username_email: this.username_email,
+      password: this.password
+    }).subscribe({
+      next: async (res) => {
+        await loader.dismiss();
+        this.showToast(`Selamat datang, ${res.data.name}`, 'success');
 
-        if (response.status === 'success') {
-          // Login Sukses! Simpan data user ke local storage jika diperlukan
-          localStorage.setItem('user_data', JSON.stringify(response.data));
-
-          // Arahkan rute berdasarkan ROLE dari database
-          const role = response.data.role;
-          if (role === 'admin' || role === 'leader') {
-            this.router.navigate(['/admin/dashboard']);
-          } else {
-            this.router.navigate(['/home']);
-          }
+        // Navigasi rute sesuai role
+        if (res.data.role === 'admin') {
+          this.navCtrl.navigateRoot('/admin');
+        } else if (res.data.role === 'leader') {
+          this.navCtrl.navigateRoot('/leader');
         } else {
-          // Jika status error (password salah dll)
-          this.tampilAlert('Login Gagal', response.message);
+          this.navCtrl.navigateRoot('/home');
         }
       },
-      error: (err) => {
-        console.error('Error HTTP:', err);
-        this.tampilAlert('Error', 'Gagal terhubung ke server. Periksa koneksi internet Anda.');
+      error: async (err) => {
+        await loader.dismiss();
+        const msg = err.error?.message || 'Gagal login. Periksa koneksi atau kredensial Anda.';
+        this.showToast(msg, 'danger');
       }
     });
   }
 
-  // Helper untuk memunculkan popup alert
-  async tampilAlert(header: string, message: string) {
-    const alert = await this.alertCtrl.create({
-      header: header,
-      message: message,
-      buttons: ['OK']
+  private async showToast(message: string, color: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2500,
+      color,
+      position: 'bottom'
     });
-    await alert.present();
+    await toast.present();
   }
 }

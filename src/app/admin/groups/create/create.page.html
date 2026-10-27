@@ -1,0 +1,98 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="admin-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin/groups" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Buat Kelompok Baru</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-body" fullscreen="true">
+  <div class="form-wrapper">
+    <div class="form-card">
+      <div class="card-header">
+        <div class="header-icon">
+          <ion-icon name="people-outline"></ion-icon>
+        </div>
+        <div>
+          <h3>Informasi Rombongan</h3>
+          <p>Tentukan nama kloter, muthawif, dan daftarkan anggota jamaah.</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Nama Kelompok / Kloter</label>
+        <div class="custom-input-box">
+          <ion-icon name="bookmark-outline"></ion-icon>
+          <ion-input [(ngModel)]="name" type="text" placeholder="cth. Kloter 01 - SUB"></ion-input>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Leader / Pembimbing (Muthawif)</label>
+        <div class="custom-input-box">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-select [(ngModel)]="leaderId" interface="action-sheet" placeholder="Pilih Leader Kelompok">
+            <ion-select-option [value]="null">-- Belum Ada Leader --</ion-select-option>
+            <ion-select-option *ngFor="let l of leaders" [value]="l.id">{{ l.name }}</ion-select-option>
+          </ion-select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Keterangan / Jadwal</label>
+        <div class="custom-textarea-box">
+          <ion-textarea [(ngModel)]="description" rows="2"
+            placeholder="cth. Jadwal Tawaf Pagi, Maktab 42"></ion-textarea>
+        </div>
+      </div>
+
+      <!-- Bagian Kelola Anggota Jamaah -->
+      <div class="member-section">
+        <div class="member-header-bar">
+          <div class="header-left">
+            <span class="title">Daftar Anggota Jamaah</span>
+            <span class="count-badge">{{ selectedMemberSlots.length }} Terpilih</span>
+          </div>
+          <button type="button" class="btn-add-action" (click)="addMemberSlot()">
+            <ion-icon name="person-add-outline"></ion-icon>
+            <span>Tambah Jamaah</span>
+          </button>
+        </div>
+
+        <div *ngIf="selectedMemberSlots.length === 0" class="empty-member-box">
+          <ion-icon name="people-outline"></ion-icon>
+          <p>Belum ada jamaah ditambahkan ke kloter ini.</p>
+        </div>
+
+        <div class="member-list" *ngIf="selectedMemberSlots.length > 0">
+          <div class="member-row" *ngFor="let slot of selectedMemberSlots; let i = index">
+            <div class="row-num">{{ i + 1 }}</div>
+
+            <div class="input-select-wrapper">
+              <ion-icon name="person-circle-outline"></ion-icon>
+              <ion-select [(ngModel)]="selectedMemberSlots[i]" interface="action-sheet" placeholder="Pilih Jamaah"
+                cancelText="Batal">
+                <ion-select-option *ngFor="let j of getAvailableForSlot(i)" [value]="j.id">
+                  {{ j.name }} ({{ j.email }})
+                </ion-select-option>
+              </ion-select>
+            </div>
+
+            <button type="button" class="btn-trash" (click)="removeMemberSlot(i)" title="Hapus">
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <ion-button fill="clear" color="medium" (click)="goBack()" class="btn-cancel">Batal</ion-button>
+        <ion-button class="btn-gold-save" (click)="onSubmit()">
+          <ion-icon slot="start" name="save-outline"></ion-icon>
+          Simpan Kelompok
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

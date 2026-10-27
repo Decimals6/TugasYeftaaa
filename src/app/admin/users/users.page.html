@@ -1,0 +1,77 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="admin-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Daftar Pengguna</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addUser()" fill="solid" class="btn-gold-add">
+        <ion-icon slot="start" name="person-add-outline"></ion-icon>
+        Tambah User
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-body" fullscreen="true">
+  <div class="content-wrapper">
+    <div class="table-container">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Email / Username</th>
+            <th>Role</th>
+            <th>Kelompok</th>
+            <th>Lat, Lon</th>
+            <th class="ion-text-center">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- State Saat Loading Data -->
+          <tr *ngIf="isLoading">
+            <td colspan="6" class="ion-text-center py-4" style="padding: 24px; color: #6b7280;">
+              <ion-spinner name="crescent" color="primary"></ion-spinner>
+              <div style="font-size: 0.85rem; margin-top: 6px;">Mengambil data user...</div>
+            </td>
+          </tr>
+
+          <!-- State Jika Data Kosong -->
+          <tr *ngIf="!isLoading && users.length === 0">
+            <td colspan="6" class="ion-text-center py-4" style="padding: 24px; color: #9ca3af; font-style: italic;">
+              Belum ada data pengguna yang tersimpan.
+            </td>
+          </tr>
+
+          <!-- Baris Data User -->
+          <tr *ngFor="let u of users">
+            <td class="fw-bold">{{ u.name }}</td>
+            <td class="text-muted">{{ u.email }}</td>
+            <td>
+              <span class="badge" [ngClass]="'badge-' + u.role">{{ u.role | uppercase }}</span>
+            </td>
+            <td>{{ u.groupName || '-' }}</td>
+            <td>
+              <span *ngIf="u.latitude && u.longitude" class="coordinate-text">
+                {{ u.latitude }}, {{ u.longitude }}
+              </span>
+              <span *ngIf="!u.latitude || !u.longitude" class="no-coord">Belum ada</span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-action btn-map" (click)="cekLokasi(u)" title="Cek Lokasi">
+                  <ion-icon name="location-outline"></ion-icon>
+                  <span>Lokasi</span>
+                </button>
+                <button class="btn-action btn-edit" (click)="editUser(u)" title="Edit User">
+                  <ion-icon name="create-outline"></ion-icon>
+                  <span>Edit</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ion-content>
