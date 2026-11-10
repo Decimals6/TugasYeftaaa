@@ -14,25 +14,26 @@ export class AdminPage {
     private navCtrl: NavController,
     private alertCtrl: AlertController,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   async logout() {
     const alert = await this.alertCtrl.create({
       header: 'Konfirmasi Keluar',
       message: 'Apakah Anda yakin ingin keluar dari akun admin?',
+      cssClass: 'custom-alert-danger',
       buttons: [
-        { text: 'Batal', role: 'cancel' },
+        {
+          text: 'Batal',
+          role: 'cancel',
+          cssClass: 'alert-btn-cancel'
+        },
         {
           text: 'Keluar',
           role: 'destructive',
+          cssClass: 'btn-confirm-danger',
           handler: () => {
-            // 2. Hapus sesi via service
             this.authService.logout();
-
-            // 3. Bersihkan juga sisa key lama kalau masih ada
             localStorage.removeItem('user_data');
-
-            // 4. Arahkan balik ke login (atau welcome)
             this.navCtrl.navigateRoot('/login');
           }
         }

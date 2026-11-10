@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="admin-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/admin" color="light"></ion-back-button>
+      <ion-back-button defaultHref="/admin"></ion-back-button>
     </ion-buttons>
     <ion-title>Kelompok Haji</ion-title>
     <ion-buttons slot="end">
@@ -38,6 +38,9 @@
           <div class="group-title">
             <h3>{{ g.name }}</h3>
             <span class="badge-jamaah">{{ g.totalJamaah }} Jamaah Terdaftar</span>
+            <span class="badge" [ngClass]="'badge-' + g.ibadah_type">
+              {{ g.ibadah_type | uppercase }}
+            </span>
           </div>
         </div>
 

@@ -8,7 +8,7 @@ export interface UserSession {
     id: number;
     name: string;
     username_email: string;
-    role: 'admin' | 'leader' | 'jamaah';
+    role: 'admin' | 'leader' | 'ketua_kloter' | 'ketua_rombongan' | 'ketua_regu' | 'jamaah';
     group_id: number | null;
     lat: number | null;
     lon: number | null;
@@ -43,7 +43,7 @@ export class AuthService {
                 this.currentUserSubject.next(user);
 
                 // Jika user login adalah jamaah, langsung aktifkan pelacakan otomatis
-                if (user && (user.role === 'jamaah' || user.role === 'leader' || !user.role)) {
+                if (user && (user.role === 'jamaah' || user.role === 'leader' || user.role === 'ketua_kloter' || user.role === 'ketua_rombongan' || user.role === 'ketua_regu' || !user.role)) {
                     this.trackerService.startTracking(user.id);
                 }
             } catch (e) {
@@ -61,7 +61,7 @@ export class AuthService {
                     this.currentUserSubject.next(response.data);
 
                     // Nyalakan live tracking setelah user berhasil login
-                    if (response.data.role === 'jamaah' || !response.data.role) {
+                    if (response.data.role === 'jamaah' || response.data.role === 'leader' || response.data.role === 'ketua_kloter' || response.data.role === 'ketua_rombongan' || response.data.role === 'ketua_regu' || !response.data.role) {
                         this.trackerService.startTracking(response.data.id);
                     }
                 }

@@ -14,6 +14,26 @@ $text-muted: #6b7280;
   ion-title {
     font-weight: 700;
   }
+
+  /* Target tombol back */
+  ion-back-button {
+    --color: #ffffff !important;
+    --icon-font-size: 1.5rem;
+    color: #ffffff !important;
+    opacity: 1 !important;
+  }
+
+  /* Target tombol logout */
+  ion-button {
+    --color: #ffffff !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+
+    ion-icon {
+      font-size: 1.6rem !important;
+      color: #ffffff !important;
+    }
+  }
 }
 
 .admin-content {
@@ -23,7 +43,7 @@ $text-muted: #6b7280;
 .header-banner {
   background: linear-gradient(135deg, $primary-emerald 0%, $emerald-light 100%);
   padding: 24px 20px 40px;
-  
+
   .banner-container {
     max-width: 900px;
     margin: 0 auto;
@@ -134,6 +154,7 @@ $text-muted: #6b7280;
 .footer-app {
   text-align: center;
   padding: 32px 16px 20px;
+
   p {
     margin: 0;
     font-size: 0.8rem;

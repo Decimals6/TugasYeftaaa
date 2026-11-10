@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="admin-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/admin/users" color="light"></ion-back-button>
+      <ion-back-button defaultHref="/admin/users" ></ion-back-button>
     </ion-buttons>
     <ion-title>Tambah Pengguna Baru</ion-title>
   </ion-toolbar>
@@ -16,7 +16,7 @@
         </div>
         <div>
           <h3>Form Akun Pengguna</h3>
-          <p>Lengkapi kredensial dan role akun untuk sistem ibadah haji.</p>
+          <p>Lengkapi kredensial dan peran hierarki akun sistem.</p>
         </div>
       </div>
 
@@ -24,10 +24,7 @@
         <label>Nama Lengkap</label>
         <div class="custom-input-box">
           <ion-icon name="person-outline"></ion-icon>
-          <ion-input
-            [(ngModel)]="name"
-            type="text"
-            placeholder="cth. H. Ahmad Fauzi">
+          <ion-input [(ngModel)]="name" type="text" placeholder="cth. H. Ahmad Fauzi">
           </ion-input>
         </div>
       </div>
@@ -36,10 +33,7 @@
         <label>Email atau Username</label>
         <div class="custom-input-box">
           <ion-icon name="mail-outline"></ion-icon>
-          <ion-input
-            [(ngModel)]="usernameEmail"
-            type="text"
-            placeholder="cth. ahmad_fauzi atau ahmad@gmail.com">
+          <ion-input [(ngModel)]="usernameEmail" type="text" placeholder="cth. ahmad_fauzi atau ahmad@gmail.com">
           </ion-input>
         </div>
       </div>
@@ -48,22 +42,32 @@
         <label>Kata Sandi</label>
         <div class="custom-input-box">
           <ion-icon name="lock-closed-outline"></ion-icon>
-          <ion-input
-            [(ngModel)]="password"
-            type="password"
-            placeholder="Minimal 6 karakter">
+          <ion-input [(ngModel)]="password" type="password" placeholder="Minimal 6 karakter">
           </ion-input>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Peran / Role</label>
+        <label>Peran / Role Hierarki</label>
         <div class="custom-input-box">
           <ion-icon name="shield-checkmark-outline"></ion-icon>
-          <ion-select [(ngModel)]="role" interface="action-sheet" placeholder="Pilih Role">
+          <ion-select [(ngModel)]="role" interface="action-sheet" placeholder="Pilih Peran">
             <ion-select-option value="jamaah">Jamaah</ion-select-option>
-            <ion-select-option value="leader">Leader / Muthawif</ion-select-option>
+            <ion-select-option value="ketua_regu">Ketua Regu (10 Jamaah)</ion-select-option>
+            <ion-select-option value="ketua_rombongan">Ketua Rombongan (5 Regu)</ion-select-option>
+            <ion-select-option value="ketua_kloter">Ketua Kloter (5 Rombongan)</ion-select-option>
             <ion-select-option value="admin">Administrator</ion-select-option>
+          </ion-select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Jenis Ibadah</label>
+        <div class="custom-input-box">
+          <ion-icon name="book-outline"></ion-icon>
+          <ion-select [(ngModel)]="ibadahType" interface="action-sheet" placeholder="Pilih Jenis Ibadah">
+            <ion-select-option value="haji">Haji</ion-select-option>
+            <ion-select-option value="umrah">Umrah</ion-select-option>
           </ion-select>
         </div>
       </div>

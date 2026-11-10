@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ToastController, LoadingController } from '@ionic/angular';
-import { UserService, LeaderOption, JamaahOption } from '../../../services/user';
+import { UserService, LeaderOption, JamaahOption, GroupType } from '../../../services/user';
 
 @Component({
   selector: 'app-edit-group',
@@ -12,6 +12,7 @@ import { UserService, LeaderOption, JamaahOption } from '../../../services/user'
 export class EditPage implements OnInit {
   groupId = 0;
   name = '';
+  type: GroupType = 'regu';
   leaderId: number | null = null;
   description = '';
 
@@ -19,6 +20,7 @@ export class EditPage implements OnInit {
   allJamaah: JamaahOption[] = [];
   selectedMemberSlots: (number | null)[] = [];
   isLoading = false;
+  ibadahType: 'haji' | 'umrah' = 'haji';
 
   constructor(
     private route: ActivatedRoute,
@@ -26,42 +28,46 @@ export class EditPage implements OnInit {
     public navCtrl: NavController,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.groupId = Number(this.route.snapshot.paramMap.get('id'));
-    this.loadLeaders();
     this.loadInitialData();
   }
 
   loadLeaders() {
-    this.userService.getLeaders().subscribe({
-      next: (res) => { if (res.status === 'success' && res.data) this.leaders = res.data; }
+    this.userService.getLeaders(this.ibadahType, this.type, this.groupId).subscribe({
+      next: (res) => {
+        if (res.status === 'success' && res.data) {
+          this.leaders = res.data;
+        }
+      }
     });
   }
 
   loadInitialData() {
     this.isLoading = true;
-    // 1. Ambil detail grup & anggota aktif
     this.userService.getGroupDetail(this.groupId).subscribe({
       next: (res) => {
         if (res.status === 'success' && res.data) {
           const g = res.data.group;
+
           this.name = g.name;
+          this.type = g.type || 'regu';
+          this.ibadahType = g.ibadah_type;
           this.leaderId = g.leader_id;
           this.description = g.description !== '-' ? g.description : '';
-          this.selectedMemberSlots = res.data.members.map(m => m.id);
+          this.selectedMemberSlots = (res.data.members || []).map(m => m.id);
         }
 
-        // 2. Ambil pool jamaah (available + jamaah di grup ini)
-        this.userService.getAvailableJamaah(this.groupId).subscribe({
-          next: (jRes) => {
-            this.isLoading = false;
-            if (jRes.status === 'success' && jRes.data) {
-              this.allJamaah = jRes.data;
+        this.loadLeaders();
+
+        this.userService.getAvailableJamaah(this.ibadahType, this.groupId).subscribe({
+          next: (res) => {
+            if (res.status === 'success' && res.data) {
+              this.allJamaah = res.data;
             }
-          },
-          error: () => { this.isLoading = false; }
+          }
         });
       },
       error: () => {
@@ -102,20 +108,22 @@ export class EditPage implements OnInit {
     const payload = {
       id: this.groupId,
       name: this.name.trim(),
+      type: this.type,
+      ibadah_type: this.ibadahType,
       leader_id: this.leaderId ? Number(this.leaderId) : null,
       description: this.description.trim(),
       member_ids: validMemberIds
     };
 
     this.userService.updateGroupWithMembers(payload).subscribe({
-      next: async (res) => {
+      next: async (res: any) => {
         await loader.dismiss();
         if (res.status === 'success') {
           this.showToast('Perubahan kelompok berhasil disimpan!', 'success');
           this.navCtrl.back();
         }
       },
-      error: async (err) => {
+      error: async (err: any) => {
         await loader.dismiss();
         this.showToast(err.error?.message || 'Gagal memperbarui kelompok.', 'danger');
       }

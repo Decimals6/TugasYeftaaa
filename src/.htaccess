@@ -1,0 +1,16 @@
+# Disable cache for Service Worker & PWA manifests
+<FilesMatch "(ngsw-worker\.js|ngsw\.json|manifest\.webmanifest)$">
+    FileETag None
+    Header unset ETag
+    Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+</FilesMatch>
+
+# Ensure index.html is revalidated by browser
+<FilesMatch "index\.html">
+    FileETag None
+    Header unset ETag
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+</FilesMatch>

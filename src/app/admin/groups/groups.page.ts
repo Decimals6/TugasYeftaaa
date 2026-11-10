@@ -5,6 +5,7 @@ import { UserService } from '../../services/user';
 export interface GroupItem {
   id: number;
   name: string;
+  ibadah_type: 'haji' | 'umrah';
   leaderId: number | null;
   leaderName: string;
   totalJamaah: number;
@@ -25,7 +26,7 @@ export class GroupsPage {
     private userService: UserService,
     public navCtrl: NavController,
     private toastCtrl: ToastController
-  ) {}
+  ) { }
 
   ionViewWillEnter() {
     this.fetchGroups();
@@ -40,10 +41,11 @@ export class GroupsPage {
           this.groups = res.data.map((item) => ({
             id: item.id,
             name: item.name,
+            ibadah_type: item.ibadah_type,
             leaderId: item.leader_id,
             leaderName: item.leader_name,
             totalJamaah: item.total_jamaah,
-            keterangan: item.description
+            keterangan: item.description,
           }));
         }
       },

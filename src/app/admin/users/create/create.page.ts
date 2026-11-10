@@ -13,13 +13,14 @@ export class CreatePage {
   usernameEmail = '';
   password = '';
   role = 'jamaah';
+  ibadahType: 'haji' | 'umrah' = 'haji';
 
   constructor(
     private userService: UserService,
     public navCtrl: NavController,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController
-  ) {}
+  ) { }
 
   async onSubmit() {
     if (!this.name.trim() || !this.usernameEmail.trim() || !this.password.trim() || !this.role) {
@@ -37,7 +38,8 @@ export class CreatePage {
       name: this.name.trim(),
       username_email: this.usernameEmail.trim(),
       password: this.password.trim(),
-      role: this.role
+      role: this.role,
+      ibadah_type: this.role === 'admin' ? 'haji' : this.ibadahType
     };
 
     this.userService.createUser(payload).subscribe({

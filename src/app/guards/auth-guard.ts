@@ -18,7 +18,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   if (expectedRoles && currentUser && !expectedRoles.includes(currentUser.role)) {
     if (currentUser.role === 'admin') {
       return router.parseUrl('/admin');
-    } else if (currentUser.role === 'leader') {
+    } else if (currentUser.role === 'leader' || currentUser.role === 'ketua_kloter' || currentUser.role === 'ketua_rombongan' || currentUser.role === 'ketua_regu') {
       return router.parseUrl('/leader');
     } else {
       return router.parseUrl('/home');

@@ -96,15 +96,51 @@ $bg-slate: #f8faf9;
         color: $primary-emerald;
         font-size: 1.15rem;
         margin-right: 8px;
+        flex-shrink: 0;
     }
 
-    ion-input,
-    ion-select {
+    ion-input {
         --color: #1f2937;
         --placeholder-color: #9ca3af;
         --placeholder-opacity: 1;
         font-size: 0.9rem;
         width: 100%;
+    }
+
+    ion-select {
+        width: 100%;
+        font-size: 0.9rem;
+        font-weight: 500;
+        --color: #1f2937;
+        --placeholder-color: #9ca3af;
+        --placeholder-opacity: 1;
+        color: #1f2937 !important;
+
+        /* Hilangkan underline bawaan Ionic MD */
+        --highlight-height: 0;
+
+        /* Teks pilihan yang terpilih agar pekat & tegas */
+        &::part(text) {
+            color: #1f2937 !important;
+            opacity: 1 !important;
+        }
+
+        /* Ikon panah dropdown agar senada dengan warna aksen */
+        &::part(icon) {
+            color: $primary-emerald !important;
+            opacity: 0.8 !important;
+        }
+
+        /* Fallback selector class internal Ionic */
+        .select-text {
+            color: #1f2937 !important;
+            opacity: 1 !important;
+        }
+
+        .select-icon {
+            color: $primary-emerald !important;
+            opacity: 0.8 !important;
+        }
     }
 }
 

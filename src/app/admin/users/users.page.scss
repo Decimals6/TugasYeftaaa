@@ -82,11 +82,14 @@ $bg-slate: #f8faf9;
 // Badges Role
 .badge {
     display: inline-block;
-    padding: 4px 8px;
+    padding: 4px 9px;
     border-radius: 6px;
     font-size: 0.72rem;
     font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
 
+    // Role
     &-jamaah {
         background: #e0f2fe;
         color: #0369a1;
@@ -101,6 +104,42 @@ $bg-slate: #f8faf9;
         background: #dcfce7;
         color: $primary-emerald;
     }
+
+    // Jenis Ibadah
+    &-haji {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    &-umrah {
+        background: #f3e8ff;
+        color: #7e22ce;
+    }
+}
+
+// Badge Kelompok
+.group-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: #e6f1ed;
+    color: $primary-emerald;
+    border: 1px solid #c5ded3;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+
+    ion-icon {
+        font-size: 0.95rem;
+    }
+}
+
+.no-group {
+    color: #9ca3af;
+    font-size: 0.8rem;
+    font-style: italic;
 }
 
 // Tombol Action
@@ -132,4 +171,4 @@ $bg-slate: #f8faf9;
             border: 1px solid #bfdbfe;
         }
     }
-}   
+}

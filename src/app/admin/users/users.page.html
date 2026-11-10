@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="admin-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/admin" color="light"></ion-back-button>
+      <ion-back-button defaultHref="/admin"></ion-back-button>
     </ion-buttons>
     <ion-title>Daftar Pengguna</ion-title>
     <ion-buttons slot="end">
@@ -22,6 +22,7 @@
             <th>Nama</th>
             <th>Email / Username</th>
             <th>Role</th>
+            <th>Jenis Ibadah</th>
             <th>Kelompok</th>
             <th>Lat, Lon</th>
             <th class="ion-text-center">Aksi</th>
@@ -30,7 +31,7 @@
         <tbody>
           <!-- State Saat Loading Data -->
           <tr *ngIf="isLoading">
-            <td colspan="6" class="ion-text-center py-4" style="padding: 24px; color: #6b7280;">
+            <td colspan="7" class="ion-text-center py-4" style="padding: 24px; color: #6b7280;">
               <ion-spinner name="crescent" color="primary"></ion-spinner>
               <div style="font-size: 0.85rem; margin-top: 6px;">Mengambil data user...</div>
             </td>
@@ -38,7 +39,7 @@
 
           <!-- State Jika Data Kosong -->
           <tr *ngIf="!isLoading && users.length === 0">
-            <td colspan="6" class="ion-text-center py-4" style="padding: 24px; color: #9ca3af; font-style: italic;">
+            <td colspan="7" class="ion-text-center py-4" style="padding: 24px; color: #9ca3af; font-style: italic;">
               Belum ada data pengguna yang tersimpan.
             </td>
           </tr>
@@ -50,7 +51,21 @@
             <td>
               <span class="badge" [ngClass]="'badge-' + u.role">{{ u.role | uppercase }}</span>
             </td>
-            <td>{{ u.groupName || '-' }}</td>
+            <td>
+              <span class="badge" [ngClass]="'badge-' + u.ibadah_type">
+                {{ u.ibadah_type | uppercase }}
+              </span>
+            </td>
+            <td>
+              <span class="group-badge" *ngIf="u.groupName && u.groupName !== '-'; else noGroup">
+                <ion-icon name="people-outline"></ion-icon>
+                {{ u.groupName }}
+              </span>
+
+              <ng-template #noGroup>
+                <span class="no-group">Belum ada kelompok</span>
+              </ng-template>
+            </td>
             <td>
               <span *ngIf="u.latitude && u.longitude" class="coordinate-text">
                 {{ u.latitude }}, {{ u.longitude }}

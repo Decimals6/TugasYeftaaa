@@ -1,50 +1,172 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar class="maps-toolbar">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/leader" color="light"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Radar Peta Jamaah</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="loadJamaahLocations()">
-        <ion-icon slot="icon-only" name="refresh-outline" color="light"></ion-icon>
+<ion-content class="radar-map-content" [fullscreen]="true">
+  <!-- Top Navigation, Search & Breadcrumb Header -->
+  <div class="top-nav-container">
+    <div class="top-nav-row">
+      <ion-button fill="clear" class="btn-circle-back" (click)="goBack()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
       </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true" class="maps-content">
-  <div id="fullMap" class="map-container"></div>
+      <div class="title-scope">
+        <span class="scope-badge">{{ activeLevel | uppercase }}</span>
+        <h3 class="scope-title">{{ groupInfo?.name || 'Radar Peta' }}</h3>
+      </div>
 
-  <!-- Tombol Melayang Fokus ke Posisi Leader -->
-  <ion-fab vertical="top" horizontal="end" slot="fixed" class="fab-locate-leader">
-    <ion-fab-button (click)="focusLeader()" color="light">
-      <ion-icon name="locate" color="primary"></ion-icon>
+      <ion-button fill="clear" class="btn-circle-refresh" (click)="fetchRadarData(false)">
+        <ion-icon name="sync-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </div>
+
+    <!-- Hierarchical Breadcrumb Navigator -->
+    <div class="breadcrumb-bar" *ngIf="breadcrumbs.length > 1">
+      <div *ngFor="let b of breadcrumbs; let i = index" class="breadcrumb-item"
+        [class.active]="i === breadcrumbs.length - 1" (click)="navigateBreadcrumb(i)">
+        <span>{{ b.label }}</span>
+        <ion-icon *ngIf="i < breadcrumbs.length - 1" name="chevron-forward-outline"></ion-icon>
+      </div>
+    </div>
+
+    <!-- Search Bar Hierarki -->
+    <div class="search-box-container">
+      <ion-searchbar
+        [(ngModel)]="searchKeyword"
+        (ionInput)="onSearchInput($event)"
+        (ionClear)="clearSearch()"
+        placeholder="Cari jamaah, ketua, regu, rombongan..."
+        debounce="400"
+        class="custom-searchbar"
+        show-clear-button="focus">
+      </ion-searchbar>
+    </div>
+  </div>
+
+  <!-- Floating Search Results Dropdown Overlay -->
+  <div class="search-dropdown-overlay" *ngIf="showSearchResults" (click)="clearSearch()">
+    <div class="search-dropdown-panel" (click)="$event.stopPropagation()">
+      <div class="dropdown-header">
+        <div class="header-meta">
+          <span class="header-indicator"></span>
+          <span class="header-text" *ngIf="isSearching">Mencari data...</span>
+          <span class="header-text" *ngIf="!isSearching">Ditemukan {{ searchResults.length }} hasil</span>
+        </div>
+        <ion-button fill="clear" size="small" class="btn-close-search" (click)="clearSearch()">
+          <ion-icon name="close-circle" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+
+      <!-- Spinner Loading -->
+      <div class="search-loading" *ngIf="isSearching">
+        <ion-spinner name="crescent"></ion-spinner>
+        <span>Mencari dalam hierarki naungan...</span>
+      </div>
+
+      <!-- Empty State -->
+      <div class="search-empty" *ngIf="!isSearching && searchResults.length === 0">
+        <div class="empty-icon-wrap">
+          <ion-icon name="search-outline"></ion-icon>
+        </div>
+        <p>Tidak ditemukan hasil untuk <strong>"{{ searchKeyword }}"</strong></p>
+        <small>Pastikan nama kelompok atau nama orang berada di bawah naungan Anda</small>
+      </div>
+
+      <!-- Result Items List -->
+      <ion-list class="search-list" *ngIf="!isSearching && searchResults.length > 0">
+        <ion-item button lines="full" *ngFor="let res of searchResults" (click)="selectSearchResult(res)">
+          <div class="item-icon-box" [ngClass]="res.category" slot="start">
+            <ion-icon *ngIf="res.type === 'group'" name="people"></ion-icon>
+            <ion-icon *ngIf="res.type === 'user' && res.category === 'leader'" name="ribbon"></ion-icon>
+            <ion-icon *ngIf="res.type === 'user' && res.category === 'jamaah'" name="person"></ion-icon>
+          </div>
+          <ion-label>
+            <h3 class="result-name">{{ res.name }}</h3>
+            <p class="result-meta">
+              <span class="role-pill">{{ res.roleLabel }}</span>
+              <span class="group-txt">{{ res.group_name }}</span>
+            </p>
+            <small class="result-parent" *ngIf="res.parent_group_name">
+              <ion-icon name="return-down-forward-outline"></ion-icon> Naungan: {{ res.parent_group_name }}
+            </small>
+          </ion-label>
+          <span slot="end" class="geo-tag" [class.active]="res.lat !== null">
+            {{ res.lat !== null ? 'GPS Aktif' : 'Offline' }}
+          </span>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+  <!-- Map Canvas -->
+  <div id="radarMap" class="radar-map"></div>
+
+  <!-- Floating Center Button -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fab-center">
+    <ion-fab-button size="small" class="btn-gps" (click)="centerToMyPosition()" title="Pusatkan ke Lokasi Saya">
+      <ion-icon name="locate"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <!-- Bottom Sheet Horizontal Slider Jamaah -->
+  <!-- Bottom Sheet: Horizontal Swiper/Cards Panel -->
   <div class="bottom-sheet">
-    <div class="sheet-scroller">
-      <div
-        *ngFor="let j of jamaahList"
-        [id]="'jamaah-card-' + j.id"
-        class="card-pill"
-        [class.active]="j.id === selectedUserId"
-        (click)="selectUser(j.id)"
-      >
-        <div class="user-info">
-          <div class="dot-indicator" [class.online]="j.lat && j.lon"></div>
-          <div>
-            <h4>{{ j.name }}</h4>
-            <span class="status-time">
-              {{ j.lat ? (j.last_located_at | date:'HH:mm:ss') : 'Lokasi Mati' }}
-            </span>
+    <div class="bottom-sheet-header">
+      <div class="sheet-title-meta">
+        <span class="badge-count">{{ activeSlideItems.length }}</span>
+        <h4>Entitas Terdeteksi</h4>
+        <span class="live-dot"><span class="pulse"></span> Live 5s</span>
+      </div>
+      <span class="sheet-hint">Geser & tap kartu untuk zoom</span>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="activeSlideItems.length === 0" class="sheet-empty">
+      <ion-icon name="navigate-circle-outline"></ion-icon>
+      <p>Tidak ada entitas terpantau di tingkat ini.</p>
+    </div>
+
+    <!-- Horizontal Card Reel -->
+    <div class="cards-scroll-container">
+      <div *ngFor="let item of activeSlideItems" class="radar-card" [class.selected]="selectedItemId === item.id"
+        [class.card-parent]="item.type === 'parent'" (click)="selectItem(item.id, item.lat, item.lon)">
+
+        <div class="card-top">
+          <div class="avatar-box" [ngClass]="item.type">
+            <ion-icon *ngIf="item.type === 'parent'" name="shield-checkmark"></ion-icon>
+            <ion-icon *ngIf="item.type === 'sub_leader'" name="ribbon"></ion-icon>
+            <ion-icon *ngIf="item.type === 'jamaah'" name="person"></ion-icon>
+          </div>
+          <div class="user-info">
+            <span class="role-tag">{{ item.roleLabel }}</span>
+            <h5 class="user-name">{{ item.title }}</h5>
+            <span class="group-sub">{{ item.subtitle }}</span>
           </div>
         </div>
-        <ion-button fill="clear" class="btn-detail-sheet" (click)="goToDetail(j.id, $event)">
-          Detail
-          <ion-icon name="chevron-forward" slot="end"></ion-icon>
-        </ion-button>
+
+        <div class="card-bottom">
+          <div class="status-geo" [class.online]="item.lat !== null">
+            <span class="geo-indicator"></span>
+            <span>{{ item.lat !== null ? 'GPS Terhubung' : 'Offline' }}</span>
+          </div>
+
+          <div class="actions-cluster">
+            <!-- Tombol Drill Down jika ini Sub-Leader -->
+            <button *ngIf="item.type === 'sub_leader' && activeLevel === 'kloter'" class="btn-sub-action drill"
+              (click)="$event.stopPropagation(); drillDownToRombongan(item.raw)">
+              Buka Regu
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </button>
+
+            <button *ngIf="item.type === 'sub_leader' && activeLevel === 'rombongan'" class="btn-sub-action drill"
+              (click)="$event.stopPropagation(); drillDownToRegu(item.raw)">
+              Buka Jamaah
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </button>
+
+            <!-- Tombol Detail jika Jamaah -->
+            <button *ngIf="item.type === 'jamaah'" class="btn-sub-action detail"
+              (click)="$event.stopPropagation(); goToJamaahDetail(item.id)">
+              <ion-icon name="id-card-outline"></ion-icon>
+              Detail
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

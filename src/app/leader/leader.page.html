@@ -3,9 +3,9 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/welcome" color="light"></ion-back-button>
     </ion-buttons>
-    <ion-title>Portal Leader</ion-title>
+    <ion-title>Portal Pimpinan</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="fetchJamaah()">
+      <ion-button (click)="fetchLeaderDashboard()">
         <ion-icon slot="icon-only" name="refresh-outline" color="light"></ion-icon>
       </ion-button>
       <ion-button (click)="logout()">
@@ -16,12 +16,14 @@
 </ion-header>
 
 <ion-content class="leader-content" [fullscreen]="true">
-  <!-- Banner Hijau Zamrud Solid & Teks Kontras -->
+  <!-- Banner Dinamis Sesuai Kasta Pimpinan -->
   <div class="header-banner">
     <div class="banner-container">
-      <span class="badge-role">Pembimbing Mutowif</span>
-      <h2 class="banner-title">Pantau Jamaah</h2>
-      <p class="banner-desc">Monitoring presensi, pergerakan lokasi jamaah, dan capaian ibadah kelompok.</p>
+      <span class="badge-role">{{ getRoleBadge() }}</span>
+      <h2 class="banner-title">{{ groupInfo?.name || userName }}</h2>
+      <p class="banner-desc">
+        {{ groupInfo?.type === 'kloter' ? 'Monitoring pergerakan Ketua Rombongan dan hierarki di bawah Kloter.' : (groupInfo?.type === 'rombongan' ? 'Monitoring presensi dan koordinat Ketua Regu dalam naungan Rombongan.' : 'Monitoring presensi, pergerakan lokasi jamaah, dan capaian ibadah regu.') }}
+      </p>
     </div>
   </div>
 
@@ -36,55 +38,162 @@
         </div>
         <ion-button fill="solid" class="btn-expand-map" (click)="goToMaps()">
           <ion-icon name="map-outline" slot="start"></ion-icon>
-          Buka Peta Jamaah
+          Buka Radar Peta
         </ion-button>
       </div>
     </div>
 
-    <!-- Section Heading -->
-    <div class="section-header">
-      <div>
-        <h3>Daftar Anggota Jamaah</h3>
-        <p>Rombongan dalam tanggung jawab Anda</p>
+    <!-- Kartu Pimpinan Atasan (Parent Leader) - Konsep 2 Arah -->
+    <div *ngIf="parentLeader" class="parent-leader-banner" style="margin-bottom: 20px;">
+      <div class="section-header" style="margin-bottom: 8px;">
+        <div>
+          <h3 style="font-size: 15px;">{{ getParentRoleLabel() }}</h3>
+          <p>{{ parentLeader.group_name }}</p>
+        </div>
       </div>
-      <span class="count-pill">{{ jamaahList.length }} Jamaah</span>
-    </div>
-
-    <!-- Empty State -->
-    <div *ngIf="jamaahList.length === 0" class="empty-state">
-      <ion-icon name="people-outline"></ion-icon>
-      <p>Belum ada data jamaah di kelompok ini.</p>
-    </div>
-
-    <!-- Jamaah Cards -->
-    <div class="jamaah-grid">
-      <div *ngFor="let j of jamaahList" class="jamaah-card">
+      <div class="jamaah-card" style="border-left: 4px solid #10b981;">
         <div class="card-left">
-          <div class="avatar-badge">
-            <ion-icon name="person"></ion-icon>
+          <div class="avatar-badge" style="background: #047857; color: #fff;">
+            <ion-icon name="shield-checkmark"></ion-icon>
           </div>
           <div class="user-meta">
-            <h4>{{ j.name }}</h4>
+            <h4>{{ parentLeader.name }}</h4>
             <span class="time-meta">
               <ion-icon name="time-outline"></ion-icon>
-              {{ j.last_located_at ? (j.last_located_at | date:'HH:mm:ss') : 'Belum aktif' }}
+              {{ parentLeader.last_located_at ? (parentLeader.last_located_at | date:'HH:mm:ss') : 'Belum aktif' }}
             </span>
           </div>
         </div>
-
         <div class="card-actions">
-          <ion-button fill="clear" class="btn-action detail" (click)="goToDetail(j.id)" title="Detail Jamaah">
-            <ion-icon name="id-card-outline" slot="icon-only"></ion-icon>
-          </ion-button>
-          <ion-button fill="clear" class="btn-action map" (click)="goToMapsWithUser(j.id)" title="Pin Lokasi">
+          <ion-button fill="clear" class="btn-action map" (click)="goToMapsWithUser(parentLeader.id)" title="Pantau Atasan di Peta">
             <ion-icon name="navigate-outline" slot="icon-only"></ion-icon>
           </ion-button>
         </div>
       </div>
     </div>
+
+    <!-- LEVEL 1: KLOTER (Menampilkan Daftar Rombongan) -->
+    <ng-container *ngIf="groupInfo?.type === 'kloter'">
+      <div class="section-header">
+        <div>
+          <h3>Daftar Rombongan</h3>
+          <p>Rombongan di bawah naungan Kloter ini</p>
+        </div>
+        <span class="count-pill">{{ getDirectSubGroups().length }} Rombongan</span>
+      </div>
+
+      <div *ngIf="getDirectSubGroups().length === 0" class="empty-state">
+        <ion-icon name="layers-outline"></ion-icon>
+        <p>Belum ada rombongan terdaftar di bawah kloter ini.</p>
+      </div>
+
+      <div class="jamaah-grid">
+        <div *ngFor="let sg of getDirectSubGroups()" class="jamaah-card">
+          <div class="card-left">
+            <div class="avatar-badge" style="background: #0b4635; color: #fff;">
+              <ion-icon name="people-circle-outline"></ion-icon>
+            </div>
+            <div class="user-meta">
+              <h4>{{ sg.name }}</h4>
+              <span class="time-meta">
+                <ion-icon name="person-outline"></ion-icon>
+                Ketua: {{ sg.leader_name }}
+              </span>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <ion-button *ngIf="sg.leader_id" fill="clear" class="btn-action map" (click)="goToMapsWithUser(sg.leader_id)" title="Lihat di Peta">
+              <ion-icon name="navigate-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- LEVEL 2: ROMBONGAN (Menampilkan Daftar Regu) -->
+    <ng-container *ngIf="groupInfo?.type === 'rombongan'">
+      <div class="section-header">
+        <div>
+          <h3>Daftar Regu</h3>
+          <p>Regu di bawah tanggung jawab Rombongan ini</p>
+        </div>
+        <span class="count-pill">{{ getDirectSubGroups().length }} Regu</span>
+      </div>
+
+      <div *ngIf="getDirectSubGroups().length === 0" class="empty-state">
+        <ion-icon name="layers-outline"></ion-icon>
+        <p>Belum ada regu terdaftar di bawah rombongan ini.</p>
+      </div>
+
+      <div class="jamaah-grid">
+        <div *ngFor="let sg of getDirectSubGroups()" class="jamaah-card">
+          <div class="card-left">
+            <div class="avatar-badge" style="background: #0b4635; color: #fff;">
+              <ion-icon name="git-branch-outline"></ion-icon>
+            </div>
+            <div class="user-meta">
+              <h4>{{ sg.name }}</h4>
+              <span class="time-meta">
+                <ion-icon name="person-outline"></ion-icon>
+                Ketua: {{ sg.leader_name }}
+              </span>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <ion-button *ngIf="sg.leader_id" fill="clear" class="btn-action map" (click)="goToMapsWithUser(sg.leader_id)" title="Lihat di Peta">
+              <ion-icon name="navigate-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- LEVEL 3: REGU / DEFAULT (Menampilkan Daftar Anggota Jamaah Langsung) -->
+    <ng-container *ngIf="groupInfo?.type === 'regu' || !groupInfo">
+      <div class="section-header">
+        <div>
+          <h3>Daftar Anggota Jamaah</h3>
+          <p>Jamaah dalam regu ini</p>
+        </div>
+        <span class="count-pill">{{ jamaahList.length }} Jamaah</span>
+      </div>
+
+      <div *ngIf="jamaahList.length === 0" class="empty-state">
+        <ion-icon name="people-outline"></ion-icon>
+        <p>Belum ada data jamaah di regu ini.</p>
+      </div>
+
+      <div class="jamaah-grid">
+        <div *ngFor="let j of jamaahList" class="jamaah-card">
+          <div class="card-left">
+            <div class="avatar-badge">
+              <ion-icon name="person"></ion-icon>
+            </div>
+            <div class="user-meta">
+              <h4>{{ j.name }}</h4>
+              <span class="time-meta">
+                <ion-icon name="time-outline"></ion-icon>
+                {{ j.last_located_at ? (j.last_located_at | date:'HH:mm:ss') : 'Belum aktif' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <ion-button fill="clear" class="btn-action detail" (click)="goToDetail(j.id)" title="Detail Jamaah">
+              <ion-icon name="id-card-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" class="btn-action map" (click)="goToMapsWithUser(j.id)" title="Pin Lokasi">
+              <ion-icon name="navigate-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </div>
 
   <div class="footer-app">
-    <p>E-Mutowif Management Console &bull; Leader Mode</p>
+    <p>E-Mutowif Management Console &bull; {{ getRoleBadge() }}</p>
   </div>
 </ion-content>

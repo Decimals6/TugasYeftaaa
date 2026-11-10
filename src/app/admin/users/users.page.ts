@@ -7,6 +7,7 @@ export interface UserRow {
   name: string;
   email: string;
   role: 'admin' | 'leader' | 'jamaah';
+  ibadah_type: 'haji' | 'umrah';
   groupName?: string;
   latitude?: number | null;
   longitude?: number | null;
@@ -28,7 +29,7 @@ export class UsersPage {
     private navCtrl: NavController,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController
-  ) {}
+  ) { }
 
   ionViewWillEnter() {
     this.fetchUsers();
@@ -46,7 +47,8 @@ export class UsersPage {
             name: item.name,
             email: item.username_email,
             role: item.role,
-            groupName: item.group_name || (item.group_id ? `Kelompok ${item.group_id}` : '-'),
+            ibadah_type: item.ibadah_type,
+            groupName: item.group_name || '-',
             latitude: item.lat,
             longitude: item.lon
           }));

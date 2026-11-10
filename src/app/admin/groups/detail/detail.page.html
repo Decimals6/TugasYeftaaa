@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="admin-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/admin/groups" color="light"></ion-back-button>
+      <ion-back-button defaultHref="/admin/groups" ></ion-back-button>
     </ion-buttons>
     <ion-title>Detail Kelompok</ion-title>
     <ion-buttons slot="end">
@@ -30,6 +30,9 @@
           <div>
             <h2>{{ detailData.group.name }}</h2>
             <span class="badge-count">{{ detailData.members.length }} Jamaah Terdaftar</span>
+            <span class="badge" [ngClass]="'badge-' + detailData.group.ibadah_type">
+              {{ detailData.group.ibadah_type | uppercase }}
+            </span>
           </div>
         </div>
 

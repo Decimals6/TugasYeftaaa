@@ -22,13 +22,13 @@ export class LoginPage {
   ngOnInit() {
     const user = this.authService.getCurrentUser();
     if (user) {
-      if (user.role === 'admin') {
-        this.navCtrl.navigateRoot('/admin');
-      } else if (user.role === 'leader') {
-        this.navCtrl.navigateRoot('/leader');
-      } else {
-        this.navCtrl.navigateRoot('/home');
-      }
+        if (user.role === 'admin') {
+          this.navCtrl.navigateRoot('/admin');
+        } else if (user.role === 'leader' || user.role === 'ketua_kloter' || user.role === 'ketua_rombongan' || user.role === 'ketua_regu') {
+          this.navCtrl.navigateRoot('/leader');
+        } else {
+          this.navCtrl.navigateRoot('/home');
+        }
     }
   }
 
@@ -55,7 +55,7 @@ export class LoginPage {
         // Navigasi rute sesuai role
         if (res.data.role === 'admin') {
           this.navCtrl.navigateRoot('/admin');
-        } else if (res.data.role === 'leader') {
+        } else if (res.data.role === 'leader' || res.data.role === 'ketua_kloter' || res.data.role === 'ketua_rombongan' || res.data.role === 'ketua_regu') {
           this.navCtrl.navigateRoot('/leader');
         } else {
           this.navCtrl.navigateRoot('/home');

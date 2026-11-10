@@ -8,7 +8,7 @@ const routes: Routes = [
   // =========================
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'welcome',
     pathMatch: 'full'
   },
 
@@ -25,7 +25,7 @@ const routes: Routes = [
   },
 
   // =========================
-  // USER (JAMAAH)
+  // USER (Haji)
   // =========================
   {
     path: 'home',
@@ -62,6 +62,34 @@ const routes: Routes = [
     canActivate: [authGuard],
     data: { roles: ['jamaah'] },
     loadChildren: () => import('./makkahakhirdetail/makkahakhirdetail.module').then(m => m.MakkahakhirdetailPageModule)
+  },
+  // =========================
+  // USER (Umrah)
+  // =========================
+
+  {
+    path: 'umroh',
+    canActivate: [authGuard],
+    data: { roles: ['jamaah'] },
+    loadChildren: () =>
+      import('./umroh/umroh.module')
+        .then(m => m.UmrohPageModule)
+  },
+  {
+    path: 'umroh/location/:id',
+    canActivate: [authGuard],
+    data: { roles: ['jamaah'] },
+    loadChildren: () =>
+      import('./umroh/location/location.module')
+        .then(m => m.LocationPageModule)
+  },
+  {
+    path: 'umroh/activity/:id',
+    canActivate: [authGuard],
+    data: { roles: ['jamaah'] },
+    loadChildren: () =>
+      import('./umroh/activity/activity.module')
+        .then(m => m.ActivityPageModule)
   },
 
   // =========================
@@ -117,7 +145,7 @@ const routes: Routes = [
   {
     path: 'leader',
     canActivate: [authGuard],
-    data: { roles: ['leader'] },
+    data: { roles: ['leader', 'ketua_kloter', 'ketua_rombongan', 'ketua_regu'] },
     children: [
       {
         path: '',
@@ -140,7 +168,12 @@ const routes: Routes = [
   {
     path: 'leader',
     loadChildren: () => import('./leader/leader.module').then(m => m.LeaderPageModule)
+  },
+  {
+    path: 'umroh',
+    loadChildren: () => import('./umroh/umroh.module').then(m => m.UmrohPageModule)
   }
+
 
 ];
 

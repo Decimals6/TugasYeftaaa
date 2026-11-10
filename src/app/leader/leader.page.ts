@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { LeaderService, Jamaah } from '../services/leader';
+import { LeaderService, Jamaah, GroupInfo, LeaderUser, SubGroup } from '../services/leader';
 import * as L from 'leaflet';
 import { NavController, AlertController } from '@ionic/angular';
-import { AuthService } from '../auth.service'; // Sesuaikan path auth service kamu
+import { AuthService, UserSession } from '../auth.service';
 
 @Component({
   selector: 'app-leader',
@@ -14,12 +14,19 @@ import { AuthService } from '../auth.service'; // Sesuaikan path auth service ka
 export class LeaderPage implements OnInit, OnDestroy {
   map!: L.Map;
   markerLeader!: L.Marker;
-  lat: number = 21.4225; // Default Makkah / Mecca
+  lat: number = 21.4225; // Default Makkah
   lon: number = 39.8262;
-  leaderId: number = 1; // Tarik dari AuthService / LocalStorage
+  leaderId: number = 1;
   groupId: number = 1;
+  userRole: string = 'leader';
+  userName: string = 'Pemimpin';
 
+  groupInfo: GroupInfo | null = null;
+  parentLeader: LeaderUser | null = null;
+  subLeaders: LeaderUser[] = [];
+  subGroups: SubGroup[] = [];
   jamaahList: Jamaah[] = [];
+
   locationInterval: any;
 
   constructor(
@@ -37,30 +44,26 @@ export class LeaderPage implements OnInit, OnDestroy {
 
   ionViewDidEnter() {
     this.initMiniMap();
-    this.fetchJamaah();
+    this.fetchLeaderDashboard();
   }
 
   ngOnDestroy() {
     if (this.locationInterval) clearInterval(this.locationInterval);
     if (this.map) this.map.remove();
   }
+
   async logout() {
     const alert = await this.alertCtrl.create({
       header: 'Konfirmasi Keluar',
-      message: 'Apakah Anda yakin ingin keluar dari akun admin?',
+      message: 'Apakah Anda yakin ingin keluar dari akun pembimbing?',
       buttons: [
         { text: 'Batal', role: 'cancel' },
         {
           text: 'Keluar',
           role: 'destructive',
           handler: () => {
-            // 2. Hapus sesi via service
             this.authService.logout();
-
-            // 3. Bersihkan juga sisa key lama kalau masih ada
             localStorage.removeItem('user_data');
-
-            // 4. Arahkan balik ke login (atau welcome)
             this.navCtrl.navigateRoot('/login');
           }
         }
@@ -70,11 +73,13 @@ export class LeaderPage implements OnInit, OnDestroy {
   }
 
   loadUserData() {
-    const userStr = localStorage.getItem('user');
+    const userStr = localStorage.getItem('user_session');
     if (userStr) {
-      const u = JSON.parse(userStr);
+      const u: UserSession = JSON.parse(userStr);
       this.leaderId = u.id;
-      this.groupId = u.group_id;
+      this.groupId = u.group_id || 1;
+      this.userRole = u.role || 'leader';
+      this.userName = u.name || 'Pemimpin';
     }
   }
 
@@ -123,14 +128,51 @@ export class LeaderPage implements OnInit, OnDestroy {
     setTimeout(() => this.map.invalidateSize(), 300);
   }
 
-  fetchJamaah() {
-    this.leaderService.getJamaahList(this.groupId).subscribe(res => {
-      if (res.status === 'success') {
-        this.jamaahList = res.data;
-      }
+  fetchLeaderDashboard() {
+    this.leaderService.getJamaahList(this.groupId, { leaderId: this.leaderId }).subscribe({
+      next: (res) => {
+        if (res.status === 'success') {
+          this.groupInfo = res.group_info;
+          this.parentLeader = res.parent_leader;
+          this.subLeaders = res.sub_leaders || [];
+          this.subGroups = res.sub_groups || [];
+          this.jamaahList = res.data || [];
+        }
+      },
+      error: (err) => console.error('Gagal mengambil dashboard leader:', err)
     });
   }
 
+  // Helpers untuk title & badge sesuai kasta
+  getRoleBadge(): string {
+    if (this.groupInfo?.type === 'kloter' || this.userRole === 'ketua_kloter') return 'Ketua Kloter';
+    if (this.groupInfo?.type === 'rombongan' || this.userRole === 'ketua_rombongan') return 'Ketua Rombongan';
+    if (this.groupInfo?.type === 'regu' || this.userRole === 'ketua_regu') return 'Ketua Regu';
+    return 'Pembimbing Mutowif';
+  }
+
+  getParentRoleLabel(): string {
+    if (this.parentLeader?.group_type === 'kloter') return 'Ketua Kloter Anda';
+    if (this.parentLeader?.group_type === 'rombongan') return 'Ketua Rombongan Anda';
+    return 'Pimpinan Naungan';
+  }
+
+  // Dapatkan daftar sub-groups yang cocok dengan level di bawahnya langsung
+  getDirectSubGroups(): SubGroup[] {
+    if (this.groupInfo?.type === 'kloter') {
+      return this.subGroups.filter(s => s.type === 'rombongan');
+    }
+    if (this.groupInfo?.type === 'rombongan') {
+      return this.subGroups.filter(s => s.type === 'regu');
+    }
+    return [];
+  }
+
+  getSubLeaderByGroupId(groupId: number): LeaderUser | undefined {
+    return this.subLeaders.find(l => l.group_id === groupId);
+  }
+
+  // Navigasi
   goToMaps() {
     this.router.navigate(['/leader/maps']);
   }

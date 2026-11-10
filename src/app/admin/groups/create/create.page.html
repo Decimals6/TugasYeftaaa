@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="admin-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/admin/groups" color="light"></ion-back-button>
+      <ion-back-button defaultHref="/admin/groups"></ion-back-button>
     </ion-buttons>
     <ion-title>Buat Kelompok Baru</ion-title>
   </ion-toolbar>
@@ -12,43 +12,111 @@
     <div class="form-card">
       <div class="card-header">
         <div class="header-icon">
-          <ion-icon name="people-outline"></ion-icon>
+          <ion-icon name="git-network-outline"></ion-icon>
         </div>
         <div>
-          <h3>Informasi Rombongan</h3>
-          <p>Tentukan nama kloter, muthawif, dan daftarkan anggota jamaah.</p>
+          <h3>Struktur Kelompok & Hierarki</h3>
+          <p>Tentukan tingkat kelompok (Kloter, Rombongan, Regu), pemimpin, dan anggotanya.</p>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Nama Kelompok / Kloter</label>
+        <label>Jenis Ibadah</label>
         <div class="custom-input-box">
-          <ion-icon name="bookmark-outline"></ion-icon>
-          <ion-input [(ngModel)]="name" type="text" placeholder="cth. Kloter 01 - SUB"></ion-input>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Leader / Pembimbing (Muthawif)</label>
-        <div class="custom-input-box">
-          <ion-icon name="person-outline"></ion-icon>
-          <ion-select [(ngModel)]="leaderId" interface="action-sheet" placeholder="Pilih Leader Kelompok">
-            <ion-select-option [value]="null">-- Belum Ada Leader --</ion-select-option>
-            <ion-select-option *ngFor="let l of leaders" [value]="l.id">{{ l.name }}</ion-select-option>
+          <ion-icon name="book-outline"></ion-icon>
+          <ion-select [(ngModel)]="ibadahType" (ionChange)="onTypeOrIbadahChange()" interface="action-sheet">
+            <ion-select-option value="haji">Haji</ion-select-option>
+            <ion-select-option value="umrah">Umrah</ion-select-option>
           </ion-select>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Keterangan / Jadwal</label>
-        <div class="custom-textarea-box">
-          <ion-textarea [(ngModel)]="description" rows="2"
-            placeholder="cth. Jadwal Tawaf Pagi, Maktab 42"></ion-textarea>
+        <label>Tingkatan Kelompok (Hierarki)</label>
+        <div class="custom-input-box">
+          <ion-icon name="layers-outline"></ion-icon>
+          <ion-select [(ngModel)]="type" (ionChange)="onTypeOrIbadahChange()" interface="action-sheet">
+            <ion-select-option value="kloter">Kloter (Level 1 - Tertinggi)</ion-select-option>
+            <ion-select-option value="rombongan">Rombongan (Level 2)</ion-select-option>
+            <ion-select-option value="regu">Regu (Level 3 - Langsung Jamaah)</ion-select-option>
+          </ion-select>
         </div>
       </div>
 
-      <!-- Bagian Kelola Anggota Jamaah -->
-      <div class="member-section">
+      <!-- Pilihan Parent Group jika Rombongan atau Regu -->
+      <div class="form-group" *ngIf="type === 'rombongan'">
+        <label>Induk Kloter</label>
+        <div class="custom-input-box">
+          <ion-icon name="compass-outline"></ion-icon>
+          <ion-select [(ngModel)]="parentId" interface="action-sheet" placeholder="Pilih Kloter Naungan">
+            <ion-select-option *ngFor="let g of parentGroupOptions" [value]="g.id">{{ g.name }}</ion-select-option>
+          </ion-select>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="type === 'regu'">
+        <label>Induk Rombongan</label>
+        <div class="custom-input-box">
+          <ion-icon name="compass-outline"></ion-icon>
+          <ion-select [(ngModel)]="parentId" interface="action-sheet" placeholder="Pilih Rombongan Naungan">
+            <ion-select-option *ngFor="let g of parentGroupOptions" [value]="g.id">{{ g.name }}</ion-select-option>
+          </ion-select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Nama Kelompok</label>
+        <div class="custom-input-box">
+          <ion-icon name="bookmark-outline"></ion-icon>
+          <ion-input [(ngModel)]="name" type="text" placeholder="cth. Kloter 01 / Rombongan 3 / Regu 2"></ion-input>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Pemimpin ({{ type === 'kloter' ? 'Ketua Kloter' : (type === 'rombongan' ? 'Ketua Rombongan' : 'Ketua Regu') }})</label>
+        <div class="custom-input-box">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-select [(ngModel)]="leaderId" interface="action-sheet" placeholder="Pilih Pimpinan Kelompok">
+            <ion-select-option [value]="null">-- Belum Ada Pimpinan --</ion-select-option>
+            <ion-select-option *ngFor="let l of leaders" [value]="l.id">{{ l.name }} ({{ l.email }})</ion-select-option>
+          </ion-select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Keterangan / Catatan</label>
+        <div class="custom-textarea-box">
+          <ion-textarea [(ngModel)]="description" rows="2" placeholder="cth. Maktab 42, Jadwal Keberangkatan"></ion-textarea>
+        </div>
+      </div>
+
+      <!-- Jika Kloter / Rombongan: Pilih Sub-Groups -->
+      <div class="member-section" *ngIf="type === 'kloter' || type === 'rombongan'">
+        <div class="member-header-bar">
+          <div class="header-left">
+            <span class="title">{{ type === 'kloter' ? 'Daftar Rombongan di Bawah Kloter' : 'Daftar Regu di Bawah Rombongan' }}</span>
+            <span class="count-badge">{{ selectedSubGroupIds.length }} Dipilih</span>
+          </div>
+        </div>
+
+        <div *ngIf="availableSubGroups.length === 0" class="empty-member-box">
+          <ion-icon name="layers-outline"></ion-icon>
+          <p>Belum ada kelompok bawahan ({{ type === 'kloter' ? 'rombongan' : 'regu' }}) yang tersedia.</p>
+        </div>
+
+        <div class="member-list" *ngIf="availableSubGroups.length > 0">
+          <div class="member-row" *ngFor="let sg of availableSubGroups">
+            <ion-checkbox [checked]="selectedSubGroupIds.includes(sg.id)" (ionChange)="toggleSubGroup(sg.id)"></ion-checkbox>
+            <div style="margin-left: 12px; flex: 1;">
+              <strong>{{ sg.name }}</strong>
+              <div style="font-size: 12px; color: var(--ion-color-medium);">Ketua: {{ sg.leader_name }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jika Regu: Kelola Anggota Jamaah -->
+      <div class="member-section" *ngIf="type === 'regu'">
         <div class="member-header-bar">
           <div class="header-left">
             <span class="title">Daftar Anggota Jamaah</span>
@@ -62,23 +130,20 @@
 
         <div *ngIf="selectedMemberSlots.length === 0" class="empty-member-box">
           <ion-icon name="people-outline"></ion-icon>
-          <p>Belum ada jamaah ditambahkan ke kloter ini.</p>
+          <p>Belum ada jamaah ditambahkan ke regu ini.</p>
         </div>
 
         <div class="member-list" *ngIf="selectedMemberSlots.length > 0">
           <div class="member-row" *ngFor="let slot of selectedMemberSlots; let i = index">
             <div class="row-num">{{ i + 1 }}</div>
-
             <div class="input-select-wrapper">
               <ion-icon name="person-circle-outline"></ion-icon>
-              <ion-select [(ngModel)]="selectedMemberSlots[i]" interface="action-sheet" placeholder="Pilih Jamaah"
-                cancelText="Batal">
+              <ion-select [(ngModel)]="selectedMemberSlots[i]" interface="action-sheet" placeholder="Pilih Jamaah" cancelText="Batal">
                 <ion-select-option *ngFor="let j of getAvailableForSlot(i)" [value]="j.id">
                   {{ j.name }} ({{ j.email }})
                 </ion-select-option>
               </ion-select>
             </div>
-
             <button type="button" class="btn-trash" (click)="removeMemberSlot(i)" title="Hapus">
               <ion-icon name="trash-outline"></ion-icon>
             </button>
